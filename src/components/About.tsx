@@ -8,7 +8,7 @@ const About = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-48 h-48 rounded-full bg-primary/20 flex items-center justify-center">
-                  <span className="font-display text-6xl text-gradient">א</span>
+                  <span className="font-display text-6xl text-gradient">ש</span>
                 </div>
               </div>
             </div>
@@ -21,28 +21,27 @@ const About = () => {
               אודות
             </h2>
             <p className="text-muted-foreground text-lg leading-relaxed mt-8">
-              אני מפתח תוכנה עם ניסיון רב בפיתוח אפליקציות ווב מתקדמות. 
-              מאז שהתחלתי את דרכי בעולם התכנות, אני שואף ליצור מוצרים שמשלבים 
-              טכנולוגיה חדשנית עם עיצוב מרהיב.
+              מומחה תמיכה טכנית עם ניסיון מוכח בהבטחת פעילות חלקה של שרתים ומיקרו-שירותים.
+              מיומן בפתרון בעיות טכניות במהירות וביעילות, עם מומחיות נרחבת ברשתות וניהול מערכות.
             </p>
             <p className="text-muted-foreground text-lg leading-relaxed">
-              אני מאמין שקוד טוב הוא אמנות - הוא צריך להיות נקי, יעיל ויפה. 
-              בכל פרויקט אני שואף לספק את הפתרון הטוב ביותר תוך שמירה על 
-              סטנדרטים גבוהים של איכות וביצועים.
+              בעל ידע נרחב בביצוע שאילתות מסד נתונים, עבודה עם SQL, Kibana ו-AWS לניתוח לוגים.
+              מנהל בהצלחה מחלקה טכנית תוך טיפוח זרימת עבודה יעילה ופתרון בעיות אפקטיבי.
+              מפגין מיומנות בעבודה עם מערכות כרטוס פנימיות ועמידה ב-SLA.
             </p>
             
             <div className="grid grid-cols-3 gap-6 pt-8">
               <div className="text-center p-4 card-elevated">
-                <span className="font-display text-3xl font-bold text-gradient">5+</span>
+                <span className="font-display text-3xl font-bold text-gradient">7+</span>
                 <p className="text-muted-foreground text-sm mt-2">שנות ניסיון</p>
               </div>
               <div className="text-center p-4 card-elevated">
-                <span className="font-display text-3xl font-bold text-gradient">50+</span>
-                <p className="text-muted-foreground text-sm mt-2">פרויקטים</p>
+                <span className="font-display text-3xl font-bold text-gradient">4</span>
+                <p className="text-muted-foreground text-sm mt-2">חברות</p>
               </div>
               <div className="text-center p-4 card-elevated">
-                <span className="font-display text-3xl font-bold text-gradient">30+</span>
-                <p className="text-muted-foreground text-sm mt-2">לקוחות מרוצים</p>
+                <span className="font-display text-3xl font-bold text-gradient">450+</span>
+                <p className="text-muted-foreground text-sm mt-2">שעות הסמכה</p>
               </div>
             </div>
           </div>

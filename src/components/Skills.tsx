@@ -1,35 +1,35 @@
-import { Code2, Palette, Database, Smartphone, Cloud, GitBranch } from "lucide-react";
+import { Server, Network, Database, Shield, Cloud, Headphones } from "lucide-react";
 
 const skills = [
   {
-    icon: Code2,
-    title: "פיתוח Frontend",
-    description: "React, TypeScript, Next.js, Tailwind CSS",
+    icon: Server,
+    title: "ניהול שרתים",
+    description: "פתרון בעיות, ניטור שרתים, ביצוע שאילתות",
+  },
+  {
+    icon: Network,
+    title: "רשתות ו-VoIP",
+    description: "ASTERISK, VoIP, אבטחת רשת, פרוטוקולים",
   },
   {
     icon: Database,
-    title: "פיתוח Backend",
-    description: "Node.js, Python, PostgreSQL, MongoDB",
-  },
-  {
-    icon: Palette,
-    title: "עיצוב UI/UX",
-    description: "Figma, Adobe XD, עיצוב רספונסיבי",
-  },
-  {
-    icon: Smartphone,
-    title: "אפליקציות מובייל",
-    description: "React Native, Flutter",
+    title: "מסדי נתונים",
+    description: "SQL, MongoDB, ניתוח לוגים עם Kibana",
   },
   {
     icon: Cloud,
-    title: "ענן ו-DevOps",
-    description: "AWS, Docker, Kubernetes, CI/CD",
+    title: "שירותי ענן",
+    description: "AWS, API Integrations, DevOps",
   },
   {
-    icon: GitBranch,
-    title: "בקרת גרסאות",
-    description: "Git, GitHub, GitLab",
+    icon: Shield,
+    title: "אבטחת סייבר",
+    description: "MCSA, Linux, Cyber Security Specialist",
+  },
+  {
+    icon: Headphones,
+    title: "תמיכה טכנית",
+    description: "ניהול מוקד, Jira, SLA, לקוחות VIP",
   },
 ];
 
@@ -42,7 +42,7 @@ const Skills = () => {
             הכישורים שלי
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            טכנולוגיות וכלים שאני משתמש בהם ליצירת פתרונות דיגיטליים מתקדמים
+            טכנולוגיות וכלים שאני משתמש בהם לפתרון בעיות טכניות מורכבות
           </p>
         </div>
 
