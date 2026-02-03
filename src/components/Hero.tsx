@@ -1,7 +1,34 @@
 import { ArrowDown, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 
 const Hero = () => {
+  const [displayedText, setDisplayedText] = useState("");
+  const [showCursor, setShowCursor] = useState(true);
+  const fullText = "Shalev Osher";
+
+  useEffect(() => {
+    let currentIndex = 0;
+    const typingInterval = setInterval(() => {
+      if (currentIndex <= fullText.length) {
+        setDisplayedText(fullText.slice(0, currentIndex));
+        currentIndex++;
+      } else {
+        clearInterval(typingInterval);
+      }
+    }, 100);
+
+    return () => clearInterval(typingInterval);
+  }, []);
+
+  useEffect(() => {
+    const cursorInterval = setInterval(() => {
+      setShowCursor((prev) => !prev);
+    }, 530);
+
+    return () => clearInterval(cursorInterval);
+  }, []);
+
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
       {/* Background decoration */}
@@ -17,7 +44,10 @@ const Hero = () => {
           </p>
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
             Hello, I'm
-            <span className="block text-gradient">Shalev Osher</span>
+            <span className="block text-gradient">
+              {displayedText}
+              <span className={`inline-block w-[3px] h-[0.9em] bg-primary ml-1 align-middle ${showCursor ? 'opacity-100' : 'opacity-0'}`} />
+            </span>
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10 font-light">
             Experienced Technical Support Specialist with a proven track record of ensuring 
