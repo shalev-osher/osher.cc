@@ -60,9 +60,9 @@ const Hero = () => {
 
         <a
           href="#about"
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-muted-foreground hover:text-primary transition-colors duration-300 animate-bounce"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 animate-bounce hover:animate-none"
         >
-          <ArrowDown size={32} />
+          <ArrowDown size={24} />
         </a>
       </div>
     </section>
