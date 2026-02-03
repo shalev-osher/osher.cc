@@ -1,33 +1,22 @@
 import { ArrowDown, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useTypewriter } from "@/hooks/useTypewriter";
 
 const Hero = () => {
-  const [displayedText, setDisplayedText] = useState("");
-  const [showCursor, setShowCursor] = useState(true);
-  const fullText = "Shalev Osher";
+  const nameTypewriter = useTypewriter({
+    text: "Shalev Osher",
+    speed: 100,
+    loop: true,
+    pauseDuration: 3000,
+  });
 
-  useEffect(() => {
-    let currentIndex = 0;
-    const typingInterval = setInterval(() => {
-      if (currentIndex <= fullText.length) {
-        setDisplayedText(fullText.slice(0, currentIndex));
-        currentIndex++;
-      } else {
-        clearInterval(typingInterval);
-      }
-    }, 100);
-
-    return () => clearInterval(typingInterval);
-  }, []);
-
-  useEffect(() => {
-    const cursorInterval = setInterval(() => {
-      setShowCursor((prev) => !prev);
-    }, 530);
-
-    return () => clearInterval(cursorInterval);
-  }, []);
+  const descriptionTypewriter = useTypewriter({
+    text: "Experienced Technical Support Specialist with a proven track record of ensuring smooth operation of servers and microservices. Skilled in troubleshooting, networking, and system administration.",
+    speed: 30,
+    delay: 1500,
+    loop: true,
+    pauseDuration: 4000,
+  });
 
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -45,14 +34,13 @@ const Hero = () => {
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
             Hello, I'm
             <span className="block text-gradient">
-              {displayedText}
-              <span className={`inline-block w-[3px] h-[0.9em] bg-primary ml-1 align-middle ${showCursor ? 'opacity-100' : 'opacity-0'}`} />
+              {nameTypewriter.displayedText}
+              <span className={`inline-block w-[3px] h-[0.9em] bg-primary ml-1 align-middle transition-opacity duration-100 ${nameTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
             </span>
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10 font-light">
-            Experienced Technical Support Specialist with a proven track record of ensuring 
-            smooth operation of servers and microservices. Skilled in troubleshooting, 
-            networking, and system administration.
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10 font-light min-h-[4.5rem] md:min-h-[3.5rem]">
+            {descriptionTypewriter.displayedText}
+            <span className={`inline-block w-[2px] h-[1em] bg-muted-foreground ml-1 align-middle transition-opacity duration-100 ${descriptionTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button variant="hero" size="xl" asChild>
