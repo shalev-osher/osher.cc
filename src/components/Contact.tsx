@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,20 +23,21 @@ const Contact = () => {
   };
 
   const contactInfo = [
-    { icon: Mail, label: "אימייל", value: "hello@example.com" },
-    { icon: Phone, label: "טלפון", value: "050-123-4567" },
-    { icon: MapPin, label: "מיקום", value: "תל אביב, ישראל" },
+    { icon: Mail, label: "אימייל", value: "shalev@osher.cc", href: "mailto:shalev@osher.cc" },
+    { icon: Phone, label: "טלפון", value: "+972-50-722-3763", href: "tel:+972507223763" },
+    { icon: MapPin, label: "מיקום", value: "אשקלון, ישראל", href: null },
+    { icon: Linkedin, label: "LinkedIn", value: "shalev-osher", href: "https://linkedin.com/in/shalev-osher/" },
   ];
 
   return (
-    <section id="contact" className="py-24 bg-secondary/30">
+    <section id="contact" className="py-24">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
             בואו נדבר
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            יש לכם פרויקט בראש? אשמח לשמוע על הרעיון שלכם ולראות איך אני יכול לעזור
+            מחפשים מומחה תמיכה טכנית? אשמח לשמוע מכם
           </p>
         </div>
 
@@ -50,7 +51,18 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="text-muted-foreground text-sm">{item.label}</p>
-                    <p className="font-medium">{item.value}</p>
+                    {item.href ? (
+                      <a 
+                        href={item.href} 
+                        target={item.href.startsWith("http") ? "_blank" : undefined}
+                        rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                        className="font-medium hover:text-primary transition-colors"
+                      >
+                        {item.value}
+                      </a>
+                    ) : (
+                      <p className="font-medium">{item.value}</p>
+                    )}
                   </div>
                 </div>
               ))}
@@ -58,8 +70,8 @@ const Contact = () => {
 
             <div className="p-6 card-elevated">
               <p className="text-muted-foreground text-sm leading-relaxed">
-                אני זמין לפרויקטים חדשים ושיתופי פעולה. אם יש לכם רעיון או צורך בפתרון טכנולוגי, 
-                מלאו את הטופס ואחזור אליכם תוך 24 שעות.
+                אני פתוח להזדמנויות חדשות בתחום התמיכה הטכנית, DevOps ואבטחת סייבר.
+                אם יש לכם תפקיד מתאים או פרויקט שדורש את הכישורים שלי, מלאו את הטופס ואחזור אליכם בהקדם.
               </p>
             </div>
           </div>
@@ -86,7 +98,7 @@ const Contact = () => {
             </div>
             <div>
               <Textarea
-                placeholder="ספרו לי על הפרויקט שלכם..."
+                placeholder="איך אני יכול לעזור?"
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 className="bg-card border-border focus:border-primary min-h-[150px] resize-none"

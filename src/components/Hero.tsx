@@ -13,18 +13,19 @@ const Hero = () => {
       <div className="container mx-auto px-6 text-center relative z-10">
         <div className="animate-fade-up">
           <p className="text-primary font-medium mb-4 tracking-widest uppercase text-sm">
-            ברוכים הבאים לפורטפוליו שלי
+            Technical Support Specialist
           </p>
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
             שלום, אני
-            <span className="block text-gradient">שם מלא</span>
+            <span className="block text-gradient">שלב אושר</span>
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10 font-light">
-            מפתח Full Stack עם תשוקה לעיצוב ויצירת חוויות דיגיטליות מרהיבות
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10 font-light">
+            מומחה תמיכה טכנית עם ניסיון מוכח בהבטחת פעילות חלקה של שרתים ומיקרו-שירותים.
+            מיומן בפתרון בעיות, ניהול רשתות ומערכות, ושליטה ב-AWS, SQL ו-Kibana.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button variant="hero" size="xl" asChild>
-              <a href="#projects">צפייה בפרויקטים</a>
+              <a href="#experience">הניסיון שלי</a>
             </Button>
             <Button variant="heroOutline" size="xl" asChild>
               <a href="#contact">צור קשר</a>
