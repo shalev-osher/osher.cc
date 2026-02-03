@@ -16,16 +16,16 @@ const Contact = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast({
-      title: "ההודעה נשלחה!",
-      description: "אחזור אליך בהקדם האפשרי.",
+      title: "Message sent!",
+      description: "I'll get back to you as soon as possible.",
     });
     setFormData({ name: "", email: "", message: "" });
   };
 
   const contactInfo = [
-    { icon: Mail, label: "אימייל", value: "shalev@osher.cc", href: "mailto:shalev@osher.cc" },
-    { icon: Phone, label: "טלפון", value: "+972-50-722-3763", href: "tel:+972507223763" },
-    { icon: MapPin, label: "מיקום", value: "אשקלון, ישראל", href: null },
+    { icon: Mail, label: "Email", value: "shalev@osher.cc", href: "mailto:shalev@osher.cc" },
+    { icon: Phone, label: "Phone", value: "+972-50-722-3763", href: "tel:+972507223763" },
+    { icon: MapPin, label: "Location", value: "Ashkelon, Israel", href: null },
     { icon: Linkedin, label: "LinkedIn", value: "shalev-osher", href: "https://linkedin.com/in/shalev-osher/" },
   ];
 
@@ -34,10 +34,10 @@ const Contact = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
-            בואו נדבר
+            Let's Connect
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            מחפשים מומחה תמיכה טכנית? אשמח לשמוע מכם
+            Looking for a Technical Support Specialist? I'd love to hear from you
           </p>
         </div>
 
@@ -70,8 +70,9 @@ const Contact = () => {
 
             <div className="p-6 card-elevated">
               <p className="text-muted-foreground text-sm leading-relaxed">
-                אני פתוח להזדמנויות חדשות בתחום התמיכה הטכנית, DevOps ואבטחת סייבר.
-                אם יש לכם תפקיד מתאים או פרויקט שדורש את הכישורים שלי, מלאו את הטופס ואחזור אליכם בהקדם.
+                I'm open to new opportunities in Technical Support, DevOps, and Cyber Security.
+                If you have a suitable role or project that requires my skills, fill out the form 
+                and I'll get back to you promptly.
               </p>
             </div>
           </div>
@@ -79,7 +80,7 @@ const Contact = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <Input
-                placeholder="שם מלא"
+                placeholder="Full Name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 className="bg-card border-border focus:border-primary h-12"
@@ -89,7 +90,7 @@ const Contact = () => {
             <div>
               <Input
                 type="email"
-                placeholder="אימייל"
+                placeholder="Email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="bg-card border-border focus:border-primary h-12"
@@ -98,7 +99,7 @@ const Contact = () => {
             </div>
             <div>
               <Textarea
-                placeholder="איך אני יכול לעזור?"
+                placeholder="How can I help you?"
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 className="bg-card border-border focus:border-primary min-h-[150px] resize-none"
@@ -107,7 +108,7 @@ const Contact = () => {
             </div>
             <Button variant="hero" size="xl" className="w-full gap-2">
               <Send className="w-5 h-5" />
-              שליחת הודעה
+              Send Message
             </Button>
           </form>
         </div>

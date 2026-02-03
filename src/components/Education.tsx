@@ -23,10 +23,10 @@ const Education = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
-            השכלה והסמכות
+            Education & Certifications
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            הכשרה מקצועית והסמכות בתחום הסייבר והטכנולוגיה
+            Professional training and certifications in cyber security and technology
           </p>
         </div>
 
@@ -35,7 +35,7 @@ const Education = () => {
           <div className="space-y-6">
             <h3 className="font-display text-2xl font-semibold flex items-center gap-3">
               <GraduationCap className="w-6 h-6 text-primary" />
-              השכלה
+              Education
             </h3>
             {education.map((edu) => (
               <div
@@ -58,7 +58,7 @@ const Education = () => {
           <div className="space-y-6">
             <h3 className="font-display text-2xl font-semibold flex items-center gap-3">
               <Award className="w-6 h-6 text-primary" />
-              הסמכות
+              Certifications
             </h3>
             {certifications.map((cert) => (
               <div
@@ -81,15 +81,15 @@ const Education = () => {
         {/* Languages */}
         <div className="max-w-4xl mx-auto mt-12">
           <div className="card-elevated p-6">
-            <h3 className="font-display text-xl font-semibold mb-4 text-center">שפות</h3>
+            <h3 className="font-display text-xl font-semibold mb-4 text-center">Languages</h3>
             <div className="flex justify-center gap-8">
               <div className="text-center">
-                <span className="font-display text-2xl font-bold text-gradient">עברית</span>
-                <p className="text-muted-foreground text-sm mt-1">שפת אם</p>
+                <span className="font-display text-2xl font-bold text-gradient">English</span>
+                <p className="text-muted-foreground text-sm mt-1">Fluent</p>
               </div>
               <div className="text-center">
-                <span className="font-display text-2xl font-bold text-gradient">English</span>
-                <p className="text-muted-foreground text-sm mt-1">שליטה מלאה</p>
+                <span className="font-display text-2xl font-bold text-gradient">Hebrew</span>
+                <p className="text-muted-foreground text-sm mt-1">Native Speaker</p>
               </div>
             </div>
           </div>
