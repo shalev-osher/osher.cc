@@ -1,6 +1,14 @@
 import profilePhoto from "@/assets/profile-photo.jpeg";
+import { useTypewriter } from "@/hooks/useTypewriter";
 
 const About = () => {
+  const titleTypewriter = useTypewriter({
+    text: "About Me",
+    speed: 80,
+    loop: true,
+    pauseDuration: 5000,
+  });
+
   return (
     <section id="about" className="py-24 relative">
       <div className="container mx-auto px-6">
@@ -20,7 +28,8 @@ const About = () => {
 
           <div className="space-y-6">
             <h2 className="font-display text-4xl md:text-5xl font-bold line-decoration">
-              About Me
+              {titleTypewriter.displayedText}
+              <span className={`inline-block w-[3px] h-[0.8em] bg-primary ml-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
             </h2>
             <p className="text-muted-foreground text-lg leading-relaxed mt-8">
               Experienced Technical Support Specialist with a proven track record of ensuring 

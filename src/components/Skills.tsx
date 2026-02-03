@@ -1,4 +1,5 @@
 import { Server, Network, Database, Shield, Cloud, Headphones } from "lucide-react";
+import { useTypewriter } from "@/hooks/useTypewriter";
 
 const skills = [
   {
@@ -34,15 +35,32 @@ const skills = [
 ];
 
 const Skills = () => {
+  const titleTypewriter = useTypewriter({
+    text: "My Skills",
+    speed: 80,
+    loop: true,
+    pauseDuration: 5000,
+  });
+
+  const subtitleTypewriter = useTypewriter({
+    text: "Technologies and tools I use to solve complex technical challenges",
+    speed: 25,
+    delay: 1000,
+    loop: true,
+    pauseDuration: 5000,
+  });
+
   return (
     <section id="skills" className="py-24 bg-secondary/30">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
-            My Skills
+            {titleTypewriter.displayedText}
+            <span className={`inline-block w-[3px] h-[0.8em] bg-primary ml-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Technologies and tools I use to solve complex technical challenges
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto min-h-[1.75rem]">
+            {subtitleTypewriter.displayedText}
+            <span className={`inline-block w-[2px] h-[1em] bg-muted-foreground ml-1 align-middle transition-opacity duration-100 ${subtitleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
           </p>
         </div>
 
