@@ -1,4 +1,4 @@
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Hero = () => {
@@ -30,6 +30,12 @@ const Hero = () => {
             </Button>
             <Button variant="heroOutline" size="xl" asChild>
               <a href="#contact">Get in Touch</a>
+            </Button>
+            <Button variant="heroOutline" size="xl" asChild>
+              <a href="/cv/shalev-osher-cv.pdf" download className="gap-2">
+                <Download className="w-5 h-5" />
+                Download CV
+              </a>
             </Button>
           </div>
         </div>
