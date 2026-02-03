@@ -60,7 +60,7 @@ const Hero = () => {
 
         <a
           href="#about"
-          className="absolute bottom-8 right-8 w-14 h-14 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+          className="fixed bottom-8 right-8 w-14 h-14 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 z-50"
         >
           <ArrowDown size={24} />
         </a>
