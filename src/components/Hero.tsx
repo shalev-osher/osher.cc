@@ -16,19 +16,20 @@ const Hero = () => {
             Technical Support Specialist
           </p>
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
-            שלום, אני
-            <span className="block text-gradient">שלב אושר</span>
+            Hello, I'm
+            <span className="block text-gradient">Shalev Osher</span>
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10 font-light">
-            מומחה תמיכה טכנית עם ניסיון מוכח בהבטחת פעילות חלקה של שרתים ומיקרו-שירותים.
-            מיומן בפתרון בעיות, ניהול רשתות ומערכות, ושליטה ב-AWS, SQL ו-Kibana.
+            Experienced Technical Support Specialist with a proven track record of ensuring 
+            smooth operation of servers and microservices. Skilled in troubleshooting, 
+            networking, and system administration.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button variant="hero" size="xl" asChild>
-              <a href="#experience">הניסיון שלי</a>
+              <a href="#experience">View Experience</a>
             </Button>
             <Button variant="heroOutline" size="xl" asChild>
-              <a href="#contact">צור קשר</a>
+              <a href="#contact">Get in Touch</a>
             </Button>
           </div>
         </div>

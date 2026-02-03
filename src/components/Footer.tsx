@@ -10,12 +10,12 @@ const Footer = () => {
     <footer className="py-12 border-t border-border">
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="text-center md:text-right">
+          <div className="text-center md:text-left">
             <a href="#" className="font-display text-2xl font-bold text-gradient">
               Shalev Osher
             </a>
             <p className="text-muted-foreground text-sm mt-2">
-              © 2024 כל הזכויות שמורות
+              © 2024 All rights reserved
             </p>
           </div>
 

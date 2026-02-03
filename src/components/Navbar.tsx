@@ -12,11 +12,11 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { href: "#about", label: "אודות" },
-    { href: "#skills", label: "כישורים" },
-    { href: "#experience", label: "ניסיון" },
-    { href: "#education", label: "השכלה" },
-    { href: "#contact", label: "צור קשר" },
+    { href: "#about", label: "About" },
+    { href: "#skills", label: "Skills" },
+    { href: "#experience", label: "Experience" },
+    { href: "#education", label: "Education" },
+    { href: "#contact", label: "Contact" },
   ];
 
   return (

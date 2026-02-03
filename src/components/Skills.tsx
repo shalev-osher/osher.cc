@@ -3,33 +3,33 @@ import { Server, Network, Database, Shield, Cloud, Headphones } from "lucide-rea
 const skills = [
   {
     icon: Server,
-    title: "ניהול שרתים",
-    description: "פתרון בעיות, ניטור שרתים, ביצוע שאילתות",
+    title: "Server Management",
+    description: "Troubleshooting, server monitoring, query execution",
   },
   {
     icon: Network,
-    title: "רשתות ו-VoIP",
-    description: "ASTERISK, VoIP, אבטחת רשת, פרוטוקולים",
+    title: "Networking & VoIP",
+    description: "ASTERISK, VoIP, network security, protocols",
   },
   {
     icon: Database,
-    title: "מסדי נתונים",
-    description: "SQL, MongoDB, ניתוח לוגים עם Kibana",
+    title: "Databases",
+    description: "SQL, MongoDB, log analysis with Kibana",
   },
   {
     icon: Cloud,
-    title: "שירותי ענן",
+    title: "Cloud Services",
     description: "AWS, API Integrations, DevOps",
   },
   {
     icon: Shield,
-    title: "אבטחת סייבר",
+    title: "Cyber Security",
     description: "MCSA, Linux, Cyber Security Specialist",
   },
   {
     icon: Headphones,
-    title: "תמיכה טכנית",
-    description: "ניהול מוקד, Jira, SLA, לקוחות VIP",
+    title: "Technical Support",
+    description: "Call center management, Jira, SLA, VIP clients",
   },
 ];
 
@@ -39,10 +39,10 @@ const Skills = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
-            הכישורים שלי
+            My Skills
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            טכנולוגיות וכלים שאני משתמש בהם לפתרון בעיות טכניות מורכבות
+            Technologies and tools I use to solve complex technical challenges
           </p>
         </div>
 

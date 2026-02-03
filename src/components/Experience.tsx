@@ -4,13 +4,14 @@ const experiences = [
   {
     company: "Voicenter",
     role: "Technical Support Specialist Tier 2",
-    period: "2023 - הווה",
+    period: "2023 - Present",
     description: [
-      "שיתוף פעולה עם צוותי Development ו-DevOps באמצעות Jira",
-      "מתן תמיכה מקיפה ללקוחות VIP וסטנדרטיים",
-      "עבודה עם API Integrations, Kibana ו-AWS",
-      "ביצוע בדיקות QA מקיפות לפי דרישות הפיתוח",
-      "פיתוח כלי troubleshooting בשיתוף עם צוות הפיתוח",
+      "Collaborating closely with Development and DevOps teams using Jira to address issues and enhance workflows",
+      "Delivering comprehensive support to VIP and standard clients across the company's suite of products",
+      "Working with API integrations (leveraging Kibana), networking, and Amazon Web Services (AWS)",
+      "Conducting rigorous QA testing on features and servers as per requests from Development and DevOps teams",
+      "Co-developing a troubleshooting tool in collaboration with the Development team",
+      "Proactively diagnosing and resolving live issues across a multitude of servers using PRTG",
     ],
   },
   {
@@ -18,10 +19,10 @@ const experiences = [
     role: "Technical Support Specialist - Strategic Customers",
     period: "2021 - 2023",
     description: [
-      "תמיכה טכנית במערכות טלפוניה בענן",
-      "כתיבת מדריכים והדרכות לעובדים",
-      "ניהול חשבונות הלקוחות הגדולים ביותר",
-      "עבודה עם ASTERISK, SQL והנדסה",
+      "Provided technical support for telephone systems on the cloud",
+      "Wrote guides and presentations, conducted apprenticeships, and administered exercises",
+      "Managed the accounts of the largest clients on-site",
+      "Worked with ASTERISK, SQL, alongside IT, engineering, and development departments",
     ],
   },
   {
@@ -29,10 +30,10 @@ const experiences = [
     role: "Technical Support Engineer Tier 1",
     period: "2021",
     description: [
-      "ניתוח רשתות VoIP ומערכות מחשב",
-      "פתרון בעיות ברשתות VoIP",
-      "הערכה ושיפור אבטחת רשת",
-      "מתן תמיכה טכנית ראשונית ללקוחות",
+      "Conducted analysis of current VoIP networks and computer systems",
+      "Resolved VoIP network complications through troubleshooting",
+      "Evaluated and enhanced network security measures and protocols",
+      "Offered initial technical support to clients via calls, emails, or tickets",
     ],
   },
   {
@@ -40,17 +41,17 @@ const experiences = [
     role: "Quality Assurance Tester",
     period: "2018 - 2021",
     description: [
-      "ביצוע בדיקות QA במעבדת Sagemcom עבור Altice (HOT)",
-      "בדיקות יומיות של ממירי טלוויזיה",
+      "Executed QA tests within Sagemcom LAB for Altice (HOT) company's products",
+      "Performed daily quality assurance testing of set-top boxes to ensure adherence to standards",
     ],
   },
   {
-    company: "צה\"ל",
-    role: "שירות צבאי",
+    company: "IDF",
+    role: "Military Service",
     period: "2015 - 2018",
     description: [
-      "ביצוע טיפולים ברכבים ושימוש בציוד בדיקה",
-      "התקנה והסרה של מכלולי רכב",
+      "Performed vehicle treatments and utilized test equipment to ensure optimal functionality",
+      "Removed and installed vehicle assemblies in accordance with established procedures",
     ],
   },
 ];
@@ -61,26 +62,26 @@ const Experience = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
-            ניסיון תעסוקתי
+            Work Experience
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            המסע המקצועי שלי בעולם הטכנולוגיה והתמיכה הטכנית
+            My professional journey in technology and technical support
           </p>
         </div>
 
         <div className="max-w-4xl mx-auto">
           <div className="relative">
             {/* Timeline line */}
-            <div className="absolute right-6 top-0 bottom-0 w-0.5 bg-border hidden md:block" />
+            <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-border hidden md:block" />
 
             <div className="space-y-8">
               {experiences.map((exp, index) => (
                 <div
                   key={`${exp.company}-${exp.role}`}
-                  className="relative md:pr-16"
+                  className="relative md:pl-16"
                 >
                   {/* Timeline dot */}
-                  <div className="absolute right-4 top-6 w-5 h-5 rounded-full bg-primary border-4 border-background hidden md:block" />
+                  <div className="absolute left-4 top-6 w-5 h-5 rounded-full bg-primary border-4 border-background hidden md:block" />
 
                   <div className="card-elevated p-6 hover:border-primary/50 border border-transparent transition-all duration-300">
                     <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
