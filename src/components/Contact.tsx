@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useTypewriter } from "@/hooks/useTypewriter";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -11,6 +12,21 @@ const Contact = () => {
     name: "",
     email: "",
     message: "",
+  });
+
+  const titleTypewriter = useTypewriter({
+    text: "Let's Connect",
+    speed: 80,
+    loop: true,
+    pauseDuration: 5000,
+  });
+
+  const subtitleTypewriter = useTypewriter({
+    text: "Looking for a Technical Support Specialist? I'd love to hear from you",
+    speed: 25,
+    delay: 1200,
+    loop: true,
+    pauseDuration: 5000,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -34,10 +50,12 @@ const Contact = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
-            Let's Connect
+            {titleTypewriter.displayedText}
+            <span className={`inline-block w-[3px] h-[0.8em] bg-primary ml-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Looking for a Technical Support Specialist? I'd love to hear from you
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto min-h-[1.75rem]">
+            {subtitleTypewriter.displayedText}
+            <span className={`inline-block w-[2px] h-[1em] bg-muted-foreground ml-1 align-middle transition-opacity duration-100 ${subtitleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
           </p>
         </div>
 
