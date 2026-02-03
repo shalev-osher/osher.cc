@@ -1,8 +1,9 @@
-import { Github, Linkedin } from "lucide-react";
+import { Github, Linkedin, Facebook } from "lucide-react";
 
 const Footer = () => {
   const socialLinks = [
     { icon: Linkedin, href: "https://linkedin.com/in/shalev-osher/", label: "LinkedIn" },
+    { icon: Facebook, href: "https://www.facebook.com/Mr.ShalevOsher/", label: "Facebook" },
     { icon: Github, href: "#", label: "GitHub" },
   ];
 
@@ -15,7 +16,7 @@ const Footer = () => {
               Shalev Osher
             </a>
             <p className="text-muted-foreground text-sm mt-2">
-              © 2024 All rights reserved
+              © 2026 All rights reserved
             </p>
           </div>
 
