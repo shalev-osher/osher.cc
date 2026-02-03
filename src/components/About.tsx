@@ -1,3 +1,5 @@
+import profilePhoto from "@/assets/profile-photo.jpeg";
+
 const About = () => {
   return (
     <section id="about" className="py-24 relative">
@@ -5,12 +7,12 @@ const About = () => {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div className="relative">
             <div className="aspect-square rounded-2xl bg-secondary overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-48 h-48 rounded-full bg-primary/20 flex items-center justify-center">
-                  <span className="font-display text-6xl text-gradient">S</span>
-                </div>
-              </div>
+              <img 
+                src={profilePhoto} 
+                alt="Shalev Osher"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent" />
             </div>
             {/* Decorative element */}
             <div className="absolute -bottom-6 -left-6 w-48 h-48 border-2 border-primary/30 rounded-2xl -z-10" />
