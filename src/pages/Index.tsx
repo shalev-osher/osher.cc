@@ -19,7 +19,7 @@ const Index = () => {
   const handleLoadComplete = useCallback(() => setIsLoaded(true), []);
 
   return (
-    <div className="min-h-screen bg-background relative overflow-x-hidden">
+    <div className="min-h-screen bg-background relative">
       <SkipToContent />
       <LoadingScreen onComplete={handleLoadComplete} />
       <ParallaxBackground />
