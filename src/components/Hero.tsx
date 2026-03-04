@@ -82,7 +82,7 @@ const Hero = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              {lang === "he" ? "שלו אושר" : "Shalev Osher"}
+              {lang === "he" ? "שליו אושר" : "Shalev Osher"}
             </motion.span>
           </h1>
           
