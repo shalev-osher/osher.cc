@@ -12,6 +12,8 @@ import LoadingScreen from "@/components/LoadingScreen";
 import ParallaxBackground from "@/components/ParallaxBackground";
 import GitHubProjects from "@/components/GitHubProjects";
 import KonamiEasterEgg from "@/components/KonamiEasterEgg";
+import ScrollProgressBar from "@/components/ScrollProgressBar";
+import SkipToContent from "@/components/SkipToContent";
 
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -19,17 +21,21 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background relative">
+      <SkipToContent />
       <LoadingScreen onComplete={handleLoadComplete} />
       <ParallaxBackground />
       <KonamiEasterEgg />
+      <ScrollProgressBar />
       <Navbar />
-      <Hero />
-      <About />
-      <Skills />
-      <GitHubProjects />
-      <Experience />
-      <Education />
-      <Contact />
+      <main id="main-content" role="main">
+        <Hero />
+        <About />
+        <Skills />
+        <GitHubProjects />
+        <Experience />
+        <Education />
+        <Contact />
+      </main>
       <Footer />
       <ScrollToTop />
     </div>

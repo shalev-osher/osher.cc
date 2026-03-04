@@ -7,7 +7,8 @@ const ThemeToggle = () => {
 
   useEffect(() => {
     const stored = localStorage.getItem("theme");
-    if (stored === "light") {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (stored === "light" || (!stored && !prefersDark)) {
       setIsDark(false);
       document.documentElement.classList.remove("dark");
     } else {
@@ -18,7 +19,11 @@ const ThemeToggle = () => {
   const toggle = () => {
     const next = !isDark;
     setIsDark(next);
+    
+    // Smooth transition for all elements
     document.documentElement.style.transition = "background-color 0.6s ease, color 0.6s ease";
+    document.body.style.transition = "background-color 0.6s ease, color 0.6s ease";
+    
     if (next) {
       document.documentElement.classList.add("dark");
       localStorage.setItem("theme", "dark");
@@ -28,6 +33,7 @@ const ThemeToggle = () => {
     }
     setTimeout(() => {
       document.documentElement.style.transition = "";
+      document.body.style.transition = "";
     }, 700);
   };
 
@@ -35,9 +41,11 @@ const ThemeToggle = () => {
     <motion.button
       onClick={toggle}
       className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors duration-300 relative overflow-hidden"
-      aria-label="Toggle theme"
+      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       whileTap={{ scale: 0.85, rotate: 180 }}
       transition={{ type: "spring", stiffness: 300, damping: 15 }}
+      role="switch"
+      aria-checked={isDark}
     >
       <AnimatePresence mode="wait" initial={false}>
         {isDark ? (
