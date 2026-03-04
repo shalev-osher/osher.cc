@@ -5,20 +5,11 @@ import useActiveSection from "@/hooks/useActiveSection";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { lang, setLang, t } = useLanguage();
 
   const sectionIds = useMemo(() => ["about", "skills", "experience", "education", "contact"], []);
   const activeSection = useActiveSection(sectionIds);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     document.body.style.overflow = isMobileOpen ? "hidden" : "";
@@ -38,9 +29,7 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`fixed top-0 inset-x-0 z-[60] transition-all duration-300 ${
-          isScrolled ? "bg-background/95 backdrop-blur-xl border-b border-border shadow-lg" : "bg-background/70 backdrop-blur-lg"
-        }`}
+        className="fixed top-0 inset-x-0 z-[200] bg-background/95 backdrop-blur-xl border-b border-border shadow-lg"
         role="navigation"
         aria-label="Main navigation"
       >
