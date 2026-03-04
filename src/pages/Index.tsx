@@ -39,6 +39,7 @@ const Index = () => {
       </main>
       <Footer />
       <ScrollToTop />
+      <AccessibilityWidget />
     </div>
   );
 };
