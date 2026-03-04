@@ -230,6 +230,36 @@
   .timeline-dot-active {
     box-shadow: 0 0 0 4px hsl(var(--background)), 0 0 30px hsl(var(--primary) / 0.6), 0 0 60px hsl(var(--primary) / 0.2);
   }
+  /* Accessibility overrides */
+  .a11y-high-contrast {
+    --foreground: 0 0% 100% !important;
+    --background: 0 0% 0% !important;
+    --muted-foreground: 0 0% 85% !important;
+    --border: 0 0% 50% !important;
+  }
+
+  .a11y-high-contrast:not(.dark) {
+    --foreground: 0 0% 0% !important;
+    --background: 0 0% 100% !important;
+    --muted-foreground: 0 0% 20% !important;
+    --border: 0 0% 30% !important;
+  }
+
+  .a11y-underline-links a {
+    text-decoration: underline !important;
+    text-underline-offset: 3px;
+  }
+
+  .a11y-big-cursor,
+  .a11y-big-cursor * {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M5 2 L5 26 L12 20 L18 28 L22 26 L16 18 L24 18 Z' fill='black' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E") 5 2, auto !important;
+  }
+
+  .a11y-pause-animations,
+  .a11y-pause-animations * {
+    animation-play-state: paused !important;
+    transition-duration: 0s !important;
+  }
 }
 
 @layer utilities {
