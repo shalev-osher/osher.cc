@@ -40,7 +40,7 @@ const ThemeToggle = () => {
   return (
     <motion.button
       onClick={toggle}
-      className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors duration-300 relative overflow-hidden"
+      className="w-9 h-9 rounded-lg border border-border/50 bg-primary/5 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 hover:border-primary/30 transition-colors duration-300 relative overflow-hidden"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       whileTap={{ scale: 0.85, rotate: 180 }}
       transition={{ type: "spring", stiffness: 300, damping: 15 }}
