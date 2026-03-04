@@ -54,7 +54,7 @@ const experiencesData = {
   ],
   he: [
     {
-      company: "Voicenter", role: "מומחה תמיכה טכנית שכבה 2", period: "2023 - היום", year: "2023",
+      company: "Voicenter", role: "מומחה תמיכה טכנית דרג ב׳", period: "2023 - היום", year: "2023",
       description: [
         "שיתוף פעולה צמוד עם צוותי פיתוח ו-DevOps באמצעות Jira לטיפול בבעיות ושיפור תהליכי עבודה",
         "מתן תמיכה מקיפה ללקוחות VIP ולקוחות רגילים במגוון מוצרי החברה",
