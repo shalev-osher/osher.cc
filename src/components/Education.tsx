@@ -1,5 +1,6 @@
 import { GraduationCap, Award, Calendar } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
+import GradientText from "@/components/GradientText";
 
 const education = [
   { institution: "Kernelios", degree: "Cyber/Computer Forensics and Counterterrorism", period: "2021 - 2022", icon: GraduationCap },
@@ -13,9 +14,11 @@ const Education = () => {
   return (
     <section id="education" className="py-24 bg-secondary/30">
       <div className="container mx-auto px-6">
-        <AnimatedSection>
+        <AnimatedSection animation="scaleUp">
           <div className="text-center mb-16">
-            <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">Education & Certifications</h2>
+            <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
+              <GradientText>Education & Certifications</GradientText>
+            </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Professional training and certifications in cyber security and technology
             </p>
@@ -23,7 +26,7 @@ const Education = () => {
         </AnimatedSection>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          <AnimatedSection delay={0.1}>
+          <AnimatedSection delay={0.1} animation="slideLeft">
             <div className="space-y-6">
               <h3 className="font-display text-2xl font-semibold flex items-center gap-3">
                 <GraduationCap className="w-6 h-6 text-primary" />
@@ -42,7 +45,7 @@ const Education = () => {
             </div>
           </AnimatedSection>
 
-          <AnimatedSection delay={0.2}>
+          <AnimatedSection delay={0.2} animation="slideRight">
             <div className="space-y-6">
               <h3 className="font-display text-2xl font-semibold flex items-center gap-3">
                 <Award className="w-6 h-6 text-primary" />
@@ -62,7 +65,7 @@ const Education = () => {
           </AnimatedSection>
         </div>
 
-        <AnimatedSection delay={0.3}>
+        <AnimatedSection delay={0.3} animation="rotate">
           <div className="max-w-4xl mx-auto mt-12">
             <div className="card-elevated p-6">
               <h3 className="font-display text-xl font-semibold mb-4 text-center">Languages</h3>

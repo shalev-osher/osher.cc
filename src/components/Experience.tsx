@@ -1,6 +1,7 @@
 import { Briefcase, Calendar, ChevronDown } from "lucide-react";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import AnimatedSection from "@/components/AnimatedSection";
+import GradientText from "@/components/GradientText";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
@@ -57,14 +58,13 @@ const Experience = () => {
 
   return (
     <section id="experience" className="py-24 section-glow relative overflow-hidden">
-      {/* Background accent */}
       <div className="absolute inset-0 pointer-events-none" style={{ background: 'var(--gradient-radial)' }} />
 
       <div className="container mx-auto px-6 relative z-10">
-        <AnimatedSection>
+        <AnimatedSection animation="fadeDown">
           <div className="text-center mb-20">
             <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
-              {titleTypewriter.displayedText}
+              <GradientText>{titleTypewriter.displayedText}</GradientText>
               <span className={`inline-block w-[3px] h-[0.8em] bg-primary ml-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto min-h-[1.75rem]">
@@ -76,7 +76,6 @@ const Experience = () => {
 
         <div className="max-w-4xl mx-auto">
           <div className="relative">
-            {/* Timeline line */}
             <div className="absolute left-[28px] md:left-1/2 md:-translate-x-px top-0 bottom-0 w-[2px] timeline-line" />
 
             <div className="space-y-0">
@@ -85,9 +84,8 @@ const Experience = () => {
                 const isEven = index % 2 === 0;
 
                 return (
-                  <AnimatedSection key={`${exp.company}-${exp.role}`} delay={index * 0.1}>
+                  <AnimatedSection key={`${exp.company}-${exp.role}`} delay={index * 0.1} animation={isEven ? "slideLeft" : "slideRight"}>
                     <div className={`relative flex items-start gap-8 md:gap-0 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-                      {/* Year badge - mobile */}
                       <div className="md:hidden flex-shrink-0 relative z-10">
                         <button
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
@@ -101,7 +99,6 @@ const Experience = () => {
                         </button>
                       </div>
 
-                      {/* Content side */}
                       <div className={`flex-1 md:w-[calc(50%-40px)] ${isEven ? 'md:pr-16 md:text-right' : 'md:pl-16'}`}>
                         <motion.div
                           className={`card-premium p-6 cursor-pointer ${isExpanded ? 'border-primary/30' : ''}`}
@@ -150,7 +147,6 @@ const Experience = () => {
                         </motion.div>
                       </div>
 
-                      {/* Center dot - desktop */}
                       <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 z-10">
                         <button
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
@@ -164,7 +160,6 @@ const Experience = () => {
                         </button>
                       </div>
 
-                      {/* Empty side for alignment */}
                       <div className="hidden md:block md:w-[calc(50%-40px)]" />
                     </div>
                   </AnimatedSection>
