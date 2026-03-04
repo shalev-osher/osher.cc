@@ -120,7 +120,7 @@ const Experience = () => {
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto min-h-[1.75rem]">
               {subtitleTypewriter.displayedText}
-              <span className={`inline-block w-[2px] h-[1em] bg-muted-foreground ml-1 align-middle transition-opacity duration-100 ${subtitleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
+              <span className={`inline-block w-[2px] h-[1em] bg-muted-foreground ms-1 align-middle transition-opacity duration-100 ${subtitleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
             </p>
           </div>
         </AnimatedSection>
