@@ -21,27 +21,25 @@ const Index = () => {
   const handleLoadComplete = useCallback(() => setIsLoaded(true), []);
 
   return (
-    <div className="min-h-screen bg-background relative overflow-x-hidden">
-      <SkipToContent />
-      <LoadingScreen onComplete={handleLoadComplete} />
-      <ParallaxBackground />
-      <KonamiEasterEgg />
-      <ScrollProgressBar />
-      <Navbar />
-      <main id="main-content" role="main">
-        <Hero />
-        <About />
-        <Skills />
-        <GitHubProjects />
-        <Experience />
-        <Education />
-        <Contact />
-      </main>
-      <Footer />
+    <>
+      <div className="min-h-screen bg-background relative overflow-x-hidden">
+        <SkipToContent />
+        <LoadingScreen onComplete={handleLoadComplete} />
+        <ParallaxBackground />
+        <KonamiEasterEgg />
+        <ScrollProgressBar />
+        <Navbar />
+        <main id="main-content" role="main">
+          <Hero />
+          <About />
+          <Skills />
+          <GitHubProjects />
+          <Experience />
+          <Education />
+          <Contact />
+        </main>
+        <Footer />
+      </div>
       <ScrollToTop />
       <AccessibilityWidget />
-    </div>
-  );
-};
-
-export default Index;
+    </>
