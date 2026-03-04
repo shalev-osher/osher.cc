@@ -150,15 +150,15 @@ const Education = () => {
             {/* Large nav arrows */}
             <button
               onClick={scrollPrev}
-              className="absolute -left-2 md:-left-16 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full flex items-center justify-center bg-card/80 backdrop-blur-md border border-border/50 hover:border-primary/50 hover:shadow-[var(--shadow-glow)] transition-all duration-300 group"
+              className="absolute left-2 md:-left-16 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center bg-card/90 backdrop-blur-md border border-border/50 hover:border-primary/50 hover:shadow-[var(--shadow-glow)] transition-all duration-300 group shadow-lg"
             >
-              <ChevronLeft className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+              <ChevronLeft className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
             </button>
             <button
               onClick={scrollNext}
-              className="absolute -right-2 md:-right-16 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full flex items-center justify-center bg-card/80 backdrop-blur-md border border-border/50 hover:border-primary/50 hover:shadow-[var(--shadow-glow)] transition-all duration-300 group"
+              className="absolute right-2 md:-right-16 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center bg-card/90 backdrop-blur-md border border-border/50 hover:border-primary/50 hover:shadow-[var(--shadow-glow)] transition-all duration-300 group shadow-lg"
             >
-              <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+              <ChevronRight className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
             </button>
 
             {/* Carousel with gradient fade edges */}
