@@ -91,7 +91,7 @@ const SkillsHeatmap = () => {
                             animate={{ opacity: 1, y: 0 }}
                           >
                             <span className="text-primary font-semibold">{skill.name}</span>
-                            <span className="text-muted-foreground ml-2">
+                            <span className="text-muted-foreground ms-2">
                               {"●".repeat(skill.level)}{"○".repeat(5 - skill.level)}
                             </span>
                           </motion.div>

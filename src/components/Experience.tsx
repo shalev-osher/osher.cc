@@ -207,7 +207,7 @@ const Experience = () => {
                         </motion.div>
                       </div>
 
-                      <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 z-10">
+                      <div className="hidden md:flex absolute start-1/2 -translate-x-1/2 z-10">
                         <button
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
                           className={`w-14 h-14 rounded-full flex items-center justify-center text-xs font-bold font-display transition-all duration-500 ${
