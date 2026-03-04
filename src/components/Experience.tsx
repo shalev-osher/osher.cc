@@ -150,7 +150,7 @@ const Experience = () => {
                         </button>
                       </div>
 
-                      <div className={`flex-1 md:w-[calc(50%-40px)] ${isEven ? 'md:pe-16 md:text-end' : 'md:ps-16'}`}>
+                      <div className={`flex-1 md:w-[calc(50%-40px)] ${isEven ? 'md:pe-16' : 'md:ps-16'}`}>
                         <motion.div
                           className={`card-premium p-6 cursor-pointer ${isExpanded ? 'border-primary/30' : ''}`}
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
@@ -165,10 +165,10 @@ const Experience = () => {
                             }
                           }}
                         >
-                          <div className={`flex flex-wrap items-start justify-between gap-3 ${isEven ? 'md:flex-row-reverse' : ''}`}>
-                            <div className={isEven ? 'md:text-end' : ''}>
+                          <div className="flex flex-wrap items-start justify-between gap-3">
+                            <div>
                               <h3 className="font-display text-lg font-semibold text-foreground">{exp.role}</h3>
-                              <div className={`flex items-center gap-2 text-primary mt-1 ${isEven ? 'md:justify-end' : ''}`}>
+                              <div className="flex items-center gap-2 text-primary mt-1">
                                 <Briefcase className="w-4 h-4" aria-hidden="true" />
                                 <span className="font-medium text-sm">{exp.company}</span>
                               </div>
@@ -183,7 +183,7 @@ const Experience = () => {
                           <AnimatePresence>
                             {isExpanded && (
                               <motion.ul
-                                className={`space-y-2 mt-4 pt-4 border-t border-border/50 ${isEven ? 'md:text-start' : ''}`}
+                                className="space-y-2 mt-4 pt-4 border-t border-border/50"
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: 'auto' }}
                                 exit={{ opacity: 0, height: 0 }}
@@ -193,11 +193,11 @@ const Experience = () => {
                                   <motion.li
                                     key={i}
                                     className="text-muted-foreground text-sm flex gap-2"
-                                    initial={{ opacity: 0, x: isEven ? 10 : -10 }}
+                                    initial={{ opacity: 0, x: lang === 'he' ? 10 : -10 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: i * 0.05, duration: 0.3 }}
                                   >
-                                    <span className="text-primary flex-shrink-0" aria-hidden="true">▸</span>
+                                    <span className="text-primary flex-shrink-0" aria-hidden="true">{lang === 'he' ? '◂' : '▸'}</span>
                                     {item}
                                   </motion.li>
                                 ))}

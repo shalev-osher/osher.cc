@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const Footer = () => {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
 
   const socialLinks = [
     { icon: Linkedin, href: "https://linkedin.com/in/shalev-osher/", label: "LinkedIn" },
@@ -19,7 +19,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-center md:text-start">
             <a href="#" className="font-display text-2xl font-bold text-gradient-warm" aria-label="Shalev Osher - Back to top">
-              Shalev Osher
+              {lang === "he" ? "שליו אושר" : "Shalev Osher"}
             </a>
             <p className="text-muted-foreground text-sm mt-2">{t("footer.rights")}</p>
           </div>
