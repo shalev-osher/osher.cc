@@ -38,15 +38,15 @@ const Navbar = () => {
             <a href="#" className="font-display text-2xl font-bold text-gradient" aria-label="Shalev Osher - Home">
               {lang === "he" ? "שליו אושר" : "Shalev Osher"}
             </a>
-            <div className="hidden md:flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-2">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
-                  className={`text-sm font-medium px-3 py-1.5 rounded-lg transition-colors duration-300 ${
+                  className={`text-sm font-medium px-3 py-1.5 rounded-lg border transition-colors duration-300 ${
                     activeSection === link.id
-                      ? "bg-primary/20 text-primary"
-                      : "bg-primary/5 text-muted-foreground hover:bg-primary/10 hover:text-primary"
+                      ? "bg-primary/20 text-primary border-primary/30"
+                      : "bg-primary/5 text-muted-foreground border-border/50 hover:bg-primary/10 hover:text-primary hover:border-primary/30"
                   }`}
                   aria-current={activeSection === link.id ? "true" : undefined}
                 >
@@ -56,7 +56,7 @@ const Navbar = () => {
               <a
                 href="/cv/shalev-osher-cv.pdf"
                 download
-                className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300"
+                className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg border border-border/50 bg-primary/5 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-colors duration-300"
                 aria-label="Download CV"
               >
                 <Download className="w-4 h-4" />
@@ -64,7 +64,7 @@ const Navbar = () => {
               </a>
               <button
                 onClick={toggleLang}
-                className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300"
+                className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg border border-border/50 bg-primary/5 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-colors duration-300"
                 aria-label={`Switch to ${lang === "en" ? "Hebrew" : "English"}`}
               >
                 <Globe className="w-4 h-4" />
