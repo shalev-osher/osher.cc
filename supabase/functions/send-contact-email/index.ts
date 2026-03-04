@@ -65,7 +65,7 @@ Deno.serve(async (req) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          from: "onboarding@resend.dev",
+          from: "contact@osher.cc",
           to: RECIPIENT_EMAIL,
           subject: `New Contact Form: ${name.trim()}`,
           html: `
