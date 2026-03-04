@@ -1,4 +1,5 @@
 import { Github, Linkedin, Facebook } from "lucide-react";
+import { motion } from "framer-motion";
 
 const Footer = () => {
   const socialLinks = [
@@ -8,11 +9,13 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="py-12 border-t border-border">
+    <footer className="py-12 border-t border-border/50 relative">
+      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, hsl(var(--primary) / 0.3), transparent)' }} />
+      
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-center md:text-left">
-            <a href="#" className="font-display text-2xl font-bold text-gradient">
+            <a href="#" className="font-display text-2xl font-bold text-gradient-warm">
               Shalev Osher
             </a>
             <p className="text-muted-foreground text-sm mt-2">
@@ -20,18 +23,20 @@ const Footer = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             {socialLinks.map((link) => (
-              <a
+              <motion.a
                 key={link.label}
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={link.label}
-                className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300"
+                className="w-11 h-11 rounded-full border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300"
+                whileHover={{ scale: 1.1, y: -2 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <link.icon className="w-5 h-5" />
-              </a>
+              </motion.a>
             ))}
           </div>
         </div>

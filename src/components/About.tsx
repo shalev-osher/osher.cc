@@ -1,6 +1,13 @@
 import AnimatedSection from "@/components/AnimatedSection";
 import profilePhoto from "@/assets/profile-photo.jpeg";
 import { useTypewriter } from "@/hooks/useTypewriter";
+import { motion } from "framer-motion";
+
+const stats = [
+  { value: "7+", label: "Years Experience" },
+  { value: "4", label: "Companies" },
+  { value: "450+", label: "Cert. Hours" },
+];
 
 const About = () => {
   const titleTypewriter = useTypewriter({
@@ -11,20 +18,30 @@ const About = () => {
   });
 
   return (
-    <section id="about" className="py-24 relative">
-      <div className="container mx-auto px-6">
+    <section id="about" className="py-24 relative section-glow">
+      <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
+      
+      <div className="container mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <AnimatedSection>
             <div className="relative">
-              <div className="aspect-square rounded-2xl bg-secondary overflow-hidden relative">
+              <motion.div
+                className="aspect-square rounded-2xl overflow-hidden relative"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 200, damping: 20 }}
+              >
                 <img 
                   src={profilePhoto} 
                   alt="Shalev Osher"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent" />
-              </div>
-              <div className="absolute -bottom-6 -left-6 w-48 h-48 border-2 border-primary/30 rounded-2xl -z-10" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent" />
+              </motion.div>
+              {/* Decorative elements */}
+              <div className="absolute -bottom-6 -left-6 w-48 h-48 border border-primary/20 rounded-2xl -z-10" />
+              <div className="absolute -top-4 -right-4 w-32 h-32 border border-primary/10 rounded-2xl -z-10" />
+              <div className="absolute -bottom-3 -right-3 w-24 h-24 rounded-full -z-10 animate-pulse-glow" style={{ background: 'hsl(var(--primary) / 0.05)' }} />
             </div>
           </AnimatedSection>
 
@@ -47,19 +64,21 @@ const About = () => {
                 with internal ticketing systems and adhering to SLA workflows.
               </p>
               
-              <div className="grid grid-cols-3 gap-6 pt-8">
-                <div className="text-center p-4 card-elevated">
-                  <span className="font-display text-3xl font-bold text-gradient">7+</span>
-                  <p className="text-muted-foreground text-sm mt-2">Years Experience</p>
-                </div>
-                <div className="text-center p-4 card-elevated">
-                  <span className="font-display text-3xl font-bold text-gradient">4</span>
-                  <p className="text-muted-foreground text-sm mt-2">Companies</p>
-                </div>
-                <div className="text-center p-4 card-elevated">
-                  <span className="font-display text-3xl font-bold text-gradient">450+</span>
-                  <p className="text-muted-foreground text-sm mt-2">Cert. Hours</p>
-                </div>
+              <div className="grid grid-cols-3 gap-4 pt-8">
+                {stats.map((stat, i) => (
+                  <motion.div
+                    key={stat.label}
+                    className="text-center p-5 card-premium"
+                    whileHover={{ y: -4 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.4 + i * 0.1, duration: 0.5 }}
+                  >
+                    <span className="font-display text-3xl font-bold text-gradient-warm">{stat.value}</span>
+                    <p className="text-muted-foreground text-sm mt-2">{stat.label}</p>
+                  </motion.div>
+                ))}
               </div>
             </div>
           </AnimatedSection>
