@@ -169,7 +169,7 @@ const Education = () => {
               <div ref={emblaRef} className="overflow-hidden">
                 <div className="flex">
                   {certificates.map((cert, index) => (
-                    <div key={cert.name} className="flex-[0_0_85%] md:flex-[0_0_55%] min-w-0 px-3 md:px-4">
+                    <div key={cert.name} className="flex-[0_0_75%] md:flex-[0_0_40%] min-w-0 px-3 md:px-4">
                       <motion.div
                         className="relative group cursor-pointer"
                         whileHover={{ y: -8 }}
