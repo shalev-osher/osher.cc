@@ -1,10 +1,12 @@
-import { Briefcase, Calendar } from "lucide-react";
+import { Briefcase, Calendar, ChevronDown } from "lucide-react";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import AnimatedSection from "@/components/AnimatedSection";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 const experiences = [
   {
-    company: "Voicenter", role: "Technical Support Specialist Tier 2", period: "2023 - Present",
+    company: "Voicenter", role: "Technical Support Specialist Tier 2", period: "2023 - Present", year: "2023",
     description: [
       "Collaborating closely with Development and DevOps teams using Jira to address issues and enhance workflows",
       "Delivering comprehensive support to VIP and standard clients across the company's suite of products",
@@ -15,7 +17,7 @@ const experiences = [
     ],
   },
   {
-    company: "Voicenter", role: "Technical Support Specialist - Strategic Customers", period: "2021 - 2023",
+    company: "Voicenter", role: "Technical Support Specialist - Strategic Customers", period: "2021 - 2023", year: "2021",
     description: [
       "Provided technical support for telephone systems on the cloud",
       "Wrote guides and presentations, conducted apprenticeships, and administered exercises",
@@ -24,7 +26,7 @@ const experiences = [
     ],
   },
   {
-    company: "Voicenter", role: "Technical Support Engineer Tier 1", period: "2021",
+    company: "Voicenter", role: "Technical Support Engineer Tier 1", period: "2021", year: "2021",
     description: [
       "Conducted analysis of current VoIP networks and computer systems",
       "Resolved VoIP network complications through troubleshooting",
@@ -33,14 +35,14 @@ const experiences = [
     ],
   },
   {
-    company: "ILDC", role: "Quality Assurance Tester", period: "2018 - 2021",
+    company: "ILDC", role: "Quality Assurance Tester", period: "2018 - 2021", year: "2018",
     description: [
       "Executed QA tests within Sagemcom LAB for Altice (HOT) company's products",
       "Performed daily quality assurance testing of set-top boxes to ensure adherence to standards",
     ],
   },
   {
-    company: "IDF", role: "Military Service", period: "2015 - 2018",
+    company: "IDF", role: "Military Service", period: "2015 - 2018", year: "2015",
     description: [
       "Performed vehicle treatments and utilized test equipment to ensure optimal functionality",
       "Removed and installed vehicle assemblies in accordance with established procedures",
@@ -49,14 +51,18 @@ const experiences = [
 ];
 
 const Experience = () => {
+  const [expandedIndex, setExpandedIndex] = useState<number>(0);
   const titleTypewriter = useTypewriter({ text: "Work Experience", speed: 80, loop: true, pauseDuration: 5000 });
   const subtitleTypewriter = useTypewriter({ text: "My professional journey in technology and technical support", speed: 25, delay: 1200, loop: true, pauseDuration: 5000 });
 
   return (
-    <section id="experience" className="py-24">
-      <div className="container mx-auto px-6">
+    <section id="experience" className="py-24 section-glow relative overflow-hidden">
+      {/* Background accent */}
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'var(--gradient-radial)' }} />
+
+      <div className="container mx-auto px-6 relative z-10">
         <AnimatedSection>
-          <div className="text-center mb-16">
+          <div className="text-center mb-20">
             <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
               {titleTypewriter.displayedText}
               <span className={`inline-block w-[3px] h-[0.8em] bg-primary ml-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
@@ -70,38 +76,100 @@ const Experience = () => {
 
         <div className="max-w-4xl mx-auto">
           <div className="relative">
-            <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-border hidden md:block" />
-            <div className="space-y-8">
-              {experiences.map((exp, index) => (
-                <AnimatedSection key={`${exp.company}-${exp.role}`} delay={index * 0.1}>
-                  <div className="relative md:pl-16">
-                    <div className="absolute left-4 top-6 w-5 h-5 rounded-full bg-primary border-4 border-background hidden md:block" />
-                    <div className="card-elevated p-6 hover:border-primary/50 border border-transparent transition-all duration-300">
-                      <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
-                        <div>
-                          <h3 className="font-display text-xl font-semibold text-foreground">{exp.role}</h3>
-                          <div className="flex items-center gap-2 text-primary mt-1">
-                            <Briefcase className="w-4 h-4" />
-                            <span className="font-medium">{exp.company}</span>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2 text-muted-foreground text-sm">
-                          <Calendar className="w-4 h-4" />
-                          <span>{exp.period}</span>
-                        </div>
+            {/* Timeline line */}
+            <div className="absolute left-[28px] md:left-1/2 md:-translate-x-px top-0 bottom-0 w-[2px] timeline-line" />
+
+            <div className="space-y-0">
+              {experiences.map((exp, index) => {
+                const isExpanded = expandedIndex === index;
+                const isEven = index % 2 === 0;
+
+                return (
+                  <AnimatedSection key={`${exp.company}-${exp.role}`} delay={index * 0.1}>
+                    <div className={`relative flex items-start gap-8 md:gap-0 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                      {/* Year badge - mobile */}
+                      <div className="md:hidden flex-shrink-0 relative z-10">
+                        <button
+                          onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
+                          className={`w-14 h-14 rounded-full flex items-center justify-center text-xs font-bold font-display transition-all duration-500 ${
+                            isExpanded
+                              ? 'bg-primary text-primary-foreground timeline-dot-active'
+                              : 'bg-card border-2 border-primary/30 text-primary timeline-dot'
+                          }`}
+                        >
+                          {exp.year}
+                        </button>
                       </div>
-                      <ul className="space-y-2">
-                        {exp.description.map((item, i) => (
-                          <li key={i} className="text-muted-foreground text-sm flex gap-2">
-                            <span className="text-primary">•</span>
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
+
+                      {/* Content side */}
+                      <div className={`flex-1 md:w-[calc(50%-40px)] ${isEven ? 'md:pr-16 md:text-right' : 'md:pl-16'}`}>
+                        <motion.div
+                          className={`card-premium p-6 cursor-pointer ${isExpanded ? 'border-primary/30' : ''}`}
+                          onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
+                          layout
+                        >
+                          <div className={`flex flex-wrap items-start justify-between gap-3 ${isEven ? 'md:flex-row-reverse' : ''}`}>
+                            <div className={isEven ? 'md:text-right' : ''}>
+                              <h3 className="font-display text-lg font-semibold text-foreground">{exp.role}</h3>
+                              <div className={`flex items-center gap-2 text-primary mt-1 ${isEven ? 'md:justify-end' : ''}`}>
+                                <Briefcase className="w-4 h-4" />
+                                <span className="font-medium text-sm">{exp.company}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2 text-muted-foreground text-xs">
+                              <Calendar className="w-3 h-3" />
+                              <span>{exp.period}</span>
+                              <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+                            </div>
+                          </div>
+
+                          <AnimatePresence>
+                            {isExpanded && (
+                              <motion.ul
+                                className={`space-y-2 mt-4 pt-4 border-t border-border/50 ${isEven ? 'md:text-left' : ''}`}
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                              >
+                                {exp.description.map((item, i) => (
+                                  <motion.li
+                                    key={i}
+                                    className="text-muted-foreground text-sm flex gap-2"
+                                    initial={{ opacity: 0, x: isEven ? 10 : -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: i * 0.05, duration: 0.3 }}
+                                  >
+                                    <span className="text-primary flex-shrink-0">▸</span>
+                                    {item}
+                                  </motion.li>
+                                ))}
+                              </motion.ul>
+                            )}
+                          </AnimatePresence>
+                        </motion.div>
+                      </div>
+
+                      {/* Center dot - desktop */}
+                      <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 z-10">
+                        <button
+                          onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
+                          className={`w-14 h-14 rounded-full flex items-center justify-center text-xs font-bold font-display transition-all duration-500 ${
+                            isExpanded
+                              ? 'bg-primary text-primary-foreground timeline-dot-active scale-110'
+                              : 'bg-card border-2 border-primary/30 text-primary hover:border-primary hover:scale-105 timeline-dot'
+                          }`}
+                        >
+                          {exp.year}
+                        </button>
+                      </div>
+
+                      {/* Empty side for alignment */}
+                      <div className="hidden md:block md:w-[calc(50%-40px)]" />
                     </div>
-                  </div>
-                </AnimatedSection>
-              ))}
+                  </AnimatedSection>
+                );
+              })}
             </div>
           </div>
         </div>
