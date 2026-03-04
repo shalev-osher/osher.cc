@@ -50,6 +50,9 @@ const Hero = () => {
       {/* Floating particles */}
       <Particles count={40} />
 
+      {/* Cursor glow */}
+      <CursorGlow />
+
       {/* Decorative lines */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-px h-full opacity-[0.04]" style={{ background: 'linear-gradient(180deg, transparent, hsl(var(--primary)), transparent)' }} />
