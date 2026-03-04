@@ -21,7 +21,7 @@ const Hero = () => {
   });
 
   return (
-    <section className="min-h-screen flex items-center justify-center relative overflow-hidden noise-texture">
+    <section className="min-h-screen flex items-center justify-center relative overflow-hidden noise-texture" aria-label="Hero section">
       {/* Radial glow from top */}
       <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
       
