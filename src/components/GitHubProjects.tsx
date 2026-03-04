@@ -16,7 +16,7 @@ interface GitHubRepo {
   topics: string[];
 }
 
-const GITHUB_USERNAME = "shalevos";
+const GITHUB_USERNAME = "shalev-osher";
 
 const languageColors: Record<string, string> = {
   TypeScript: "hsl(210 80% 60%)",
