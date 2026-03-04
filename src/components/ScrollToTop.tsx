@@ -6,7 +6,10 @@ const ScrollToTop = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsVisible(window.scrollY > 400);
+      const footer = document.querySelector('footer');
+      const footerTop = footer ? footer.getBoundingClientRect().top : Infinity;
+      const isInFooter = footerTop < window.innerHeight;
+      setIsVisible(window.scrollY > 400 && !isInFooter);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
