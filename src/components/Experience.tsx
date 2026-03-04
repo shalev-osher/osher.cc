@@ -166,7 +166,7 @@ const Experience = () => {
                           }}
                         >
                           <div className={`flex flex-wrap items-start justify-between gap-3 ${isEven ? 'md:flex-row-reverse' : ''}`}>
-                            <div className={isEven ? 'md:text-right' : ''}>
+                            <div className={isEven ? 'md:text-end' : ''}>
                               <h3 className="font-display text-lg font-semibold text-foreground">{exp.role}</h3>
                               <div className={`flex items-center gap-2 text-primary mt-1 ${isEven ? 'md:justify-end' : ''}`}>
                                 <Briefcase className="w-4 h-4" aria-hidden="true" />
