@@ -14,6 +14,7 @@ import GitHubProjects from "@/components/GitHubProjects";
 import KonamiEasterEgg from "@/components/KonamiEasterEgg";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 import SkipToContent from "@/components/SkipToContent";
+import AccessibilityWidget from "@/components/AccessibilityWidget";
 
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
