@@ -66,7 +66,7 @@ const SkillsHeatmap = () => {
           <div className="grid gap-3">
             {categories.map((category) => (
               <div key={category} className="flex items-center gap-3">
-                <span className="text-xs font-medium text-muted-foreground w-20 text-right shrink-0">
+                <span className="text-xs font-medium text-muted-foreground w-20 text-end shrink-0">
                   {category}
                 </span>
                 <div className="flex gap-1.5 flex-wrap">
