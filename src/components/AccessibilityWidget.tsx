@@ -48,6 +48,7 @@ const defaultSettings: A11ySettings = {
 
 const AccessibilityWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [hideFloating, setHideFloating] = useState(false);
   const [settings, setSettings] = useState<A11ySettings>(() => {
     try {
       const saved = localStorage.getItem("a11y-settings");
