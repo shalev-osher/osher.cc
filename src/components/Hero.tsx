@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import { motion } from "framer-motion";
 import Particles from "./Particles";
+import CursorGlow from "./CursorGlow";
 
 const roles = [
   "Technical Support Specialist",
