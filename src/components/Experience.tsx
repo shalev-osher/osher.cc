@@ -183,7 +183,7 @@ const Experience = () => {
                           <AnimatePresence>
                             {isExpanded && (
                               <motion.ul
-                                className={`space-y-2 mt-4 pt-4 border-t border-border/50 ${isEven ? 'md:text-left' : ''}`}
+                                className={`space-y-2 mt-4 pt-4 border-t border-border/50 ${isEven ? 'md:text-start' : ''}`}
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: 'auto' }}
                                 exit={{ opacity: 0, height: 0 }}
