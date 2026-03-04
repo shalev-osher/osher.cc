@@ -59,7 +59,7 @@ const About = () => {
             <div className="space-y-6">
               <h2 id="about-heading" className="font-display text-4xl md:text-5xl font-bold line-decoration">
                 <GradientText>{titleTypewriter.displayedText}</GradientText>
-                <span className={`inline-block w-[3px] h-[0.8em] bg-primary ml-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
+                <span className={`inline-block w-[3px] h-[0.8em] bg-primary ms-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
               </h2>
               <p className="text-muted-foreground text-lg leading-relaxed mt-8">
                 {t("about.p1")}

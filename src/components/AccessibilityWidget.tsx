@@ -179,7 +179,7 @@ const AccessibilityWidget = () => {
               onClick={() => setIsOpen(false)}
             />
             <motion.div
-              className="fixed bottom-6 right-6 z-[100] w-[360px] max-h-[85vh] overflow-y-auto rounded-2xl bg-card border border-border shadow-2xl"
+              className="fixed bottom-6 end-6 z-[100] w-[360px] max-h-[85vh] overflow-y-auto rounded-2xl bg-card border border-border shadow-2xl"
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
