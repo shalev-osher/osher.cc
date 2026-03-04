@@ -2,20 +2,19 @@ import { ArrowDown, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTypewriter } from "@/hooks/useTypewriter";
 
-const Hero = () => {
-  const nameTypewriter = useTypewriter({
-    text: "Shalev Osher",
-    speed: 100,
-    loop: true,
-    pauseDuration: 3000,
-  });
+const roles = [
+  "Technical Support Specialist",
+  "System Administrator",
+  "DevOps Enthusiast",
+  "Full Stack Developer",
+];
 
-  const descriptionTypewriter = useTypewriter({
-    text: "Experienced Technical Support Specialist with a proven track record of ensuring smooth operation of servers and microservices. Skilled in troubleshooting, networking, and system administration.",
-    speed: 30,
-    delay: 1500,
-    loop: true,
-    pauseDuration: 4000,
+const Hero = () => {
+  const roleTypewriter = useTypewriter({
+    texts: roles,
+    speed: 80,
+    delay: 1200,
+    pauseDuration: 2500,
   });
 
   return (
