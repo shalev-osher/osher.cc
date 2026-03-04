@@ -101,16 +101,6 @@ const AccessibilityWidget = () => {
     localStorage.setItem("a11y-settings", JSON.stringify(settings));
   }, [settings, applySettings]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const footer = document.querySelector('footer');
-      const footerTop = footer ? footer.getBoundingClientRect().top : Infinity;
-      setHideFloating(footerTop < window.innerHeight);
-    };
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const update = (key: keyof A11ySettings, value: any) => {
     setSettings((prev) => ({ ...prev, [key]: value }));
