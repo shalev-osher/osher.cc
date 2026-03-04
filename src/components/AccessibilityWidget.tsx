@@ -48,6 +48,7 @@ const defaultSettings: A11ySettings = {
 
 const AccessibilityWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [hideFloating, setHideFloating] = useState(false);
   const [settings, setSettings] = useState<A11ySettings>(() => {
     try {
       const saved = localStorage.getItem("a11y-settings");
@@ -101,6 +102,17 @@ const AccessibilityWidget = () => {
     localStorage.setItem("a11y-settings", JSON.stringify(settings));
   }, [settings, applySettings]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const footer = document.querySelector('footer');
+      const footerTop = footer ? footer.getBoundingClientRect().top : Infinity;
+      setHideFloating(footerTop < window.innerHeight);
+    };
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const update = (key: keyof A11ySettings, value: any) => {
     setSettings((prev) => ({ ...prev, [key]: value }));
   };
@@ -139,7 +151,7 @@ const AccessibilityWidget = () => {
 
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-8 end-24 z-[60] w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2"
+        className={`fixed bottom-8 end-24 z-[60] w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 ${hideFloating ? 'opacity-0 pointer-events-none translate-y-4' : 'opacity-100 translate-y-0'}`}
         style={{
           backgroundColor: "#2563eb",
           color: "#ffffff",
