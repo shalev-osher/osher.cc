@@ -2,6 +2,7 @@ import { ArrowDown, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import { motion } from "framer-motion";
+import Particles from "./Particles";
 
 const roles = [
   "Technical Support Specialist",
