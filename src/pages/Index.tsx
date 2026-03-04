@@ -43,3 +43,7 @@ const Index = () => {
       <ScrollToTop />
       <AccessibilityWidget />
     </>
+  );
+};
+
+export default Index;
