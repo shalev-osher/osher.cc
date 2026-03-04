@@ -101,8 +101,11 @@ const translations: Record<string, Record<Lang, string>> = {
     en: "I'm open to new opportunities in Technical Support, DevOps, and Cyber Security. If you have a suitable role or project that requires my skills, fill out the form and I'll get back to you promptly.",
     he: "אני פתוח להזדמנויות חדשות בתמיכה טכנית, DevOps ואבטחת סייבר. אם יש לכם תפקיד או פרויקט שמתאים לכישורים שלי, מלאו את הטופס ואחזור אליכם בהקדם.",
   },
+  "contact.successTitle": { en: "Message sent!", he: "ההודעה נשלחה!" },
+  "contact.successDesc": { en: "Your message has been sent successfully. I'll get back to you soon.", he: "ההודעה נשלחה בהצלחה. אחזור אליך בקרוב." },
+  "contact.errorTitle": { en: "Error", he: "שגיאה" },
+  "contact.errorDesc": { en: "Failed to send message. Please try again.", he: "שליחת ההודעה נכשלה. אנא נסה שוב." },
 
-  // Footer
   "footer.rights": { en: "© 2026 All rights reserved", he: "© 2026 כל הזכויות שמורות" },
 
   // Accessibility
