@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import { ArrowDown, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTypewriter } from "@/hooks/useTypewriter";
