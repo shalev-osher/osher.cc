@@ -127,15 +127,18 @@ const Hero = () => {
         </motion.div>
       </div>
 
-      <motion.a
-        href="#about"
-        className="fixed bottom-8 right-8 w-14 h-14 rounded-full border border-primary/30 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 z-50 glass-effect animate-pulse-glow"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
-      >
-        <ArrowDown size={24} />
-      </motion.a>
+      {ReactDOM.createPortal(
+        <motion.a
+          href="#about"
+          className="fixed bottom-8 right-8 w-14 h-14 rounded-full border border-primary/30 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 z-50 glass-effect animate-pulse-glow"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+        >
+          <ArrowDown size={24} />
+        </motion.a>,
+        document.body
+      )}
     </section>
   );
 };
