@@ -38,8 +38,8 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-background/90 backdrop-blur-xl border-b border-border shadow-lg" : "bg-background/50 backdrop-blur-md"
+        className={`fixed top-0 inset-x-0 z-[60] transition-all duration-300 ${
+          isScrolled ? "bg-background/95 backdrop-blur-xl border-b border-border shadow-lg" : "bg-background/70 backdrop-blur-lg"
         }`}
         role="navigation"
         aria-label="Main navigation"
