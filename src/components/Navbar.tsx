@@ -63,7 +63,7 @@ const Navbar = () => {
                 >
                   {link.label}
                   {activeSection === link.id && (
-                    <span className="absolute -bottom-1 left-0 right-0 h-0.5 rounded-full bg-primary animate-fade-in" />
+                    <span className="absolute -bottom-1 start-0 end-0 h-0.5 rounded-full bg-primary animate-fade-in" />
                   )}
                 </a>
               ))}
