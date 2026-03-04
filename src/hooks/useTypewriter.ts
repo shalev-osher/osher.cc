@@ -1,77 +1,63 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface UseTypewriterOptions {
-  text: string;
+  text?: string;
+  texts?: string[];
   speed?: number;
   delay?: number;
-  loop?: boolean;
   pauseDuration?: number;
+  loop?: boolean;
 }
 
 export const useTypewriter = ({
   text,
-  speed = 100,
+  texts: textsProp,
+  speed = 80,
   delay = 0,
-  loop = false,
   pauseDuration = 2000,
+  loop = false,
 }: UseTypewriterOptions) => {
+  const texts = textsProp || (text ? [text] : [""]);
   const [displayedText, setDisplayedText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [showCursor, setShowCursor] = useState(true);
+  const indexRef = useRef(0);
 
   useEffect(() => {
-    let currentIndex = 0;
-    let typingInterval: NodeJS.Timeout;
-    let delayTimeout: NodeJS.Timeout;
-    let pauseTimeout: NodeJS.Timeout;
+    let timeout: NodeJS.Timeout;
+    indexRef.current = 0;
 
-    const startTyping = () => {
+    const typeText = (t: string, charIndex: number) => {
       setIsTyping(true);
-      currentIndex = 0;
-      setDisplayedText("");
-
-      typingInterval = setInterval(() => {
-        if (currentIndex <= text.length) {
-          setDisplayedText(text.slice(0, currentIndex));
-          currentIndex++;
-        } else {
-          clearInterval(typingInterval);
-          setIsTyping(false);
-
-          if (loop) {
-            pauseTimeout = setTimeout(() => {
-              // Erase effect
-              let eraseIndex = text.length;
-              const eraseInterval = setInterval(() => {
-                if (eraseIndex >= 0) {
-                  setDisplayedText(text.slice(0, eraseIndex));
-                  eraseIndex--;
-                } else {
-                  clearInterval(eraseInterval);
-                  setTimeout(startTyping, 500);
-                }
-              }, speed / 2);
-            }, pauseDuration);
-          }
+      if (charIndex <= t.length) {
+        setDisplayedText(t.slice(0, charIndex));
+        timeout = setTimeout(() => typeText(t, charIndex + 1), speed);
+      } else {
+        setIsTyping(false);
+        if (loop || texts.length > 1) {
+          timeout = setTimeout(() => eraseText(t, t.length), pauseDuration);
         }
-      }, speed);
+      }
     };
 
-    delayTimeout = setTimeout(startTyping, delay);
-
-    return () => {
-      clearTimeout(delayTimeout);
-      clearTimeout(pauseTimeout);
-      clearInterval(typingInterval);
+    const eraseText = (t: string, charIndex: number) => {
+      if (charIndex >= 0) {
+        setDisplayedText(t.slice(0, charIndex));
+        timeout = setTimeout(() => eraseText(t, charIndex - 1), speed / 2);
+      } else {
+        indexRef.current = (indexRef.current + 1) % texts.length;
+        timeout = setTimeout(() => typeText(texts[indexRef.current], 0), 400);
+      }
     };
-  }, [text, speed, delay, loop, pauseDuration]);
+
+    timeout = setTimeout(() => typeText(texts[0], 0), delay);
+
+    return () => clearTimeout(timeout);
+  }, [texts.join(","), speed, delay, pauseDuration, loop]);
 
   useEffect(() => {
-    const cursorInterval = setInterval(() => {
-      setShowCursor((prev) => !prev);
-    }, 530);
-
-    return () => clearInterval(cursorInterval);
+    const interval = setInterval(() => setShowCursor((p) => !p), 530);
+    return () => clearInterval(interval);
   }, []);
 
   return { displayedText, isTyping, showCursor };
