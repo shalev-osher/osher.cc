@@ -9,14 +9,16 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import LoadingScreen from "@/components/LoadingScreen";
+import ParallaxBackground from "@/components/ParallaxBackground";
 
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const handleLoadComplete = useCallback(() => setIsLoaded(true), []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
       <LoadingScreen onComplete={handleLoadComplete} />
+      <ParallaxBackground />
       <Navbar />
       <Hero />
       <About />
