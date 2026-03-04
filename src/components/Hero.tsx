@@ -21,7 +21,7 @@ const Hero = () => {
   });
 
   return (
-    <section className="min-h-screen flex items-center justify-center relative overflow-hidden noise-texture">
+    <section className="min-h-screen flex items-center justify-center relative overflow-hidden noise-texture" aria-label="Hero section">
       {/* Radial glow from top */}
       <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
       
@@ -74,7 +74,7 @@ const Hero = () => {
             Portfolio
           </motion.p>
           
-          <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight">
+          <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight" id="hero-title">
             <motion.span
               className="block text-foreground/80 text-3xl md:text-4xl lg:text-5xl font-light mb-2"
               initial={{ opacity: 0, y: 20 }}

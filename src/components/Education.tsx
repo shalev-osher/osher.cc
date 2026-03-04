@@ -93,7 +93,7 @@ const Education = () => {
   }, [emblaApi]);
 
   return (
-    <section id="education" className="py-24 bg-secondary/30 relative overflow-hidden">
+    <section id="education" className="py-24 bg-secondary/30 relative overflow-hidden" aria-labelledby="education-heading">
       {/* Ambient background glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] rounded-full bg-primary/[0.03] blur-[120px]" />
@@ -102,7 +102,7 @@ const Education = () => {
       <div className="container mx-auto px-6 relative z-10">
         <AnimatedSection animation="scaleUp">
           <div className="text-center mb-20">
-            <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
+            <h2 id="education-heading" className="font-display text-4xl md:text-5xl font-bold mb-4">
               <GradientText>Education & Certifications</GradientText>
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
@@ -151,12 +151,14 @@ const Education = () => {
             <button
               onClick={scrollPrev}
               className="absolute left-0 md:-left-16 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center bg-card border border-border hover:border-primary/50 hover:shadow-[var(--shadow-glow)] transition-all duration-300 group shadow-lg"
+              aria-label="Previous certificate"
             >
               <ChevronLeft className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
             </button>
             <button
               onClick={scrollNext}
               className="absolute right-0 md:-right-16 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center bg-card border border-border hover:border-primary/50 hover:shadow-[var(--shadow-glow)] transition-all duration-300 group shadow-lg"
+              aria-label="Next certificate"
             >
               <ChevronRight className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
             </button>
@@ -247,6 +249,8 @@ const Education = () => {
                       ? "w-8 bg-primary"
                       : "w-1.5 bg-muted-foreground/30 hover:bg-muted-foreground/50"
                   }`}
+                  aria-label={`Go to certificate ${index + 1}`}
+                  aria-current={index === activeIndex ? "true" : undefined}
                 />
               ))}
             </div>
