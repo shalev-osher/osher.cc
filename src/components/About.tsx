@@ -49,9 +49,9 @@ const About = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent" />
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent" />
               </motion.div>
-              <div className="absolute -bottom-6 -left-6 w-48 h-48 border border-primary/20 rounded-2xl -z-10" aria-hidden="true" />
-              <div className="absolute -top-4 -right-4 w-32 h-32 border border-primary/10 rounded-2xl -z-10" aria-hidden="true" />
-              <div className="absolute -bottom-3 -right-3 w-24 h-24 rounded-full -z-10 animate-pulse-glow" style={{ background: 'hsl(var(--primary) / 0.05)' }} aria-hidden="true" />
+              <div className="absolute -bottom-6 -start-6 w-48 h-48 border border-primary/20 rounded-2xl -z-10" aria-hidden="true" />
+              <div className="absolute -top-4 -end-4 w-32 h-32 border border-primary/10 rounded-2xl -z-10" aria-hidden="true" />
+              <div className="absolute -bottom-3 -end-3 w-24 h-24 rounded-full -z-10 animate-pulse-glow" style={{ background: 'hsl(var(--primary) / 0.05)' }} aria-hidden="true" />
             </div>
           </AnimatedSection>
 
@@ -59,7 +59,7 @@ const About = () => {
             <div className="space-y-6">
               <h2 id="about-heading" className="font-display text-4xl md:text-5xl font-bold line-decoration">
                 <GradientText>{titleTypewriter.displayedText}</GradientText>
-                <span className={`inline-block w-[3px] h-[0.8em] bg-primary ml-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
+                <span className={`inline-block w-[3px] h-[0.8em] bg-primary ms-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
               </h2>
               <p className="text-muted-foreground text-lg leading-relaxed mt-8">
                 {t("about.p1")}

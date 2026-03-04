@@ -82,7 +82,7 @@ const Hero = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              {lang === "he" ? "שלו אושר" : "Shalev Osher"}
+              {lang === "he" ? "שליו אושר" : "Shalev Osher"}
             </motion.span>
           </h1>
           
@@ -94,7 +94,7 @@ const Hero = () => {
           >
             <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto font-light min-h-[2.5rem]">
               <span className="text-primary">{roleTypewriter.displayedText}</span>
-              <span className={`inline-block w-[2px] h-[1em] bg-primary ml-1 align-middle transition-opacity duration-100 ${roleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
+              <span className={`inline-block w-[2px] h-[1em] bg-primary ms-1 align-middle transition-opacity duration-100 ${roleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
             </p>
           </motion.div>
 
@@ -123,7 +123,7 @@ const Hero = () => {
       {createPortal(
         <motion.a
           href="#about"
-          className="fixed bottom-8 right-8 w-14 h-14 rounded-full border border-primary/30 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 z-50 glass-effect animate-pulse-glow"
+          className="fixed bottom-8 end-8 w-14 h-14 rounded-full border border-primary/30 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 z-50 glass-effect animate-pulse-glow"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2 }}
