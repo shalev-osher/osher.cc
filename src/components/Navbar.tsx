@@ -56,18 +56,16 @@ const Navbar = () => {
               <a
                 href="/cv/shalev-osher-cv.pdf"
                 download
-                className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg border border-border/50 bg-primary/5 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-colors duration-300"
+                className="text-sm font-medium px-3 py-1.5 rounded-lg border border-border/50 bg-primary/5 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-colors duration-300"
                 aria-label="Download CV"
               >
-                <Download className="w-4 h-4" />
                 CV
               </a>
               <button
                 onClick={toggleLang}
-                className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg border border-border/50 bg-primary/5 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-colors duration-300"
+                className="text-sm font-medium px-3 py-1.5 rounded-lg border border-border/50 bg-primary/5 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-colors duration-300"
                 aria-label={`Switch to ${lang === "en" ? "Hebrew" : "English"}`}
               >
-                <Globe className="w-4 h-4" />
                 {lang === "en" ? "HE" : "EN"}
               </button>
               <ThemeToggle />
