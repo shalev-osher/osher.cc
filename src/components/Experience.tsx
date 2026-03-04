@@ -74,7 +74,7 @@ const experiencesData = {
       ],
     },
     {
-      company: "Voicenter", role: "מהנדס תמיכה טכנית שכבה 1", period: "2021", year: "2021",
+      company: "Voicenter", role: "מהנדס תמיכה טכנית דרג א׳", period: "2021", year: "2021",
       description: [
         "ביצוע ניתוח של רשתות VoIP ומערכות מחשוב קיימות",
         "פתרון תקלות ברשתות VoIP באמצעות troubleshooting",
