@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import AnimatedSection from "@/components/AnimatedSection";
+import { motion } from "framer-motion";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -28,8 +29,10 @@ const Contact = () => {
   ];
 
   return (
-    <section id="contact" className="py-24">
-      <div className="container mx-auto px-6">
+    <section id="contact" className="py-24 relative section-glow overflow-hidden">
+      <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
+
+      <div className="container mx-auto px-6 relative z-10">
         <AnimatedSection>
           <div className="text-center mb-16">
             <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
@@ -46,14 +49,21 @@ const Contact = () => {
         <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
           <AnimatedSection delay={0.1}>
             <div className="space-y-8">
-              <div className="space-y-6">
-                {contactInfo.map((item) => (
-                  <div key={item.label} className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+              <div className="space-y-4">
+                {contactInfo.map((item, i) => (
+                  <motion.div
+                    key={item.label}
+                    className="flex items-center gap-4 p-4 card-premium"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 + i * 0.1 }}
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <item.icon className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <p className="text-muted-foreground text-sm">{item.label}</p>
+                      <p className="text-muted-foreground text-xs uppercase tracking-wider">{item.label}</p>
                       {item.href ? (
                         <a href={item.href} target={item.href.startsWith("http") ? "_blank" : undefined} rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined} className="font-medium hover:text-primary transition-colors">
                           {item.value}
@@ -62,10 +72,10 @@ const Contact = () => {
                         <p className="font-medium">{item.value}</p>
                       )}
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
-              <div className="p-6 card-elevated">
+              <div className="p-6 card-premium">
                 <p className="text-muted-foreground text-sm leading-relaxed">
                   I'm open to new opportunities in Technical Support, DevOps, and Cyber Security.
                   If you have a suitable role or project that requires my skills, fill out the form 
@@ -76,10 +86,10 @@ const Contact = () => {
           </AnimatedSection>
 
           <AnimatedSection delay={0.2}>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <Input placeholder="Full Name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="bg-card border-border focus:border-primary h-12" required />
-              <Input type="email" placeholder="Email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="bg-card border-border focus:border-primary h-12" required />
-              <Textarea placeholder="How can I help you?" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="bg-card border-border focus:border-primary min-h-[150px] resize-none" required />
+            <form onSubmit={handleSubmit} className="space-y-5 card-premium p-8">
+              <Input placeholder="Full Name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="bg-background/50 border-border/50 focus:border-primary h-12" required />
+              <Input type="email" placeholder="Email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="bg-background/50 border-border/50 focus:border-primary h-12" required />
+              <Textarea placeholder="How can I help you?" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="bg-background/50 border-border/50 focus:border-primary min-h-[150px] resize-none" required />
               <Button variant="hero" size="xl" className="w-full gap-2">
                 <Send className="w-5 h-5" />
                 Send Message
