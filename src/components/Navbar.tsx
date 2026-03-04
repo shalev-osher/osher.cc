@@ -56,7 +56,7 @@ const Navbar = () => {
               <a
                 href="/cv/shalev-osher-cv.pdf"
                 download
-                className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors duration-300"
+                className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg bg-primary/20 text-primary hover:bg-primary/30 transition-colors duration-300"
                 aria-label="Download CV"
               >
                 <Download className="w-4 h-4" />
