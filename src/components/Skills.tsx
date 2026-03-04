@@ -4,19 +4,22 @@ import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
 import { motion } from "framer-motion";
 import SkillsHeatmap from "@/components/SkillsHeatmap";
-
-const skills = [
-  { icon: Server, title: "Server Management", description: "Troubleshooting, server monitoring, query execution" },
-  { icon: Network, title: "Networking & VoIP", description: "ASTERISK, VoIP, network security, protocols" },
-  { icon: Database, title: "Databases", description: "SQL, MongoDB, log analysis with Kibana" },
-  { icon: Cloud, title: "Cloud Services", description: "AWS, API Integrations, DevOps" },
-  { icon: Shield, title: "Cyber Security", description: "MCSA, Linux, Cyber Security Specialist" },
-  { icon: Headphones, title: "Technical Support", description: "Call center management, Jira, SLA, VIP clients" },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Skills = () => {
-  const titleTypewriter = useTypewriter({ text: "My Skills", speed: 80, loop: true, pauseDuration: 5000 });
-  const subtitleTypewriter = useTypewriter({ text: "Technologies and tools I use to solve complex technical challenges", speed: 25, delay: 1000, loop: true, pauseDuration: 5000 });
+  const { t } = useLanguage();
+
+  const skills = [
+    { icon: Server, title: t("skills.serverMgmt"), description: t("skills.serverDesc") },
+    { icon: Network, title: t("skills.networking"), description: t("skills.networkDesc") },
+    { icon: Database, title: t("skills.databases"), description: t("skills.dbDesc") },
+    { icon: Cloud, title: t("skills.cloud"), description: t("skills.cloudDesc") },
+    { icon: Shield, title: t("skills.cyber"), description: t("skills.cyberDesc") },
+    { icon: Headphones, title: t("skills.support"), description: t("skills.supportDesc") },
+  ];
+
+  const titleTypewriter = useTypewriter({ text: t("skills.title"), speed: 80, loop: true, pauseDuration: 5000 });
+  const subtitleTypewriter = useTypewriter({ text: t("skills.subtitle"), speed: 25, delay: 1000, loop: true, pauseDuration: 5000 });
 
   return (
     <section id="skills" className="py-24 relative overflow-hidden section-glow" aria-labelledby="skills-heading">

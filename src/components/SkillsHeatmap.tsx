@@ -2,39 +2,35 @@ import { useState } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Skill {
   name: string;
-  level: number; // 1-5
+  level: number;
   category: string;
 }
 
 const skillsData: Skill[] = [
-  // Systems & Infrastructure
   { name: "Linux", level: 5, category: "Systems" },
   { name: "Windows Server", level: 5, category: "Systems" },
   { name: "Active Directory", level: 4, category: "Systems" },
   { name: "VMware", level: 4, category: "Systems" },
   { name: "Docker", level: 3, category: "Systems" },
-  // Networking
   { name: "TCP/IP", level: 5, category: "Networking" },
   { name: "VoIP/Asterisk", level: 5, category: "Networking" },
   { name: "DNS", level: 4, category: "Networking" },
   { name: "VPN", level: 4, category: "Networking" },
   { name: "Firewalls", level: 4, category: "Networking" },
-  // Cloud & DevOps
   { name: "AWS", level: 4, category: "Cloud" },
   { name: "CI/CD", level: 3, category: "Cloud" },
   { name: "Terraform", level: 3, category: "Cloud" },
   { name: "Kubernetes", level: 3, category: "Cloud" },
   { name: "Git", level: 4, category: "Cloud" },
-  // Databases & Monitoring
   { name: "SQL", level: 4, category: "Data" },
   { name: "MongoDB", level: 3, category: "Data" },
   { name: "Kibana", level: 4, category: "Data" },
   { name: "Grafana", level: 3, category: "Data" },
   { name: "Jira", level: 5, category: "Data" },
-  // Security
   { name: "Penetration Testing", level: 3, category: "Security" },
   { name: "SIEM", level: 3, category: "Security" },
   { name: "Incident Response", level: 4, category: "Security" },
@@ -55,12 +51,13 @@ const levelColors = [
 
 const SkillsHeatmap = () => {
   const [hoveredSkill, setHoveredSkill] = useState<Skill | null>(null);
+  const { t } = useLanguage();
 
   return (
     <div className="mt-16">
       <AnimatedSection animation="fadeUp">
         <h3 className="font-display text-2xl font-semibold text-center mb-8">
-          <GradientText>Skills Proficiency Map</GradientText>
+          <GradientText>{t("skills.heatmapTitle")}</GradientText>
         </h3>
       </AnimatedSection>
 
@@ -84,14 +81,9 @@ const SkillsHeatmap = () => {
                         onHoverStart={() => setHoveredSkill(skill)}
                         onHoverEnd={() => setHoveredSkill(null)}
                       >
-                        <span
-                          className={
-                            skill.level >= 4 ? "text-primary-foreground" : "text-foreground"
-                          }
-                        >
+                        <span className={skill.level >= 4 ? "text-primary-foreground" : "text-foreground"}>
                           {skill.name}
                         </span>
-
                         {hoveredSkill?.name === skill.name && (
                           <motion.div
                             className="absolute -top-10 left-1/2 -translate-x-1/2 bg-card border border-border rounded-md px-3 py-1.5 text-xs whitespace-nowrap shadow-lg z-20"
@@ -100,8 +92,7 @@ const SkillsHeatmap = () => {
                           >
                             <span className="text-primary font-semibold">{skill.name}</span>
                             <span className="text-muted-foreground ml-2">
-                              {"●".repeat(skill.level)}
-                              {"○".repeat(5 - skill.level)}
+                              {"●".repeat(skill.level)}{"○".repeat(5 - skill.level)}
                             </span>
                           </motion.div>
                         )}
@@ -112,17 +103,12 @@ const SkillsHeatmap = () => {
             ))}
           </div>
 
-          {/* Legend */}
           <div className="flex items-center justify-center gap-2 mt-6 text-xs text-muted-foreground">
-            <span>Beginner</span>
+            <span>{t("skills.beginner")}</span>
             {[1, 2, 3, 4, 5].map((level) => (
-              <div
-                key={level}
-                className="w-5 h-5 rounded"
-                style={{ backgroundColor: levelColors[level] }}
-              />
+              <div key={level} className="w-5 h-5 rounded" style={{ backgroundColor: levelColors[level] }} />
             ))}
-            <span>Expert</span>
+            <span>{t("skills.expert")}</span>
           </div>
         </div>
       </AnimatedSection>
