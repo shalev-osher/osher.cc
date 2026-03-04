@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import AnimatedSection from "@/components/AnimatedSection";
+import GradientText from "@/components/GradientText";
 import { motion } from "framer-motion";
 
 const Contact = () => {
@@ -33,10 +34,10 @@ const Contact = () => {
       <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
 
       <div className="container mx-auto px-6 relative z-10">
-        <AnimatedSection>
+        <AnimatedSection animation="blur">
           <div className="text-center mb-16">
             <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
-              {titleTypewriter.displayedText}
+              <GradientText>{titleTypewriter.displayedText}</GradientText>
               <span className={`inline-block w-[3px] h-[0.8em] bg-primary ml-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto min-h-[1.75rem]">
@@ -47,7 +48,7 @@ const Contact = () => {
         </AnimatedSection>
 
         <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          <AnimatedSection delay={0.1}>
+          <AnimatedSection delay={0.1} animation="slideLeft">
             <div className="space-y-8">
               <div className="space-y-4">
                 {contactInfo.map((item, i) => (
@@ -85,7 +86,7 @@ const Contact = () => {
             </div>
           </AnimatedSection>
 
-          <AnimatedSection delay={0.2}>
+          <AnimatedSection delay={0.2} animation="slideRight">
             <form onSubmit={handleSubmit} className="space-y-5 card-premium p-8">
               <Input placeholder="Full Name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="bg-background/50 border-border/50 focus:border-primary h-12" required />
               <Input type="email" placeholder="Email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="bg-background/50 border-border/50 focus:border-primary h-12" required />
