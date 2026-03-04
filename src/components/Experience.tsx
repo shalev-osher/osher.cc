@@ -127,7 +127,7 @@ const Experience = () => {
 
         <div className="max-w-4xl mx-auto">
           <div className="relative" role="list" aria-label="Work experience timeline">
-            <div className="absolute start-[28px] md:start-1/2 md:-translate-x-px top-0 bottom-0 w-[2px] timeline-line" aria-hidden="true" />
+            <div className="absolute start-[28px] md:start-1/2 md:[transform:translateX(-50%)] rtl:md:[transform:translateX(50%)] top-0 bottom-0 w-[2px] timeline-line" aria-hidden="true" />
 
             <div className="space-y-0">
               {experiences.map((exp, index) => {
@@ -207,7 +207,7 @@ const Experience = () => {
                         </motion.div>
                       </div>
 
-                      <div className="hidden md:flex absolute start-1/2 -translate-x-1/2 z-10">
+                      <div className="hidden md:flex absolute start-1/2 [transform:translateX(-50%)] rtl:[transform:translateX(50%)] z-10">
                         <button
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
                           className={`w-14 h-14 rounded-full flex items-center justify-center text-xs font-bold font-display transition-all duration-500 ${
