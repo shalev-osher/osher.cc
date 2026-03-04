@@ -2,6 +2,7 @@ import { ArrowDown, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import { motion } from "framer-motion";
+import Particles from "./Particles";
 
 const roles = [
   "Technical Support Specialist",
@@ -44,6 +45,9 @@ const Hero = () => {
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         />
       </div>
+
+      {/* Floating particles */}
+      <Particles count={40} />
 
       {/* Decorative lines */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
