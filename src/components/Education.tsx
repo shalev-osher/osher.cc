@@ -102,7 +102,7 @@ const Education = () => {
       <div className="container mx-auto px-6 relative z-10">
         <AnimatedSection animation="scaleUp">
           <div className="text-center mb-20">
-            <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
+            <h2 id="education-heading" className="font-display text-4xl md:text-5xl font-bold mb-4">
               <GradientText>Education & Certifications</GradientText>
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
