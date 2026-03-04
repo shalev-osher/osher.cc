@@ -2,20 +2,19 @@ import { ArrowDown, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTypewriter } from "@/hooks/useTypewriter";
 
-const Hero = () => {
-  const nameTypewriter = useTypewriter({
-    text: "Shalev Osher",
-    speed: 100,
-    loop: true,
-    pauseDuration: 3000,
-  });
+const roles = [
+  "Technical Support Specialist",
+  "System Administrator",
+  "DevOps Enthusiast",
+  "Full Stack Developer",
+];
 
-  const descriptionTypewriter = useTypewriter({
-    text: "Experienced Technical Support Specialist with a proven track record of ensuring smooth operation of servers and microservices. Skilled in troubleshooting, networking, and system administration.",
-    speed: 30,
-    delay: 1500,
-    loop: true,
-    pauseDuration: 4000,
+const Hero = () => {
+  const roleTypewriter = useTypewriter({
+    texts: roles,
+    speed: 80,
+    delay: 1200,
+    pauseDuration: 2500,
   });
 
   return (
@@ -29,18 +28,15 @@ const Hero = () => {
       <div className="container mx-auto px-6 text-center relative z-10">
         <div className="animate-fade-up">
           <p className="text-primary font-medium mb-4 tracking-widest uppercase text-sm">
-            Technical Support Specialist
+            Portfolio
           </p>
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
             Hello, I'm
-            <span className="block text-gradient">
-              {nameTypewriter.displayedText}
-              <span className={`inline-block w-[3px] h-[0.9em] bg-primary ml-1 align-middle transition-opacity duration-100 ${nameTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
-            </span>
+            <span className="block text-gradient">Shalev Osher</span>
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10 font-light min-h-[4.5rem] md:min-h-[3.5rem]">
-            {descriptionTypewriter.displayedText}
-            <span className={`inline-block w-[2px] h-[1em] bg-muted-foreground ml-1 align-middle transition-opacity duration-100 ${descriptionTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10 font-light min-h-[2.5rem]">
+            <span className="text-primary">{roleTypewriter.displayedText}</span>
+            <span className={`inline-block w-[2px] h-[1em] bg-primary ml-1 align-middle transition-opacity duration-100 ${roleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button variant="hero" size="xl" asChild>
