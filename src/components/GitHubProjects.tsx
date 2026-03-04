@@ -3,6 +3,7 @@ import { ExternalLink, GitBranch, Star, Code2 } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface GitHubRepo {
   id: number;
@@ -19,40 +20,23 @@ interface GitHubRepo {
 const GITHUB_USERNAME = "shalev-osher";
 
 const languageColors: Record<string, string> = {
-  TypeScript: "hsl(210 80% 60%)",
-  JavaScript: "hsl(50 90% 55%)",
-  Python: "hsl(210 60% 50%)",
-  Java: "hsl(20 80% 55%)",
-  HTML: "hsl(15 85% 55%)",
-  CSS: "hsl(200 80% 55%)",
-  Shell: "hsl(120 40% 50%)",
-  Go: "hsl(195 70% 55%)",
-  Rust: "hsl(25 70% 50%)",
-  C: "hsl(210 30% 50%)",
-  "C++": "hsl(340 60% 55%)",
-  "C#": "hsl(270 60% 55%)",
+  TypeScript: "hsl(210 80% 60%)", JavaScript: "hsl(50 90% 55%)", Python: "hsl(210 60% 50%)",
+  Java: "hsl(20 80% 55%)", HTML: "hsl(15 85% 55%)", CSS: "hsl(200 80% 55%)",
+  Shell: "hsl(120 40% 50%)", Go: "hsl(195 70% 55%)", Rust: "hsl(25 70% 50%)",
+  C: "hsl(210 30% 50%)", "C++": "hsl(340 60% 55%)", "C#": "hsl(270 60% 55%)",
 };
 
 const GitHubProjects = () => {
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=6&type=owner`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch");
-        return res.json();
-      })
-      .then((data: GitHubRepo[]) => {
-        const filtered = data.filter((r) => !r.fork).slice(0, 6);
-        setRepos(filtered);
-        setLoading(false);
-      })
-      .catch(() => {
-        setError(true);
-        setLoading(false);
-      });
+      .then((res) => { if (!res.ok) throw new Error("Failed"); return res.json(); })
+      .then((data: GitHubRepo[]) => { setRepos(data.filter((r) => !r.fork).slice(0, 6)); setLoading(false); })
+      .catch(() => { setError(true); setLoading(false); });
   }, []);
 
   if (error || (!loading && repos.length === 0)) return null;
@@ -60,16 +44,13 @@ const GitHubProjects = () => {
   return (
     <section id="projects" className="py-24 relative overflow-hidden section-glow">
       <div className="absolute inset-0" style={{ background: "var(--gradient-radial)" }} />
-
       <div className="container mx-auto px-6 relative z-10">
         <AnimatedSection animation="blur">
           <div className="text-center mb-16">
             <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
-              <GradientText>GitHub Projects</GradientText>
+              <GradientText>{t("github.title")}</GradientText>
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Open source projects and repositories from my GitHub
-            </p>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">{t("github.subtitle")}</p>
           </div>
         </AnimatedSection>
 
@@ -88,9 +69,7 @@ const GitHubProjects = () => {
             {repos.map((repo, index) => (
               <AnimatedSection key={repo.id} delay={index * 0.1} animation="scaleUp">
                 <motion.a
-                  href={repo.html_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={repo.html_url} target="_blank" rel="noopener noreferrer"
                   className="group card-premium p-6 h-full flex flex-col cursor-pointer block"
                   whileHover={{ scale: 1.02, rotateY: 3, rotateX: -2 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -102,30 +81,17 @@ const GitHubProjects = () => {
                     </div>
                     <div className="flex items-center gap-3 text-muted-foreground text-sm">
                       {repo.stargazers_count > 0 && (
-                        <span className="flex items-center gap-1">
-                          <Star className="w-3.5 h-3.5" />
-                          {repo.stargazers_count}
-                        </span>
+                        <span className="flex items-center gap-1"><Star className="w-3.5 h-3.5" />{repo.stargazers_count}</span>
                       )}
                       <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-primary" />
                     </div>
                   </div>
-
-                  <h3 className="font-display text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
-                    {repo.name}
-                  </h3>
-
-                  <p className="text-muted-foreground text-sm leading-relaxed flex-grow mb-4">
-                    {repo.description || "No description available"}
-                  </p>
-
+                  <h3 className="font-display text-lg font-semibold mb-2 group-hover:text-primary transition-colors">{repo.name}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed flex-grow mb-4">{repo.description || t("github.noDesc")}</p>
                   <div className="flex items-center justify-between mt-auto">
                     {repo.language && (
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <span
-                          className="w-3 h-3 rounded-full"
-                          style={{ backgroundColor: languageColors[repo.language] || "hsl(var(--muted-foreground))" }}
-                        />
+                        <span className="w-3 h-3 rounded-full" style={{ backgroundColor: languageColors[repo.language] || "hsl(var(--muted-foreground))" }} />
                         {repo.language}
                       </div>
                     )}

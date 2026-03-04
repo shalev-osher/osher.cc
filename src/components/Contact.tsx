@@ -8,19 +8,19 @@ import { useTypewriter } from "@/hooks/useTypewriter";
 import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Contact = () => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { t } = useLanguage();
 
-  const titleTypewriter = useTypewriter({ text: "Let's Connect", speed: 80, loop: true, pauseDuration: 5000 });
-  const subtitleTypewriter = useTypewriter({ text: "Looking for a Technical Support Specialist? I'd love to hear from you", speed: 25, delay: 1200, loop: true, pauseDuration: 5000 });
+  const titleTypewriter = useTypewriter({ text: t("contact.title"), speed: 80, loop: true, pauseDuration: 5000 });
+  const subtitleTypewriter = useTypewriter({ text: t("contact.subtitle"), speed: 25, delay: 1200, loop: true, pauseDuration: 5000 });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Client-side validation
     const name = formData.name.trim();
     const email = formData.email.trim();
     const message = formData.message.trim();
@@ -39,21 +39,18 @@ const Contact = () => {
     }
 
     setIsSubmitting(true);
-
-    // Build mailto link as fallback (no backend yet)
     const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
     const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
     window.open(`mailto:shalev@osher.cc?subject=${subject}&body=${body}`, "_self");
-
     toast({ title: "Opening email client!", description: "Your message will be sent via your default email app." });
     setFormData({ name: "", email: "", message: "" });
     setIsSubmitting(false);
   };
 
   const contactInfo = [
-    { icon: Mail, label: "Email", value: "shalev@osher.cc", href: "mailto:shalev@osher.cc" },
-    { icon: Phone, label: "Phone", value: "+972-50-722-3763", href: "tel:+972507223763" },
-    { icon: MapPin, label: "Location", value: "Ashkelon, Israel", href: null },
+    { icon: Mail, label: t("contact.email"), value: "shalev@osher.cc", href: "mailto:shalev@osher.cc" },
+    { icon: Phone, label: t("contact.phone"), value: "+972-50-722-3763", href: "tel:+972507223763" },
+    { icon: MapPin, label: t("contact.location"), value: t("contact.locationVal"), href: null },
     { icon: Linkedin, label: "LinkedIn", value: "shalev-osher", href: "https://linkedin.com/in/shalev-osher/" },
   ];
 
@@ -106,11 +103,7 @@ const Contact = () => {
                 ))}
               </div>
               <div className="p-6 card-premium">
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  I'm open to new opportunities in Technical Support, DevOps, and Cyber Security.
-                  If you have a suitable role or project that requires my skills, fill out the form 
-                  and I'll get back to you promptly.
-                </p>
+                <p className="text-muted-foreground text-sm leading-relaxed">{t("contact.openTo")}</p>
               </div>
             </div>
           </AnimatedSection>
@@ -118,20 +111,20 @@ const Contact = () => {
           <AnimatedSection delay={0.2} animation="slideRight">
             <form onSubmit={handleSubmit} className="space-y-5 card-premium p-8" aria-label="Contact form">
               <div>
-                <label htmlFor="contact-name" className="sr-only">Full Name</label>
-                <Input id="contact-name" placeholder="Full Name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="bg-background/50 border-border/50 focus:border-primary h-12" required maxLength={100} autoComplete="name" />
+                <label htmlFor="contact-name" className="sr-only">{t("contact.fullName")}</label>
+                <Input id="contact-name" placeholder={t("contact.fullName")} value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="bg-background/50 border-border/50 focus:border-primary h-12" required maxLength={100} autoComplete="name" />
               </div>
               <div>
-                <label htmlFor="contact-email" className="sr-only">Email</label>
-                <Input id="contact-email" type="email" placeholder="Email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="bg-background/50 border-border/50 focus:border-primary h-12" required maxLength={255} autoComplete="email" />
+                <label htmlFor="contact-email" className="sr-only">{t("contact.emailPlaceholder")}</label>
+                <Input id="contact-email" type="email" placeholder={t("contact.emailPlaceholder")} value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="bg-background/50 border-border/50 focus:border-primary h-12" required maxLength={255} autoComplete="email" />
               </div>
               <div>
-                <label htmlFor="contact-message" className="sr-only">Message</label>
-                <Textarea id="contact-message" placeholder="How can I help you?" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="bg-background/50 border-border/50 focus:border-primary min-h-[150px] resize-none" required maxLength={2000} />
+                <label htmlFor="contact-message" className="sr-only">{t("contact.messagePlaceholder")}</label>
+                <Textarea id="contact-message" placeholder={t("contact.messagePlaceholder")} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="bg-background/50 border-border/50 focus:border-primary min-h-[150px] resize-none" required maxLength={2000} />
               </div>
               <Button variant="hero" size="xl" className="w-full gap-2" disabled={isSubmitting}>
                 <Send className="w-5 h-5" aria-hidden="true" />
-                {isSubmitting ? "Sending..." : "Send Message"}
+                {isSubmitting ? t("contact.sending") : t("contact.send")}
               </Button>
             </form>
           </AnimatedSection>

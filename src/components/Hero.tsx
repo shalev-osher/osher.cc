@@ -5,15 +5,13 @@ import { useTypewriter } from "@/hooks/useTypewriter";
 import { motion } from "framer-motion";
 import Particles from "./Particles";
 import CursorGlow from "./CursorGlow";
-
-const roles = [
-  "Technical Support Specialist",
-  "System Administrator",
-  "DevOps Enthusiast",
-  "Full Stack Developer",
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Hero = () => {
+  const { t, lang } = useLanguage();
+
+  const roles = [t("hero.role1"), t("hero.role2"), t("hero.role3"), t("hero.role4")];
+
   const roleTypewriter = useTypewriter({
     texts: roles,
     speed: 80,
@@ -23,10 +21,8 @@ const Hero = () => {
 
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden noise-texture" aria-label="Hero section">
-      {/* Radial glow from top */}
       <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
       
-      {/* Animated orbs */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
           className="absolute top-1/4 -right-32 w-[500px] h-[500px] rounded-full blur-[100px]"
@@ -48,13 +44,9 @@ const Hero = () => {
         />
       </div>
 
-      {/* Floating particles */}
       <Particles count={40} />
-
-      {/* Cursor glow */}
       <CursorGlow />
 
-      {/* Decorative lines */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-px h-full opacity-[0.04]" style={{ background: 'linear-gradient(180deg, transparent, hsl(var(--primary)), transparent)' }} />
         <div className="absolute top-0 right-1/3 w-px h-full opacity-[0.03]" style={{ background: 'linear-gradient(180deg, transparent, hsl(var(--primary)), transparent)' }} />
@@ -72,7 +64,7 @@ const Hero = () => {
             animate={{ opacity: 1, letterSpacing: '0.3em' }}
             transition={{ duration: 1.2, delay: 0.3 }}
           >
-            Portfolio
+            {t("hero.portfolio")}
           </motion.p>
           
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight" id="hero-title">
@@ -82,7 +74,7 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
             >
-              Hello, I'm
+              {t("hero.hello")}
             </motion.span>
             <motion.span
               className="block text-gradient-warm"
@@ -90,7 +82,7 @@ const Hero = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              Shalev Osher
+              {lang === "he" ? "שלו אושר" : "Shalev Osher"}
             </motion.span>
           </h1>
           
@@ -113,15 +105,15 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 1.5 }}
           >
             <Button variant="hero" size="xl" asChild>
-              <a href="#experience">View Experience</a>
+              <a href="#experience">{t("hero.viewExperience")}</a>
             </Button>
             <Button variant="heroOutline" size="xl" asChild>
-              <a href="#contact">Get in Touch</a>
+              <a href="#contact">{t("hero.getInTouch")}</a>
             </Button>
             <Button variant="heroOutline" size="xl" asChild>
               <a href="/cv/shalev-osher-cv.pdf" download className="gap-2">
                 <Download className="w-5 h-5" />
-                Download CV
+                {t("hero.downloadCV")}
               </a>
             </Button>
           </motion.div>
