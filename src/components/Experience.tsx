@@ -150,7 +150,7 @@ const Experience = () => {
                         </button>
                       </div>
 
-                      <div className={`flex-1 md:w-[calc(50%-40px)] ${isEven ? 'md:pr-16 md:text-right' : 'md:pl-16'}`}>
+                      <div className={`flex-1 md:w-[calc(50%-40px)] ${isEven ? 'md:pe-16 md:text-end' : 'md:ps-16'}`}>
                         <motion.div
                           className={`card-premium p-6 cursor-pointer ${isExpanded ? 'border-primary/30' : ''}`}
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
