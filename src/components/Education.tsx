@@ -151,12 +151,14 @@ const Education = () => {
             <button
               onClick={scrollPrev}
               className="absolute left-0 md:-left-16 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center bg-card border border-border hover:border-primary/50 hover:shadow-[var(--shadow-glow)] transition-all duration-300 group shadow-lg"
+              aria-label="Previous certificate"
             >
               <ChevronLeft className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
             </button>
             <button
               onClick={scrollNext}
               className="absolute right-0 md:-right-16 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center bg-card border border-border hover:border-primary/50 hover:shadow-[var(--shadow-glow)] transition-all duration-300 group shadow-lg"
+              aria-label="Next certificate"
             >
               <ChevronRight className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
             </button>
