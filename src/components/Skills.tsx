@@ -3,6 +3,7 @@ import { useTypewriter } from "@/hooks/useTypewriter";
 import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
 import { motion } from "framer-motion";
+import SkillsHeatmap from "@/components/SkillsHeatmap";
 
 const skills = [
   { icon: Server, title: "Server Management", description: "Troubleshooting, server monitoring, query execution" },
@@ -53,6 +54,8 @@ const Skills = () => {
             </AnimatedSection>
           ))}
         </div>
+
+        <SkillsHeatmap />
       </div>
     </section>
   );
