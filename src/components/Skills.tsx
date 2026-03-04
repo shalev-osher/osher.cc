@@ -1,6 +1,7 @@
 import { Server, Network, Database, Shield, Cloud, Headphones } from "lucide-react";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import AnimatedSection from "@/components/AnimatedSection";
+import GradientText from "@/components/GradientText";
 import { motion } from "framer-motion";
 
 const skills = [
@@ -18,15 +19,14 @@ const Skills = () => {
 
   return (
     <section id="skills" className="py-24 relative overflow-hidden section-glow">
-      {/* Background */}
       <div className="absolute inset-0 bg-secondary/30" />
       <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
 
       <div className="container mx-auto px-6 relative z-10">
-        <AnimatedSection>
+        <AnimatedSection animation="blur">
           <div className="text-center mb-16">
             <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
-              {titleTypewriter.displayedText}
+              <GradientText>{titleTypewriter.displayedText}</GradientText>
               <span className={`inline-block w-[3px] h-[0.8em] bg-primary ml-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto min-h-[1.75rem]">
@@ -38,7 +38,7 @@ const Skills = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {skills.map((skill, index) => (
-            <AnimatedSection key={skill.title} delay={index * 0.1}>
+            <AnimatedSection key={skill.title} delay={index * 0.1} animation="scaleUp">
               <motion.div
                 className="group card-premium p-8 h-full"
                 whileHover={{ scale: 1.02 }}
