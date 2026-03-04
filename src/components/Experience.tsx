@@ -4,57 +4,108 @@ import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-const experiences = [
-  {
-    company: "Voicenter", role: "Technical Support Specialist Tier 2", period: "2023 - Present", year: "2023",
-    description: [
-      "Collaborating closely with Development and DevOps teams using Jira to address issues and enhance workflows",
-      "Delivering comprehensive support to VIP and standard clients across the company's suite of products",
-      "Working with API integrations (leveraging Kibana), networking, and Amazon Web Services (AWS)",
-      "Conducting rigorous QA testing on features and servers as per requests from Development and DevOps teams",
-      "Co-developing a troubleshooting tool in collaboration with the Development team",
-      "Proactively diagnosing and resolving live issues across a multitude of servers using PRTG",
-    ],
-  },
-  {
-    company: "Voicenter", role: "Technical Support Specialist - Strategic Customers", period: "2021 - 2023", year: "2021",
-    description: [
-      "Provided technical support for telephone systems on the cloud",
-      "Wrote guides and presentations, conducted apprenticeships, and administered exercises",
-      "Managed the accounts of the largest clients on-site",
-      "Worked with ASTERISK, SQL, alongside IT, engineering, and development departments",
-    ],
-  },
-  {
-    company: "Voicenter", role: "Technical Support Engineer Tier 1", period: "2021", year: "2021",
-    description: [
-      "Conducted analysis of current VoIP networks and computer systems",
-      "Resolved VoIP network complications through troubleshooting",
-      "Evaluated and enhanced network security measures and protocols",
-      "Offered initial technical support to clients via calls, emails, or tickets",
-    ],
-  },
-  {
-    company: "ILDC", role: "Quality Assurance Tester", period: "2018 - 2021", year: "2018",
-    description: [
-      "Executed QA tests within Sagemcom LAB for Altice (HOT) company's products",
-      "Performed daily quality assurance testing of set-top boxes to ensure adherence to standards",
-    ],
-  },
-  {
-    company: "IDF", role: "Military Service", period: "2015 - 2018", year: "2015",
-    description: [
-      "Performed vehicle treatments and utilized test equipment to ensure optimal functionality",
-      "Removed and installed vehicle assemblies in accordance with established procedures",
-    ],
-  },
-];
+const experiencesData = {
+  en: [
+    {
+      company: "Voicenter", role: "Technical Support Specialist Tier 2", period: "2023 - Present", year: "2023",
+      description: [
+        "Collaborating closely with Development and DevOps teams using Jira to address issues and enhance workflows",
+        "Delivering comprehensive support to VIP and standard clients across the company's suite of products",
+        "Working with API integrations (leveraging Kibana), networking, and Amazon Web Services (AWS)",
+        "Conducting rigorous QA testing on features and servers as per requests from Development and DevOps teams",
+        "Co-developing a troubleshooting tool in collaboration with the Development team",
+        "Proactively diagnosing and resolving live issues across a multitude of servers using PRTG",
+      ],
+    },
+    {
+      company: "Voicenter", role: "Technical Support Specialist - Strategic Customers", period: "2021 - 2023", year: "2021",
+      description: [
+        "Provided technical support for telephone systems on the cloud",
+        "Wrote guides and presentations, conducted apprenticeships, and administered exercises",
+        "Managed the accounts of the largest clients on-site",
+        "Worked with ASTERISK, SQL, alongside IT, engineering, and development departments",
+      ],
+    },
+    {
+      company: "Voicenter", role: "Technical Support Engineer Tier 1", period: "2021", year: "2021",
+      description: [
+        "Conducted analysis of current VoIP networks and computer systems",
+        "Resolved VoIP network complications through troubleshooting",
+        "Evaluated and enhanced network security measures and protocols",
+        "Offered initial technical support to clients via calls, emails, or tickets",
+      ],
+    },
+    {
+      company: "ILDC", role: "Quality Assurance Tester", period: "2018 - 2021", year: "2018",
+      description: [
+        "Executed QA tests within Sagemcom LAB for Altice (HOT) company's products",
+        "Performed daily quality assurance testing of set-top boxes to ensure adherence to standards",
+      ],
+    },
+    {
+      company: "IDF", role: "Military Service", period: "2015 - 2018", year: "2015",
+      description: [
+        "Performed vehicle treatments and utilized test equipment to ensure optimal functionality",
+        "Removed and installed vehicle assemblies in accordance with established procedures",
+      ],
+    },
+  ],
+  he: [
+    {
+      company: "Voicenter", role: "מומחה תמיכה טכנית שכבה 2", period: "2023 - היום", year: "2023",
+      description: [
+        "שיתוף פעולה צמוד עם צוותי פיתוח ו-DevOps באמצעות Jira לטיפול בבעיות ושיפור תהליכי עבודה",
+        "מתן תמיכה מקיפה ללקוחות VIP ולקוחות רגילים במגוון מוצרי החברה",
+        "עבודה עם אינטגרציות API (בשימוש Kibana), רשתות ו-Amazon Web Services (AWS)",
+        "ביצוע בדיקות QA קפדניות על פיצ'רים ושרתים לפי בקשות צוותי פיתוח ו-DevOps",
+        "פיתוח משותף של כלי לפתרון תקלות בשיתוף עם צוות הפיתוח",
+        "אבחון וטיפול פרואקטיבי בתקלות חיות במגוון שרתים באמצעות PRTG",
+      ],
+    },
+    {
+      company: "Voicenter", role: "מומחה תמיכה טכנית - לקוחות אסטרטגיים", period: "2021 - 2023", year: "2021",
+      description: [
+        "מתן תמיכה טכנית למערכות טלפוניה בענן",
+        "כתיבת מדריכים ומצגות, הנחיית חניכים וניהול תרגולים",
+        "ניהול חשבונות הלקוחות הגדולים ביותר באתר",
+        "עבודה עם ASTERISK, SQL, לצד מחלקות IT, הנדסה ופיתוח",
+      ],
+    },
+    {
+      company: "Voicenter", role: "מהנדס תמיכה טכנית שכבה 1", period: "2021", year: "2021",
+      description: [
+        "ביצוע ניתוח של רשתות VoIP ומערכות מחשוב קיימות",
+        "פתרון תקלות ברשתות VoIP באמצעות troubleshooting",
+        "הערכה ושיפור אמצעי אבטחת רשת ופרוטוקולים",
+        "מתן תמיכה טכנית ראשונית ללקוחות דרך שיחות, מיילים או פניות",
+      ],
+    },
+    {
+      company: "ILDC", role: "בודק אבטחת איכות", period: "2018 - 2021", year: "2018",
+      description: [
+        "ביצוע בדיקות QA במעבדת Sagemcom עבור מוצרי חברת Altice (HOT)",
+        "ביצוע בדיקות אבטחת איכות יומיות של ממירים להבטחת עמידה בסטנדרטים",
+      ],
+    },
+    {
+      company: "צה\"ל", role: "שירות צבאי", period: "2015 - 2018", year: "2015",
+      description: [
+        "ביצוע טיפולים ברכבים ושימוש בציוד בדיקה להבטחת תפקוד מיטבי",
+        "הסרה והתקנה של מכלולי רכב בהתאם לנהלים מבוססים",
+      ],
+    },
+  ],
+};
 
 const Experience = () => {
   const [expandedIndex, setExpandedIndex] = useState<number>(0);
-  const titleTypewriter = useTypewriter({ text: "Work Experience", speed: 80, loop: true, pauseDuration: 5000 });
-  const subtitleTypewriter = useTypewriter({ text: "My professional journey in technology and technical support", speed: 25, delay: 1200, loop: true, pauseDuration: 5000 });
+  const { t, lang } = useLanguage();
+  const experiences = experiencesData[lang];
+
+  const titleTypewriter = useTypewriter({ text: t("exp.title"), speed: 80, loop: true, pauseDuration: 5000 });
+  const subtitleTypewriter = useTypewriter({ text: t("exp.subtitle"), speed: 25, delay: 1200, loop: true, pauseDuration: 5000 });
 
   return (
     <section id="experience" className="py-24 section-glow relative overflow-hidden" aria-labelledby="experience-heading">
@@ -90,9 +141,7 @@ const Experience = () => {
                         <button
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
                           className={`w-14 h-14 rounded-full flex items-center justify-center text-xs font-bold font-display transition-all duration-500 ${
-                            isExpanded
-                              ? 'bg-primary text-primary-foreground timeline-dot-active'
-                              : 'bg-card border-2 border-primary/30 text-primary timeline-dot'
+                            isExpanded ? 'bg-primary text-primary-foreground timeline-dot-active' : 'bg-card border-2 border-primary/30 text-primary timeline-dot'
                           }`}
                           aria-expanded={isExpanded}
                           aria-label={`${exp.role} at ${exp.company}, ${exp.period}`}
@@ -162,9 +211,7 @@ const Experience = () => {
                         <button
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
                           className={`w-14 h-14 rounded-full flex items-center justify-center text-xs font-bold font-display transition-all duration-500 ${
-                            isExpanded
-                              ? 'bg-primary text-primary-foreground timeline-dot-active scale-110'
-                              : 'bg-card border-2 border-primary/30 text-primary hover:border-primary hover:scale-105 timeline-dot'
+                            isExpanded ? 'bg-primary text-primary-foreground timeline-dot-active scale-110' : 'bg-card border-2 border-primary/30 text-primary hover:border-primary hover:scale-105 timeline-dot'
                           }`}
                           aria-expanded={isExpanded}
                           aria-label={`${exp.role} at ${exp.company}, ${exp.period}`}

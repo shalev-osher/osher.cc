@@ -1,7 +1,10 @@
 import { Github, Linkedin, Facebook } from "lucide-react";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Footer = () => {
+  const { t } = useLanguage();
+
   const socialLinks = [
     { icon: Linkedin, href: "https://linkedin.com/in/shalev-osher/", label: "LinkedIn" },
     { icon: Facebook, href: "https://www.facebook.com/Mr.ShalevOsher/", label: "Facebook" },
@@ -18,22 +21,15 @@ const Footer = () => {
             <a href="#" className="font-display text-2xl font-bold text-gradient-warm" aria-label="Shalev Osher - Back to top">
               Shalev Osher
             </a>
-            <p className="text-muted-foreground text-sm mt-2">
-              © 2026 All rights reserved
-            </p>
+            <p className="text-muted-foreground text-sm mt-2">{t("footer.rights")}</p>
           </div>
 
           <nav className="flex items-center gap-3" aria-label="Social media links">
             {socialLinks.map((link) => (
               <motion.a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={link.label}
+                key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" aria-label={link.label}
                 className="w-11 h-11 rounded-full border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300"
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.1, y: -2 }} whileTap={{ scale: 0.95 }}
               >
                 <link.icon className="w-5 h-5" aria-hidden="true" />
               </motion.a>

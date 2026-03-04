@@ -5,10 +5,13 @@ import profilePhoto from "@/assets/profile-photo.jpeg";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import { motion } from "framer-motion";
 import { useCountUp } from "@/hooks/useCountUp";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const About = () => {
+  const { t } = useLanguage();
+
   const titleTypewriter = useTypewriter({
-    text: "About Me",
+    text: t("about.title"),
     speed: 80,
     loop: true,
     pauseDuration: 5000,
@@ -19,9 +22,9 @@ const About = () => {
   const certHours = useCountUp({ end: 450, suffix: "+", duration: 2000 });
 
   const stats = [
-    { ref: yearsExp.ref, display: yearsExp.display, label: "Years Experience" },
-    { ref: companies.ref, display: companies.display, label: "Companies" },
-    { ref: certHours.ref, display: certHours.display, label: "Cert. Hours" },
+    { ref: yearsExp.ref, display: yearsExp.display, label: t("about.yearsExp") },
+    { ref: companies.ref, display: companies.display, label: t("about.companies") },
+    { ref: certHours.ref, display: certHours.display, label: t("about.certHours") },
   ];
 
   return (
@@ -59,16 +62,10 @@ const About = () => {
                 <span className={`inline-block w-[3px] h-[0.8em] bg-primary ml-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
               </h2>
               <p className="text-muted-foreground text-lg leading-relaxed mt-8">
-                Experienced Technical Support Specialist with a proven track record of ensuring 
-                smooth operation of servers and microservices. Skilled in troubleshooting and 
-                resolving technical issues promptly, with extensive networking and system 
-                administration expertise.
+                {t("about.p1")}
               </p>
               <p className="text-muted-foreground text-lg leading-relaxed">
-                Adept at utilizing SQL databases, Kibana, and AWS for log analysis and service 
-                recording. Successfully manages a technical department, fostering efficient 
-                workflow and effective issue resolution. Demonstrates proficiency in working 
-                with internal ticketing systems and adhering to SLA workflows.
+                {t("about.p2")}
               </p>
               
               <div className="grid grid-cols-3 gap-4 pt-8" role="list" aria-label="Key statistics">

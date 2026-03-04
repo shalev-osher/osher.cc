@@ -1,11 +1,13 @@
 import { useState, useEffect, useMemo } from "react";
-import { Menu, X, Download } from "lucide-react";
+import { Menu, X, Download, Globe } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 import useActiveSection from "@/hooks/useActiveSection";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const { lang, setLang, t } = useLanguage();
 
   const sectionIds = useMemo(() => ["about", "skills", "experience", "education", "contact"], []);
   const activeSection = useActiveSection(sectionIds);
@@ -24,12 +26,14 @@ const Navbar = () => {
   }, [isMobileOpen]);
 
   const navLinks = [
-    { href: "#about", label: "About", id: "about" },
-    { href: "#skills", label: "Skills", id: "skills" },
-    { href: "#experience", label: "Experience", id: "experience" },
-    { href: "#education", label: "Certifications", id: "education" },
-    { href: "#contact", label: "Contact", id: "contact" },
+    { href: "#about", label: t("nav.about"), id: "about" },
+    { href: "#skills", label: t("nav.skills"), id: "skills" },
+    { href: "#experience", label: t("nav.experience"), id: "experience" },
+    { href: "#education", label: t("nav.certifications"), id: "education" },
+    { href: "#contact", label: t("nav.contact"), id: "contact" },
   ];
+
+  const toggleLang = () => setLang(lang === "en" ? "he" : "en");
 
   return (
     <>
@@ -72,9 +76,24 @@ const Navbar = () => {
                 <Download className="w-4 h-4" />
                 CV
               </a>
+              <button
+                onClick={toggleLang}
+                className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors duration-300"
+                aria-label={`Switch to ${lang === "en" ? "Hebrew" : "English"}`}
+              >
+                <Globe className="w-4 h-4" />
+                {lang === "en" ? "HE" : "EN"}
+              </button>
               <ThemeToggle />
             </div>
             <div className="flex items-center gap-3 md:hidden">
+              <button
+                onClick={toggleLang}
+                className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary/20 transition-colors text-xs font-bold"
+                aria-label={`Switch to ${lang === "en" ? "Hebrew" : "English"}`}
+              >
+                {lang === "en" ? "HE" : "EN"}
+              </button>
               <a
                 href="/cv/shalev-osher-cv.pdf"
                 download
