@@ -146,25 +146,25 @@ const Education = () => {
             </h3>
           </div>
 
-          <div className="relative max-w-6xl mx-auto">
+          <div className="relative max-w-6xl mx-auto px-14 md:px-0">
             {/* Large nav arrows */}
             <button
               onClick={scrollPrev}
-              className="absolute left-2 md:-left-16 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center bg-card/90 backdrop-blur-md border border-border/50 hover:border-primary/50 hover:shadow-[var(--shadow-glow)] transition-all duration-300 group shadow-lg"
+              className="absolute left-0 md:-left-16 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center bg-card border border-border hover:border-primary/50 hover:shadow-[var(--shadow-glow)] transition-all duration-300 group shadow-lg"
             >
               <ChevronLeft className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
             </button>
             <button
               onClick={scrollNext}
-              className="absolute right-2 md:-right-16 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center bg-card/90 backdrop-blur-md border border-border/50 hover:border-primary/50 hover:shadow-[var(--shadow-glow)] transition-all duration-300 group shadow-lg"
+              className="absolute right-0 md:-right-16 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center bg-card border border-border hover:border-primary/50 hover:shadow-[var(--shadow-glow)] transition-all duration-300 group shadow-lg"
             >
               <ChevronRight className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
             </button>
 
             {/* Carousel with gradient fade edges */}
             <div className="relative">
-              <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-secondary/80 to-transparent z-10 pointer-events-none rounded-l-2xl" />
-              <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-secondary/80 to-transparent z-10 pointer-events-none rounded-r-2xl" />
+              <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-secondary/80 to-transparent z-10 pointer-events-none rounded-l-2xl" />
+              <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-secondary/80 to-transparent z-10 pointer-events-none rounded-r-2xl" />
 
               <div ref={emblaRef} className="overflow-hidden">
                 <div className="flex">
