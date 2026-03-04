@@ -21,6 +21,13 @@ const certifications = [
     verifyUrl: null,
   },
   {
+    name: "תעודת גמר - מיישם הגנת סייבר",
+    issuer: "משרד הכלכלה והתעשייה",
+    code: "תעודה מס׳ 1442431",
+    year: "April 2022",
+    verifyUrl: null,
+  },
+  {
     name: "MCSA: Windows Server 2016",
     issuer: "Microsoft",
     code: "Cert #1F7071-E04B87",
