@@ -9,6 +9,7 @@ import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -39,12 +40,21 @@ const Contact = () => {
     }
 
     setIsSubmitting(true);
-    const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
-    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
-    window.open(`mailto:shalev@osher.cc?subject=${subject}&body=${body}`, "_self");
-    toast({ title: "Opening email client!", description: "Your message will be sent via your default email app." });
-    setFormData({ name: "", email: "", message: "" });
-    setIsSubmitting(false);
+    try {
+      const { data, error } = await supabase.functions.invoke("send-contact-email", {
+        body: { name, email, message },
+      });
+
+      if (error) throw error;
+
+      toast({ title: t("contact.successTitle") || "Message sent!", description: t("contact.successDesc") || "Your message has been sent successfully." });
+      setFormData({ name: "", email: "", message: "" });
+    } catch (err) {
+      console.error("Contact form error:", err);
+      toast({ title: t("contact.errorTitle") || "Error", description: t("contact.errorDesc") || "Failed to send message. Please try again.", variant: "destructive" });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
