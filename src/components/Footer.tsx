@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const Footer = () => {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
 
   const socialLinks = [
     { icon: Linkedin, href: "https://linkedin.com/in/shalev-osher/", label: "LinkedIn" },
