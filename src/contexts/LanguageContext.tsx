@@ -162,6 +162,9 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     const dir = lang === "he" ? "rtl" : "ltr";
     document.documentElement.dir = dir;
     document.documentElement.lang = lang;
+    document.title = lang === "he"
+      ? "שליו אושר | מנהל מערכות ומהנדס DevOps"
+      : "Shalev Osher | System Administrator & DevOps Engineer Portfolio";
   }, [lang]);
 
   const t = (key: string): string => {
