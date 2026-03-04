@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { GraduationCap, Award, Calendar, ExternalLink, Clock, Languages, X, Download, Eye } from "lucide-react";
+import { GraduationCap, Award, Calendar, ExternalLink, Clock, Languages, X, Download, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import useEmblaCarousel from "embla-carousel-react";
+import { useCallback } from "react";
 
 const education = [
   {
@@ -14,7 +16,7 @@ const education = [
   },
 ];
 
-const certifications = [
+const certificates = [
   {
     name: "Certified Hands-On Cyber Security Specialist",
     issuer: "Kernelios",
@@ -32,9 +34,15 @@ const certifications = [
     verifyUrl: null,
     image: "/certificates/kernelios-gov.jpeg",
     pdf: "/certificates/kernelios-gov.pdf",
-    extraImages: [
-      { label: "גיליון ציונים", image: "/certificates/kernelios-grades.jpeg", pdf: "/certificates/kernelios-grades.pdf" },
-    ],
+  },
+  {
+    name: "גיליון ציונים - מיישם הגנת סייבר",
+    issuer: "משרד הכלכלה והתעשייה",
+    code: "קרנליוס בע״מ",
+    year: "June 2022",
+    verifyUrl: null,
+    image: "/certificates/kernelios-grades.jpeg",
+    pdf: "/certificates/kernelios-grades.pdf",
   },
   {
     name: "MCSA: Windows Server 2016",
@@ -54,19 +62,14 @@ const certifications = [
     image: "/certificates/linux-essentials.jpeg",
     pdf: "/certificates/linux-essentials.pdf",
   },
-  {
-    name: "Pre Security",
-    issuer: "TryHackMe",
-    code: "THM-LUXTRZ1DQ0",
-    year: "December 2025",
-    verifyUrl: "https://tryhackme.com/certificate/THM-LUXTRZ1DQ0",
-    image: null,
-    pdf: null,
-  },
 ];
 
 const Education = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "center" });
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
   return (
     <section id="education" className="py-24 bg-secondary/30">
@@ -82,122 +85,128 @@ const Education = () => {
           </div>
         </AnimatedSection>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {/* Education */}
-          <AnimatedSection delay={0.1} animation="slideLeft">
-            <div className="space-y-6">
-              <h3 className="font-display text-2xl font-semibold flex items-center gap-3">
-                <GraduationCap className="w-6 h-6 text-primary" />
-                Education
-              </h3>
-              {education.map((edu) => (
-                <div key={edu.institution} className="card-elevated p-6 hover:border-primary/50 border border-transparent transition-all duration-300">
-                  <h4 className="font-display text-lg font-semibold mb-2">{edu.degree}</h4>
-                  <p className="text-primary font-medium mb-3">{edu.institution}</p>
-                  <div className="flex flex-col gap-2 text-muted-foreground text-sm">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4" />
-                      <span>{edu.period}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-4 h-4" />
-                      <span>{edu.hours}</span>
-                    </div>
+        {/* Education Card */}
+        <AnimatedSection delay={0.1} animation="slideLeft">
+          <div className="max-w-2xl mx-auto mb-16">
+            <h3 className="font-display text-2xl font-semibold flex items-center gap-3 mb-6">
+              <GraduationCap className="w-6 h-6 text-primary" />
+              Education
+            </h3>
+            {education.map((edu) => (
+              <div key={edu.institution} className="card-elevated p-6 hover:border-primary/50 border border-transparent transition-all duration-300">
+                <h4 className="font-display text-lg font-semibold mb-2">{edu.degree}</h4>
+                <p className="text-primary font-medium mb-3">{edu.institution}</p>
+                <div className="flex flex-wrap gap-4 text-muted-foreground text-sm">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4" />
+                    <span>{edu.period}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-4 h-4" />
+                    <span>{edu.hours}</span>
                   </div>
                 </div>
-              ))}
-            </div>
-          </AnimatedSection>
+              </div>
+            ))}
+          </div>
+        </AnimatedSection>
 
-          {/* Certifications */}
-          <AnimatedSection delay={0.2} animation="slideRight">
-            <div className="space-y-6">
-              <h3 className="font-display text-2xl font-semibold flex items-center gap-3">
-                <Award className="w-6 h-6 text-primary" />
-                Certifications
-              </h3>
-              {certifications.map((cert, index) => (
-                <AnimatedSection key={cert.name} delay={0.2 + index * 0.1} animation="scaleUp">
-                  <div className="card-elevated p-5 hover:border-primary/50 border border-transparent transition-all duration-300 group">
-                    {/* Certificate thumbnail */}
-                    {cert.image && (
-                      <div
-                        className="mb-4 rounded-lg overflow-hidden border border-border/50 cursor-pointer group/img relative"
-                        onClick={() => setSelectedImage(cert.image)}
-                      >
-                        <img
-                          src={cert.image}
-                          alt={cert.name}
-                          className="w-full h-40 object-cover object-top transition-transform duration-500 group-hover/img:scale-105"
-                          loading="lazy"
-                        />
-                        <div className="absolute inset-0 bg-background/60 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
-                          <Eye className="w-5 h-5 text-primary" />
-                          <span className="text-sm font-medium text-foreground">View Certificate</span>
-                        </div>
-                      </div>
-                    )}
+        {/* Certificates Carousel */}
+        <AnimatedSection delay={0.2} animation="scaleUp">
+          <div className="max-w-5xl mx-auto">
+            <h3 className="font-display text-2xl font-semibold flex items-center gap-3 mb-8 justify-center">
+              <Award className="w-6 h-6 text-primary" />
+              Certifications
+            </h3>
 
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex-1">
-                        <h4 className="font-display text-base font-semibold mb-1 group-hover:text-primary transition-colors">
-                          {cert.name}
-                        </h4>
-                        <p className="text-primary/80 text-sm font-medium mb-1">{cert.issuer}</p>
-                        <p className="text-muted-foreground text-xs mb-2 font-mono">{cert.code}</p>
-                        <div className="flex items-center gap-2 text-muted-foreground text-xs">
-                          <Calendar className="w-3.5 h-3.5" />
-                          <span>{cert.year}</span>
+            <div className="relative">
+              {/* Navigation Buttons */}
+              <button
+                onClick={scrollPrev}
+                className="absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2 z-10 p-2.5 rounded-full bg-background/80 backdrop-blur-sm border border-border/50 hover:border-primary/50 hover:bg-background transition-all shadow-lg"
+              >
+                <ChevronLeft className="w-5 h-5 text-foreground" />
+              </button>
+              <button
+                onClick={scrollNext}
+                className="absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 z-10 p-2.5 rounded-full bg-background/80 backdrop-blur-sm border border-border/50 hover:border-primary/50 hover:bg-background transition-all shadow-lg"
+              >
+                <ChevronRight className="w-5 h-5 text-foreground" />
+              </button>
+
+              {/* Carousel */}
+              <div ref={emblaRef} className="overflow-hidden rounded-xl">
+                <div className="flex">
+                  {certificates.map((cert) => (
+                    <div key={cert.name} className="flex-[0_0_100%] min-w-0 md:flex-[0_0_60%] px-3">
+                      <div className="card-elevated border border-transparent hover:border-primary/30 transition-all duration-500 overflow-hidden rounded-xl">
+                        {/* Certificate Image */}
+                        <div
+                          className="relative cursor-pointer group overflow-hidden"
+                          onClick={() => setSelectedImage(cert.image)}
+                        >
+                          <img
+                            src={cert.image}
+                            alt={cert.name}
+                            className="w-full h-64 md:h-80 object-contain bg-muted/30 transition-transform duration-700 group-hover:scale-105"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-background/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30">
+                              <Eye className="w-4 h-4 text-primary" />
+                              <span className="text-sm font-medium text-foreground">View Full Size</span>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex flex-col gap-2 shrink-0 mt-1">
-                        {cert.verifyUrl && (
-                          <a
-                            href={cert.verifyUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-primary/60 hover:text-primary transition-colors"
-                            title="Verify Certificate"
-                          >
-                            <ExternalLink className="w-4 h-4" />
-                          </a>
-                        )}
-                        {cert.pdf && (
-                          <a
-                            href={cert.pdf}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-primary/60 hover:text-primary transition-colors"
-                            title="Download PDF"
-                          >
-                            <Download className="w-4 h-4" />
-                          </a>
-                        )}
+
+                        {/* Info */}
+                        <div className="p-5">
+                          <h4 className="font-display text-base font-semibold mb-1">{cert.name}</h4>
+                          <p className="text-primary/80 text-sm font-medium mb-1">{cert.issuer}</p>
+                          <p className="text-muted-foreground text-xs font-mono mb-3">{cert.code}</p>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2 text-muted-foreground text-xs">
+                              <Calendar className="w-3.5 h-3.5" />
+                              <span>{cert.year}</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              {cert.verifyUrl && (
+                                <a
+                                  href={cert.verifyUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-primary/60 hover:text-primary transition-colors"
+                                  title="Verify"
+                                >
+                                  <ExternalLink className="w-4 h-4" />
+                                </a>
+                              )}
+                              {cert.pdf && (
+                                <a
+                                  href={cert.pdf}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-primary/60 hover:text-primary transition-colors"
+                                  title="Download PDF"
+                                >
+                                  <Download className="w-4 h-4" />
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-
-                    {/* Extra images (e.g. grade sheet) */}
-                    {cert.extraImages?.map((extra) => (
-                      <div key={extra.label} className="mt-3 pt-3 border-t border-border/30">
-                        <button
-                          onClick={() => setSelectedImage(extra.image)}
-                          className="text-xs text-primary/70 hover:text-primary transition-colors flex items-center gap-1.5"
-                        >
-                          <Eye className="w-3.5 h-3.5" />
-                          {extra.label}
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </AnimatedSection>
-              ))}
+                  ))}
+                </div>
+              </div>
             </div>
-          </AnimatedSection>
-        </div>
+          </div>
+        </AnimatedSection>
 
         {/* Languages */}
         <AnimatedSection delay={0.5} animation="rotate">
-          <div className="max-w-4xl mx-auto mt-12">
+          <div className="max-w-4xl mx-auto mt-16">
             <div className="card-elevated p-6">
               <h3 className="font-display text-xl font-semibold mb-4 text-center flex items-center justify-center gap-2">
                 <Languages className="w-5 h-5 text-primary" />
@@ -218,7 +227,7 @@ const Education = () => {
         </AnimatedSection>
       </div>
 
-      {/* Lightbox Modal */}
+      {/* Lightbox */}
       <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
         <DialogContent className="max-w-4xl w-[95vw] p-2 bg-background/95 backdrop-blur-xl border-border/50">
           <button
