@@ -27,8 +27,9 @@ const certificates = [
 const Education = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "center", skipSnaps: false });
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const isRtl = lang === "he";
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "center", skipSnaps: false, direction: isRtl ? "rtl" : "ltr" });
 
   const scrollTo = useCallback((index: number) => { emblaApi?.scrollTo(index); setActiveIndex(index); }, [emblaApi]);
   const scrollPrev = useCallback(() => { emblaApi?.scrollPrev(); setActiveIndex((prev) => (prev - 1 + certificates.length) % certificates.length); }, [emblaApi]);
