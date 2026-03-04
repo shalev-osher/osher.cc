@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import { motion } from "framer-motion";
 import Particles from "./Particles";
+import CursorGlow from "./CursorGlow";
 
 const roles = [
   "Technical Support Specialist",
@@ -48,6 +49,9 @@ const Hero = () => {
 
       {/* Floating particles */}
       <Particles count={40} />
+
+      {/* Cursor glow */}
+      <CursorGlow />
 
       {/* Decorative lines */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
