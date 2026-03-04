@@ -1,14 +1,10 @@
+import { useRef } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
 import profilePhoto from "@/assets/profile-photo.jpeg";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import { motion } from "framer-motion";
-
-const stats = [
-  { value: "7+", label: "Years Experience" },
-  { value: "4", label: "Companies" },
-  { value: "450+", label: "Cert. Hours" },
-];
+import { useCountUp } from "@/hooks/useCountUp";
 
 const About = () => {
   const titleTypewriter = useTypewriter({
@@ -18,8 +14,18 @@ const About = () => {
     pauseDuration: 5000,
   });
 
+  const yearsExp = useCountUp({ end: 7, suffix: "+", duration: 1500 });
+  const companies = useCountUp({ end: 4, duration: 1200 });
+  const certHours = useCountUp({ end: 450, suffix: "+", duration: 2000 });
+
+  const stats = [
+    { ref: yearsExp.ref, display: yearsExp.display, label: "Years Experience" },
+    { ref: companies.ref, display: companies.display, label: "Companies" },
+    { ref: certHours.ref, display: certHours.display, label: "Cert. Hours" },
+  ];
+
   return (
-    <section id="about" className="py-24 relative section-glow">
+    <section id="about" className="py-24 relative section-glow" aria-labelledby="about-heading">
       <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
       
       <div className="container mx-auto px-6 relative z-10">
@@ -33,23 +39,24 @@ const About = () => {
               >
                 <img 
                   src={profilePhoto} 
-                  alt="Shalev Osher"
+                  alt="Shalev Osher - System Administrator and DevOps Engineer"
                   className="w-full h-full object-cover"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent" />
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent" />
               </motion.div>
-              <div className="absolute -bottom-6 -left-6 w-48 h-48 border border-primary/20 rounded-2xl -z-10" />
-              <div className="absolute -top-4 -right-4 w-32 h-32 border border-primary/10 rounded-2xl -z-10" />
-              <div className="absolute -bottom-3 -right-3 w-24 h-24 rounded-full -z-10 animate-pulse-glow" style={{ background: 'hsl(var(--primary) / 0.05)' }} />
+              <div className="absolute -bottom-6 -left-6 w-48 h-48 border border-primary/20 rounded-2xl -z-10" aria-hidden="true" />
+              <div className="absolute -top-4 -right-4 w-32 h-32 border border-primary/10 rounded-2xl -z-10" aria-hidden="true" />
+              <div className="absolute -bottom-3 -right-3 w-24 h-24 rounded-full -z-10 animate-pulse-glow" style={{ background: 'hsl(var(--primary) / 0.05)' }} aria-hidden="true" />
             </div>
           </AnimatedSection>
 
           <AnimatedSection delay={0.2} animation="slideRight">
             <div className="space-y-6">
-              <h2 className="font-display text-4xl md:text-5xl font-bold line-decoration">
+              <h2 id="about-heading" className="font-display text-4xl md:text-5xl font-bold line-decoration">
                 <GradientText>{titleTypewriter.displayedText}</GradientText>
-                <span className={`inline-block w-[3px] h-[0.8em] bg-primary ml-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
+                <span className={`inline-block w-[3px] h-[0.8em] bg-primary ml-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
               </h2>
               <p className="text-muted-foreground text-lg leading-relaxed mt-8">
                 Experienced Technical Support Specialist with a proven track record of ensuring 
@@ -64,7 +71,7 @@ const About = () => {
                 with internal ticketing systems and adhering to SLA workflows.
               </p>
               
-              <div className="grid grid-cols-3 gap-4 pt-8">
+              <div className="grid grid-cols-3 gap-4 pt-8" role="list" aria-label="Key statistics">
                 {stats.map((stat, i) => (
                   <motion.div
                     key={stat.label}
@@ -74,8 +81,9 @@ const About = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.4 + i * 0.1, duration: 0.5 }}
+                    role="listitem"
                   >
-                    <span className="font-display text-3xl font-bold text-gradient-warm">{stat.value}</span>
+                    <span ref={stat.ref as any} className="font-display text-3xl font-bold text-gradient-warm">{stat.display}</span>
                     <p className="text-muted-foreground text-sm mt-2">{stat.label}</p>
                   </motion.div>
                 ))}
