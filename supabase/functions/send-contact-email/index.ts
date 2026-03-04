@@ -14,7 +14,6 @@ Deno.serve(async (req) => {
   try {
     const { name, email, message } = await req.json();
 
-    // Validate inputs
     if (!name || typeof name !== "string" || name.trim().length === 0 || name.length > 100) {
       return new Response(
         JSON.stringify({ error: "Invalid name" }),
@@ -38,6 +37,7 @@ Deno.serve(async (req) => {
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const resendApiKey = Deno.env.get("RESEND_API_KEY");
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
@@ -52,37 +52,37 @@ Deno.serve(async (req) => {
 
     if (dbError) {
       console.error("DB error:", dbError);
-      // Continue even if DB fails - still send email notification
     }
 
-    // Send email notification using Supabase Auth admin API
-    // We'll use a simple approach: send via the built-in SMTP
-    const RECIPIENT_EMAIL = "shalev@osher.cc";
+    // Send email notification via Resend
+    if (resendApiKey) {
+      const RECIPIENT_EMAIL = "shalev@osher.cc";
 
-    const emailResponse = await fetch(`${supabaseUrl}/auth/v1/admin/generate_link`, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${supabaseServiceKey}`,
-        "apikey": supabaseServiceKey,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        type: "magiclink",
-        email: RECIPIENT_EMAIL,
-        options: {
-          data: {
-            contact_name: name.trim(),
-            contact_email: email.trim(),
-            contact_message: message.trim(),
-          },
+      const emailRes = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${resendApiKey}`,
+          "Content-Type": "application/json",
         },
-      }),
-    });
+        body: JSON.stringify({
+          from: "onboarding@resend.dev",
+          to: RECIPIENT_EMAIL,
+          subject: `New Contact Form: ${name.trim()}`,
+          html: `
+            <h2>New Contact Form Submission</h2>
+            <p><strong>Name:</strong> ${name.trim()}</p>
+            <p><strong>Email:</strong> ${email.trim()}</p>
+            <p><strong>Message:</strong></p>
+            <p>${message.trim().replace(/\n/g, "<br>")}</p>
+          `,
+        }),
+      });
 
-    // The main goal is saving to DB - email via magiclink is a bonus
-    // For production, consider using Resend or similar service
-
-    console.log("Contact submission saved. Email notification status:", emailResponse.status);
+      const emailResult = await emailRes.text();
+      console.log("Resend response:", emailRes.status, emailResult);
+    } else {
+      console.warn("RESEND_API_KEY not set, skipping email notification");
+    }
 
     return new Response(
       JSON.stringify({ success: true, message: "Message sent successfully!" }),
