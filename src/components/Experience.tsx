@@ -57,26 +57,26 @@ const Experience = () => {
   const subtitleTypewriter = useTypewriter({ text: "My professional journey in technology and technical support", speed: 25, delay: 1200, loop: true, pauseDuration: 5000 });
 
   return (
-    <section id="experience" className="py-24 section-glow relative overflow-hidden">
+    <section id="experience" className="py-24 section-glow relative overflow-hidden" aria-labelledby="experience-heading">
       <div className="absolute inset-0 pointer-events-none" style={{ background: 'var(--gradient-radial)' }} />
 
       <div className="container mx-auto px-6 relative z-10">
         <AnimatedSection animation="fadeDown">
           <div className="text-center mb-20">
-            <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
+            <h2 id="experience-heading" className="font-display text-4xl md:text-5xl font-bold mb-4">
               <GradientText>{titleTypewriter.displayedText}</GradientText>
-              <span className={`inline-block w-[3px] h-[0.8em] bg-primary ml-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
+              <span className={`inline-block w-[3px] h-[0.8em] bg-primary ml-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto min-h-[1.75rem]">
               {subtitleTypewriter.displayedText}
-              <span className={`inline-block w-[2px] h-[1em] bg-muted-foreground ml-1 align-middle transition-opacity duration-100 ${subtitleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
+              <span className={`inline-block w-[2px] h-[1em] bg-muted-foreground ml-1 align-middle transition-opacity duration-100 ${subtitleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
             </p>
           </div>
         </AnimatedSection>
 
         <div className="max-w-4xl mx-auto">
-          <div className="relative">
-            <div className="absolute left-[28px] md:left-1/2 md:-translate-x-px top-0 bottom-0 w-[2px] timeline-line" />
+          <div className="relative" role="list" aria-label="Work experience timeline">
+            <div className="absolute left-[28px] md:left-1/2 md:-translate-x-px top-0 bottom-0 w-[2px] timeline-line" aria-hidden="true" />
 
             <div className="space-y-0">
               {experiences.map((exp, index) => {
@@ -85,7 +85,7 @@ const Experience = () => {
 
                 return (
                   <AnimatedSection key={`${exp.company}-${exp.role}`} delay={index * 0.1} animation={isEven ? "slideLeft" : "slideRight"}>
-                    <div className={`relative flex items-start gap-8 md:gap-0 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                    <div className={`relative flex items-start gap-8 md:gap-0 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`} role="listitem">
                       <div className="md:hidden flex-shrink-0 relative z-10">
                         <button
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
@@ -94,6 +94,8 @@ const Experience = () => {
                               ? 'bg-primary text-primary-foreground timeline-dot-active'
                               : 'bg-card border-2 border-primary/30 text-primary timeline-dot'
                           }`}
+                          aria-expanded={isExpanded}
+                          aria-label={`${exp.role} at ${exp.company}, ${exp.period}`}
                         >
                           {exp.year}
                         </button>
@@ -104,19 +106,28 @@ const Experience = () => {
                           className={`card-premium p-6 cursor-pointer ${isExpanded ? 'border-primary/30' : ''}`}
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
                           layout
+                          role="button"
+                          tabIndex={0}
+                          aria-expanded={isExpanded}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              setExpandedIndex(isExpanded ? -1 : index);
+                            }
+                          }}
                         >
                           <div className={`flex flex-wrap items-start justify-between gap-3 ${isEven ? 'md:flex-row-reverse' : ''}`}>
                             <div className={isEven ? 'md:text-right' : ''}>
                               <h3 className="font-display text-lg font-semibold text-foreground">{exp.role}</h3>
                               <div className={`flex items-center gap-2 text-primary mt-1 ${isEven ? 'md:justify-end' : ''}`}>
-                                <Briefcase className="w-4 h-4" />
+                                <Briefcase className="w-4 h-4" aria-hidden="true" />
                                 <span className="font-medium text-sm">{exp.company}</span>
                               </div>
                             </div>
                             <div className="flex items-center gap-2 text-muted-foreground text-xs">
-                              <Calendar className="w-3 h-3" />
+                              <Calendar className="w-3 h-3" aria-hidden="true" />
                               <span>{exp.period}</span>
-                              <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+                              <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} aria-hidden="true" />
                             </div>
                           </div>
 
@@ -137,7 +148,7 @@ const Experience = () => {
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: i * 0.05, duration: 0.3 }}
                                   >
-                                    <span className="text-primary flex-shrink-0">▸</span>
+                                    <span className="text-primary flex-shrink-0" aria-hidden="true">▸</span>
                                     {item}
                                   </motion.li>
                                 ))}
@@ -155,6 +166,8 @@ const Experience = () => {
                               ? 'bg-primary text-primary-foreground timeline-dot-active scale-110'
                               : 'bg-card border-2 border-primary/30 text-primary hover:border-primary hover:scale-105 timeline-dot'
                           }`}
+                          aria-expanded={isExpanded}
+                          aria-label={`${exp.role} at ${exp.company}, ${exp.period}`}
                         >
                           {exp.year}
                         </button>
