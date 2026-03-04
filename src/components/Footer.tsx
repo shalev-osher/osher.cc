@@ -9,13 +9,13 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="py-12 border-t border-border/50 relative">
-      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, hsl(var(--primary) / 0.3), transparent)' }} />
+    <footer className="py-12 border-t border-border/50 relative" role="contentinfo">
+      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, hsl(var(--primary) / 0.3), transparent)' }} aria-hidden="true" />
       
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-center md:text-left">
-            <a href="#" className="font-display text-2xl font-bold text-gradient-warm">
+            <a href="#" className="font-display text-2xl font-bold text-gradient-warm" aria-label="Shalev Osher - Back to top">
               Shalev Osher
             </a>
             <p className="text-muted-foreground text-sm mt-2">
@@ -23,7 +23,7 @@ const Footer = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <nav className="flex items-center gap-3" aria-label="Social media links">
             {socialLinks.map((link) => (
               <motion.a
                 key={link.label}
@@ -35,10 +35,10 @@ const Footer = () => {
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <link.icon className="w-5 h-5" />
+                <link.icon className="w-5 h-5" aria-hidden="true" />
               </motion.a>
             ))}
-          </div>
+          </nav>
         </div>
       </div>
     </footer>
