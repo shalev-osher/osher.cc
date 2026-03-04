@@ -116,18 +116,18 @@ const Experience = () => {
           <div className="text-center mb-20">
             <h2 id="experience-heading" className="font-display text-4xl md:text-5xl font-bold mb-4">
               <GradientText>{titleTypewriter.displayedText}</GradientText>
-              <span className={`inline-block w-[3px] h-[0.8em] bg-primary ml-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
+              <span className={`inline-block w-[3px] h-[0.8em] bg-primary ms-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto min-h-[1.75rem]">
               {subtitleTypewriter.displayedText}
-              <span className={`inline-block w-[2px] h-[1em] bg-muted-foreground ml-1 align-middle transition-opacity duration-100 ${subtitleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
+              <span className={`inline-block w-[2px] h-[1em] bg-muted-foreground ms-1 align-middle transition-opacity duration-100 ${subtitleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
             </p>
           </div>
         </AnimatedSection>
 
         <div className="max-w-4xl mx-auto">
           <div className="relative" role="list" aria-label="Work experience timeline">
-            <div className="absolute left-[28px] md:left-1/2 md:-translate-x-px top-0 bottom-0 w-[2px] timeline-line" aria-hidden="true" />
+            <div className="absolute start-[28px] md:start-1/2 md:-translate-x-px top-0 bottom-0 w-[2px] timeline-line" aria-hidden="true" />
 
             <div className="space-y-0">
               {experiences.map((exp, index) => {
@@ -150,7 +150,7 @@ const Experience = () => {
                         </button>
                       </div>
 
-                      <div className={`flex-1 md:w-[calc(50%-40px)] ${isEven ? 'md:pr-16 md:text-right' : 'md:pl-16'}`}>
+                      <div className={`flex-1 md:w-[calc(50%-40px)] ${isEven ? 'md:pe-16 md:text-end' : 'md:ps-16'}`}>
                         <motion.div
                           className={`card-premium p-6 cursor-pointer ${isExpanded ? 'border-primary/30' : ''}`}
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
@@ -166,7 +166,7 @@ const Experience = () => {
                           }}
                         >
                           <div className={`flex flex-wrap items-start justify-between gap-3 ${isEven ? 'md:flex-row-reverse' : ''}`}>
-                            <div className={isEven ? 'md:text-right' : ''}>
+                            <div className={isEven ? 'md:text-end' : ''}>
                               <h3 className="font-display text-lg font-semibold text-foreground">{exp.role}</h3>
                               <div className={`flex items-center gap-2 text-primary mt-1 ${isEven ? 'md:justify-end' : ''}`}>
                                 <Briefcase className="w-4 h-4" aria-hidden="true" />
@@ -183,7 +183,7 @@ const Experience = () => {
                           <AnimatePresence>
                             {isExpanded && (
                               <motion.ul
-                                className={`space-y-2 mt-4 pt-4 border-t border-border/50 ${isEven ? 'md:text-left' : ''}`}
+                                className={`space-y-2 mt-4 pt-4 border-t border-border/50 ${isEven ? 'md:text-start' : ''}`}
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: 'auto' }}
                                 exit={{ opacity: 0, height: 0 }}
@@ -207,7 +207,7 @@ const Experience = () => {
                         </motion.div>
                       </div>
 
-                      <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 z-10">
+                      <div className="hidden md:flex absolute start-1/2 -translate-x-1/2 z-10">
                         <button
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
                           className={`w-14 h-14 rounded-full flex items-center justify-center text-xs font-bold font-display transition-all duration-500 ${
