@@ -54,6 +54,8 @@ const Skills = () => {
             </AnimatedSection>
           ))}
         </div>
+
+        <SkillsHeatmap />
       </div>
     </section>
   );
