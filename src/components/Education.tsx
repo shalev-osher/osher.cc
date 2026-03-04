@@ -249,6 +249,8 @@ const Education = () => {
                       ? "w-8 bg-primary"
                       : "w-1.5 bg-muted-foreground/30 hover:bg-muted-foreground/50"
                   }`}
+                  aria-label={`Go to certificate ${index + 1}`}
+                  aria-current={index === activeIndex ? "true" : undefined}
                 />
               ))}
             </div>
