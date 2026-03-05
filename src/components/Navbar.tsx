@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { Menu, X, Download, Globe } from "lucide-react";
+import { Menu, X, Download } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 import useActiveSection from "@/hooks/useActiveSection";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -33,9 +33,9 @@ const Navbar = () => {
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <a href="#" className="font-display text-2xl font-bold text-gradient" aria-label="Shalev Osher - Home">
+            <a href="#" className="font-display text-xl sm:text-2xl font-bold text-gradient" aria-label="Shalev Osher - Home">
               {lang === "he" ? "שליו אושר" : "Shalev Osher"}
             </a>
             <div className="hidden md:flex items-center gap-2">
@@ -70,10 +70,10 @@ const Navbar = () => {
               </button>
               <ThemeToggle />
             </div>
-            <div className="flex items-center gap-3 md:hidden">
+            <div className="flex items-center gap-2 md:hidden">
               <button
                 onClick={toggleLang}
-                className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary/20 transition-colors text-xs font-bold"
+                className="w-9 h-9 rounded-lg border border-border/50 bg-primary/5 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors text-xs font-bold"
                 aria-label={`Switch to ${lang === "en" ? "Hebrew" : "English"}`}
               >
                 {lang === "en" ? "HE" : "EN"}
@@ -81,19 +81,19 @@ const Navbar = () => {
               <a
                 href="/cv/shalev-osher-cv.pdf"
                 download
-                className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary/20 transition-colors"
+                className="w-9 h-9 rounded-lg border border-border/50 bg-primary/5 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
                 aria-label="Download CV"
               >
-                <Download size={18} />
+                <Download size={16} />
               </a>
               <ThemeToggle />
               <button
                 onClick={() => setIsMobileOpen(!isMobileOpen)}
-                className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary transition-colors"
+                className="w-9 h-9 rounded-lg border border-border/50 bg-primary/5 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
                 aria-label={isMobileOpen ? "Close menu" : "Open menu"}
                 aria-expanded={isMobileOpen}
               >
-                {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
+                {isMobileOpen ? <X size={18} /> : <Menu size={18} />}
               </button>
             </div>
           </div>
@@ -102,7 +102,7 @@ const Navbar = () => {
 
       {/* Mobile menu overlay */}
       <div
-        className={`fixed inset-0 z-40 bg-background/95 backdrop-blur-xl flex flex-col items-center justify-center gap-8 transition-all duration-300 md:hidden ${
+        className={`fixed inset-0 z-40 bg-background/98 backdrop-blur-xl flex flex-col items-center justify-center gap-6 transition-all duration-300 md:hidden ${
           isMobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         role="dialog"
@@ -114,8 +114,10 @@ const Navbar = () => {
             key={link.href}
             href={link.href}
             onClick={() => setIsMobileOpen(false)}
-            className={`font-display text-3xl font-semibold transition-colors duration-300 ${
-              activeSection === link.id ? "text-primary" : "text-foreground hover:text-primary"
+            className={`font-display text-2xl sm:text-3xl font-semibold transition-all duration-300 px-6 py-2 rounded-xl ${
+              activeSection === link.id
+                ? "text-primary bg-primary/10"
+                : "text-foreground hover:text-primary hover:bg-primary/5"
             }`}
             style={{ transitionDelay: isMobileOpen ? `${i * 50}ms` : "0ms" }}
           >
