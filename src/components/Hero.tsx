@@ -1,10 +1,43 @@
 import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTypewriter } from "@/hooks/useTypewriter";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import Particles from "./Particles";
 import CursorGlow from "./CursorGlow";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useRef, ReactNode, MouseEvent } from "react";
+
+const MagneticButton = ({ children }: { children: ReactNode }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const springX = useSpring(x, { stiffness: 200, damping: 15 });
+  const springY = useSpring(y, { stiffness: 200, damping: 15 });
+
+  const handleMouse = (e: MouseEvent) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    x.set((e.clientX - cx) * 0.3);
+    y.set((e.clientY - cy) * 0.3);
+  };
+
+  const handleLeave = () => { x.set(0); y.set(0); };
+
+  return (
+    <motion.div
+      ref={ref}
+      style={{ x: springX, y: springY }}
+      onMouseMove={handleMouse}
+      onMouseLeave={handleLeave}
+      className="inline-block"
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 const Hero = () => {
   const { t, lang } = useLanguage();
@@ -103,18 +136,24 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.5 }}
           >
-            <Button variant="hero" size="xl" asChild>
-              <a href="#experience">{t("hero.viewExperience")}</a>
-            </Button>
-            <Button variant="heroOutline" size="xl" asChild>
-              <a href="#contact">{t("hero.getInTouch")}</a>
-            </Button>
-            <Button variant="heroOutline" size="xl" asChild>
-              <a href="/cv/shalev-osher-cv.pdf" download className="gap-2">
-                <Download className="w-5 h-5" />
-                {t("hero.downloadCV")}
-              </a>
-            </Button>
+            <MagneticButton>
+              <Button variant="hero" size="xl" asChild>
+                <a href="#experience">{t("hero.viewExperience")}</a>
+              </Button>
+            </MagneticButton>
+            <MagneticButton>
+              <Button variant="heroOutline" size="xl" asChild>
+                <a href="#contact">{t("hero.getInTouch")}</a>
+              </Button>
+            </MagneticButton>
+            <MagneticButton>
+              <Button variant="heroOutline" size="xl" asChild>
+                <a href="/cv/shalev-osher-cv.pdf" download className="gap-2">
+                  <Download className="w-5 h-5" />
+                  {t("hero.downloadCV")}
+                </a>
+              </Button>
+            </MagneticButton>
           </motion.div>
         </motion.div>
       </div>
