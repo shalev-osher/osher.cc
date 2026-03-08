@@ -72,16 +72,30 @@ const About = () => {
                 {stats.map((stat, i) => (
                   <motion.div
                     key={stat.label}
-                    className="text-center p-5 card-premium"
-                    whileHover={{ y: -4 }}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    className="text-center p-5 card-premium relative overflow-hidden"
+                    whileHover={{ y: -6, scale: 1.03 }}
+                    initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
                     viewport={{ once: true }}
-                    transition={{ delay: 0.4 + i * 0.1, duration: 0.5 }}
+                    transition={{ delay: 0.4 + i * 0.15, duration: 0.6, type: "spring", stiffness: 100 }}
                     role="listitem"
                   >
-                    <span ref={stat.ref as any} className="font-display text-3xl font-bold text-gradient-warm">{stat.display}</span>
-                    <p className="text-muted-foreground text-sm mt-2">{stat.label}</p>
+                    <motion.div
+                      className="absolute inset-0 rounded-xl"
+                      initial={{ opacity: 0 }}
+                      animate={stat.isComplete ? { opacity: [0, 0.3, 0] } : {}}
+                      transition={{ duration: 0.8, ease: "easeOut" }}
+                      style={{ background: "hsl(var(--primary) / 0.15)" }}
+                    />
+                    <motion.span
+                      ref={stat.ref as any}
+                      className="font-display text-3xl font-bold text-gradient-warm relative z-10 inline-block"
+                      animate={stat.isComplete ? { scale: [1, 1.15, 1] } : {}}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                    >
+                      {stat.display}
+                    </motion.span>
+                    <p className="text-muted-foreground text-sm mt-2 relative z-10">{stat.label}</p>
                   </motion.div>
                 ))}
               </div>
