@@ -98,8 +98,21 @@ const Education = () => {
 
               <div ref={emblaRef} className="overflow-hidden">
                 <div className="flex">
-                  {certificates.map((cert) => (
-                    <div key={cert.name} className="flex-[0_0_75%] md:flex-[0_0_40%] min-w-0 px-3 md:px-4">
+                  {certificates.map((cert, index) => (
+                    <motion.div
+                      key={cert.name}
+                      className="flex-[0_0_75%] md:flex-[0_0_40%] min-w-0 px-3 md:px-4"
+                      initial={{ opacity: 0, y: 40, scale: 0.92 }}
+                      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                      viewport={{ once: true, amount: 0.2 }}
+                      transition={{
+                        delay: index * 0.12,
+                        duration: 0.6,
+                        type: "spring",
+                        stiffness: 80,
+                        damping: 15,
+                      }}
+                    >
                       <motion.div className="relative group cursor-pointer" whileHover={{ y: -8 }} transition={{ duration: 0.4, ease: "easeOut" }}>
                         <div className={`absolute -inset-2 rounded-3xl bg-gradient-to-br ${cert.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl`} />
                         <div className="relative rounded-2xl overflow-hidden bg-card/60 backdrop-blur-sm border border-border/40 group-hover:border-primary/20 transition-all duration-500">
@@ -135,7 +148,7 @@ const Education = () => {
                           </div>
                         </div>
                       </motion.div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </div>
