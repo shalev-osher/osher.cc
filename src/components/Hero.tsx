@@ -103,18 +103,24 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.5 }}
           >
-            <Button variant="hero" size="xl" asChild>
-              <a href="#experience">{t("hero.viewExperience")}</a>
-            </Button>
-            <Button variant="heroOutline" size="xl" asChild>
-              <a href="#contact">{t("hero.getInTouch")}</a>
-            </Button>
-            <Button variant="heroOutline" size="xl" asChild>
-              <a href="/cv/shalev-osher-cv.pdf" download className="gap-2">
-                <Download className="w-5 h-5" />
-                {t("hero.downloadCV")}
-              </a>
-            </Button>
+            <MagneticButton>
+              <Button variant="hero" size="xl" asChild>
+                <a href="#experience">{t("hero.viewExperience")}</a>
+              </Button>
+            </MagneticButton>
+            <MagneticButton>
+              <Button variant="heroOutline" size="xl" asChild>
+                <a href="#contact">{t("hero.getInTouch")}</a>
+              </Button>
+            </MagneticButton>
+            <MagneticButton>
+              <Button variant="heroOutline" size="xl" asChild>
+                <a href="/cv/shalev-osher-cv.pdf" download className="gap-2">
+                  <Download className="w-5 h-5" />
+                  {t("hero.downloadCV")}
+                </a>
+              </Button>
+            </MagneticButton>
           </motion.div>
         </motion.div>
       </div>
