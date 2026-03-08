@@ -22,9 +22,9 @@ const About = () => {
   const certHours = useCountUp({ end: 450, suffix: "+", duration: 2000 });
 
   const stats = [
-    { ref: yearsExp.ref, display: yearsExp.display, label: t("about.yearsExp") },
-    { ref: companies.ref, display: companies.display, label: t("about.companies") },
-    { ref: certHours.ref, display: certHours.display, label: t("about.certHours") },
+    { ref: yearsExp.ref, display: yearsExp.display, isComplete: yearsExp.isComplete, label: t("about.yearsExp") },
+    { ref: companies.ref, display: companies.display, isComplete: companies.isComplete, label: t("about.companies") },
+    { ref: certHours.ref, display: certHours.display, isComplete: certHours.isComplete, label: t("about.certHours") },
   ];
 
   return (
