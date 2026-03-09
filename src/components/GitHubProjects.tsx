@@ -33,6 +33,8 @@ const GitHubProjects = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const { t } = useLanguage();
+  const titleTypewriter = useTypewriter({ text: t("github.title"), speed: 80, loop: true, pauseDuration: 5000 });
+  const subtitleTypewriter = useTypewriter({ text: t("github.subtitle"), speed: 25, delay: 1000, loop: true, pauseDuration: 5000 });
 
   useEffect(() => {
     fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=6&type=owner`)
