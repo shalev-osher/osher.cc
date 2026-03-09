@@ -35,21 +35,7 @@ const About = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <AnimatedSection animation="slideLeft">
-            <div className="relative">
-              <motion.div
-                className="aspect-square rounded-2xl overflow-hidden relative"
-                whileHover={{ scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 200, damping: 20 }}
-              >
-                <img 
-                  src={profilePhoto} 
-                  alt="Shalev Osher - System Administrator and DevOps Engineer"
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent" />
-              </motion.div>
+            <ProfileTilt />
               <div className="absolute -bottom-6 -start-6 w-48 h-48 border border-primary/20 rounded-2xl -z-10" aria-hidden="true" />
               <div className="absolute -top-4 -end-4 w-32 h-32 border border-primary/10 rounded-2xl -z-10" aria-hidden="true" />
               <div className="absolute -bottom-3 -end-3 w-24 h-24 rounded-full -z-10 animate-pulse-glow" style={{ background: 'hsl(var(--primary) / 0.05)' }} aria-hidden="true" />
