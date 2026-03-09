@@ -8,6 +8,54 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useCountUp } from "@/hooks/useCountUp";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+const ProfileTilt = () => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useSpring(useTransform(y, [-150, 150], [12, -12]), { stiffness: 200, damping: 25 });
+  const rotateY = useSpring(useTransform(x, [-150, 150], [-12, 12]), { stiffness: 200, damping: 25 });
+  const glowX = useTransform(x, [-150, 150], [0, 100]);
+  const glowY = useTransform(y, [-150, 150], [0, 100]);
+
+  const handleMouse = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    x.set(e.clientX - rect.left - rect.width / 2);
+    y.set(e.clientY - rect.top - rect.height / 2);
+  }, [x, y]);
+
+  const handleLeave = useCallback(() => { x.set(0); y.set(0); }, [x, y]);
+
+  return (
+    <div className="relative">
+      <motion.div
+        className="aspect-square rounded-2xl overflow-hidden relative cursor-pointer"
+        style={{ rotateX, rotateY, transformPerspective: 800, transformStyle: "preserve-3d" }}
+        onMouseMove={handleMouse}
+        onMouseLeave={handleLeave}
+      >
+        <img
+          src={profilePhoto}
+          alt="Shalev Osher - System Administrator and DevOps Engineer"
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent" />
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: useTransform(
+              [glowX, glowY],
+              ([gx, gy]) => `radial-gradient(circle at ${gx}% ${gy}%, hsl(var(--primary) / 0.15) 0%, transparent 60%)`
+            ),
+          }}
+        />
+      </motion.div>
+      <div className="absolute -bottom-6 -start-6 w-48 h-48 border border-primary/20 rounded-2xl -z-10" aria-hidden="true" />
+      <div className="absolute -top-4 -end-4 w-32 h-32 border border-primary/10 rounded-2xl -z-10" aria-hidden="true" />
+      <div className="absolute -bottom-3 -end-3 w-24 h-24 rounded-full -z-10 animate-pulse-glow" style={{ background: 'hsl(var(--primary) / 0.05)' }} aria-hidden="true" />
+    </div>
+  );
+};
+
 const About = () => {
   const { t } = useLanguage();
 
