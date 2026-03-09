@@ -6,6 +6,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import useEmblaCarousel from "embla-carousel-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTypewriter } from "@/hooks/useTypewriter";
 
 const education = [
   {
@@ -31,6 +32,9 @@ const Education = () => {
   const isRtl = lang === "he";
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "center", skipSnaps: false, direction: isRtl ? "rtl" : "ltr" });
 
+  const titleTypewriter = useTypewriter({ text: t("edu.title"), speed: 80, loop: true, pauseDuration: 5000 });
+  const subtitleTypewriter = useTypewriter({ text: t("edu.subtitle"), speed: 25, delay: 1000, loop: true, pauseDuration: 5000 });
+
   const scrollTo = useCallback((index: number) => { emblaApi?.scrollTo(index); setActiveIndex(index); }, [emblaApi]);
   const scrollPrev = useCallback(() => { emblaApi?.scrollPrev(); setActiveIndex((prev) => (prev - 1 + certificates.length) % certificates.length); }, [emblaApi]);
   const scrollNext = useCallback(() => { emblaApi?.scrollNext(); setActiveIndex((prev) => (prev + 1) % certificates.length); }, [emblaApi]);
@@ -45,9 +49,13 @@ const Education = () => {
         <AnimatedSection animation="scaleUp">
           <div className="text-center mb-20">
             <h2 id="education-heading" className="font-display text-4xl md:text-5xl font-bold mb-4">
-              <GradientText>{t("edu.title")}</GradientText>
+              <GradientText>{titleTypewriter.displayedText}</GradientText>
+              <span className={`inline-block w-[3px] h-[0.8em] bg-primary ms-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">{t("edu.subtitle")}</p>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto min-h-[1.75rem]">
+              {subtitleTypewriter.displayedText}
+              <span className={`inline-block w-[2px] h-[1em] bg-muted-foreground ms-1 align-middle transition-opacity duration-100 ${subtitleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
+            </p>
           </div>
         </AnimatedSection>
 
