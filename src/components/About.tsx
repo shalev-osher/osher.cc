@@ -1,9 +1,10 @@
-import { useRef } from "react";
+import { useRef, useCallback } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
+import ScrollRevealText from "@/components/ScrollRevealText";
 import profilePhoto from "@/assets/profile-photo.jpeg";
 import { useTypewriter } from "@/hooks/useTypewriter";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useCountUp } from "@/hooks/useCountUp";
 import { useLanguage } from "@/contexts/LanguageContext";
 
