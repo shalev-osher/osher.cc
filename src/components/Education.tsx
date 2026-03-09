@@ -32,6 +32,9 @@ const Education = () => {
   const isRtl = lang === "he";
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "center", skipSnaps: false, direction: isRtl ? "rtl" : "ltr" });
 
+  const titleTypewriter = useTypewriter({ text: t("edu.title"), speed: 80, loop: true, pauseDuration: 5000 });
+  const subtitleTypewriter = useTypewriter({ text: t("edu.subtitle"), speed: 25, delay: 1000, loop: true, pauseDuration: 5000 });
+
   const scrollTo = useCallback((index: number) => { emblaApi?.scrollTo(index); setActiveIndex(index); }, [emblaApi]);
   const scrollPrev = useCallback(() => { emblaApi?.scrollPrev(); setActiveIndex((prev) => (prev - 1 + certificates.length) % certificates.length); }, [emblaApi]);
   const scrollNext = useCallback(() => { emblaApi?.scrollNext(); setActiveIndex((prev) => (prev + 1) % certificates.length); }, [emblaApi]);
