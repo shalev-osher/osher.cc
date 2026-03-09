@@ -4,6 +4,7 @@ import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTypewriter } from "@/hooks/useTypewriter";
 
 interface GitHubRepo {
   id: number;
@@ -32,6 +33,8 @@ const GitHubProjects = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const { t } = useLanguage();
+  const titleTypewriter = useTypewriter({ text: t("github.title"), speed: 80, loop: true, pauseDuration: 5000 });
+  const subtitleTypewriter = useTypewriter({ text: t("github.subtitle"), speed: 25, delay: 1000, loop: true, pauseDuration: 5000 });
 
   useEffect(() => {
     fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=6&type=owner`)
@@ -49,9 +52,13 @@ const GitHubProjects = () => {
         <AnimatedSection animation="blur">
           <div className="text-center mb-16">
             <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
-              <GradientText>{t("github.title")}</GradientText>
+              <GradientText>{titleTypewriter.displayedText}</GradientText>
+              <span className={`inline-block w-[3px] h-[0.8em] bg-primary ms-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">{t("github.subtitle")}</p>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto min-h-[1.75rem]">
+              {subtitleTypewriter.displayedText}
+              <span className={`inline-block w-[2px] h-[1em] bg-muted-foreground ms-1 align-middle transition-opacity duration-100 ${subtitleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
+            </p>
           </div>
         </AnimatedSection>
 
