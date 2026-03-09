@@ -30,8 +30,8 @@ const SkillCard3D = ({ skill, index }: { skill: { icon: any; title: string; desc
   return (
     <AnimatedSection key={skill.title} delay={index * 0.1} animation="scaleUp">
       <motion.div
-        className="group card-premium p-8 h-full relative overflow-hidden"
-        style={{ rotateX, rotateY, transformPerspective: 800, transformStyle: "preserve-3d" }}
+        className="group p-8 h-full relative overflow-hidden rounded-xl border border-border/30 backdrop-blur-md"
+        style={{ rotateX, rotateY, transformPerspective: 800, transformStyle: "preserve-3d", background: "hsl(var(--card) / 0.4)" }}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         role="listitem"
