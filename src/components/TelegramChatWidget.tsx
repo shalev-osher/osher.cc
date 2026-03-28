@@ -10,6 +10,8 @@ interface Message {
   created_at: string;
 }
 
+const SESSION_ID = `web-${Math.random().toString(36).slice(2, 10)}`;
+
 const TelegramChatWidget = () => {
   const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -74,7 +76,7 @@ const TelegramChatWidget = () => {
 
     try {
       const { error } = await supabase.functions.invoke("telegram-send", {
-        body: { text: trimmed },
+        body: { text: trimmed, sessionId: SESSION_ID },
       });
       if (error) throw error;
     } catch (err) {
