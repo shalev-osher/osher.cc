@@ -38,6 +38,54 @@ export type Database = {
         }
         Relationships: []
       }
+      telegram_bot_state: {
+        Row: {
+          id: number
+          update_offset: number
+          updated_at: string
+        }
+        Insert: {
+          id: number
+          update_offset?: number
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          update_offset?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      telegram_messages: {
+        Row: {
+          chat_id: number
+          created_at: string
+          id: string
+          raw_update: Json | null
+          sender: string
+          text: string | null
+          update_id: number | null
+        }
+        Insert: {
+          chat_id: number
+          created_at?: string
+          id?: string
+          raw_update?: Json | null
+          sender?: string
+          text?: string | null
+          update_id?: number | null
+        }
+        Update: {
+          chat_id?: number
+          created_at?: string
+          id?: string
+          raw_update?: Json | null
+          sender?: string
+          text?: string | null
+          update_id?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
