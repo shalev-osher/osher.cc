@@ -26,6 +26,7 @@ const Index = () => {
       <ParallaxBackground />
       <KonamiEasterEgg />
       <ScrollProgressBar />
+      <TelegramFloatingButton />
       <Navbar />
       <main id="main-content" role="main">
         <Hero />
