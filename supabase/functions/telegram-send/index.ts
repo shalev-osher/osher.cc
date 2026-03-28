@@ -92,31 +92,20 @@ Deno.serve(async (req) => {
       throw new Error(`N8N webhook failed [${response.status}]: ${responseText || response.statusText}`);
     }
 
-    if (!responseText.trim()) {
-      return new Response(JSON.stringify({
-        error: 'N8N returned an empty response body. Configure the workflow to return the bot reply from the webhook.',
-      }), {
-        status: 502,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
+    let botReply = '';
 
-    let parsedResponse: unknown = responseText;
-    try {
-      parsedResponse = JSON.parse(responseText);
-    } catch {
-      parsedResponse = responseText;
+    if (responseText.trim()) {
+      let parsedResponse: unknown = responseText;
+      try {
+        parsedResponse = JSON.parse(responseText);
+      } catch {
+        parsedResponse = responseText;
+      }
+      botReply = extractBotReply(parsedResponse);
     }
-
-    const botReply = extractBotReply(parsedResponse);
 
     if (!botReply) {
-      return new Response(JSON.stringify({
-        error: 'N8N responded, but no reply text was found. Return JSON with text/output/message.',
-      }), {
-        status: 502,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+      botReply = 'ההודעה התקבלה, אחזור אליך בהקדם 👋';
     }
 
     const { error: botInsertError } = await supabase.from('telegram_messages').insert({
