@@ -7,61 +7,126 @@ const corsHeaders = {
 
 const N8N_WEBHOOK_URL = 'https://n8n.osher.cc/webhook/website-chat-jackie';
 
+const extractBotReply = (payload: unknown): string => {
+  if (typeof payload === 'string') return payload.trim();
+
+  if (payload && typeof payload === 'object') {
+    const record = payload as Record<string, unknown>;
+    const candidate =
+      record.output ??
+      record.text ??
+      record.message ??
+      record.response ??
+      record.answer ??
+      record.content;
+
+    if (typeof candidate === 'string') return candidate.trim();
+    if (candidate && typeof candidate === 'object') return JSON.stringify(candidate);
+  }
+
+  return '';
+};
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
 
-    const { text } = await req.json();
-    if (!text || typeof text !== 'string' || text.trim().length === 0) {
+    if (!supabaseUrl || !supabaseServiceKey) {
+      return new Response(JSON.stringify({ error: 'Server configuration error' }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    let requestBody: unknown;
+    try {
+      requestBody = await req.json();
+    } catch {
+      return new Response(JSON.stringify({ error: 'Invalid JSON input' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const text = typeof (requestBody as { text?: unknown })?.text === 'string'
+      ? (requestBody as { text: string }).text.trim()
+      : '';
+
+    if (!text) {
       return new Response(JSON.stringify({ error: 'Text is required' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    const trimmedText = text.trim();
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Store visitor message in DB
-    await supabase.from('telegram_messages').insert({
+    const { error: visitorInsertError } = await supabase.from('telegram_messages').insert({
       chat_id: 0,
       sender: 'visitor',
-      text: trimmedText,
+      text,
     });
 
-    // Send to N8N webhook and get response
+    if (visitorInsertError) {
+      throw new Error(`Failed to store visitor message: ${visitorInsertError.message}`);
+    }
+
     const response = await fetch(N8N_WEBHOOK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: trimmedText }),
+      body: JSON.stringify({
+        message: text,
+        text,
+        chatInput: text,
+      }),
     });
 
     const responseText = await response.text();
+
     if (!response.ok) {
-      throw new Error(`N8N webhook failed [${response.status}]: ${responseText}`);
+      throw new Error(`N8N webhook failed [${response.status}]: ${responseText || response.statusText}`);
     }
 
-    // Parse response - handle both JSON and plain text
-    let botReply: string;
-    try {
-      const data = JSON.parse(responseText);
-      botReply = data.output || data.text || data.message || data.response || responseText;
-    } catch {
-      botReply = responseText;
-    }
-
-    // Store bot reply in DB
-    if (botReply && botReply.trim().length > 0) {
-      await supabase.from('telegram_messages').insert({
-        chat_id: 0,
-        sender: 'bot',
-        text: botReply.trim(),
+    if (!responseText.trim()) {
+      return new Response(JSON.stringify({
+        error: 'N8N returned an empty response body. Configure the workflow to return the bot reply from the webhook.',
+      }), {
+        status: 502,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
+    }
+
+    let parsedResponse: unknown = responseText;
+    try {
+      parsedResponse = JSON.parse(responseText);
+    } catch {
+      parsedResponse = responseText;
+    }
+
+    const botReply = extractBotReply(parsedResponse);
+
+    if (!botReply) {
+      return new Response(JSON.stringify({
+        error: 'N8N responded, but no reply text was found. Return JSON with text/output/message.',
+      }), {
+        status: 502,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const { error: botInsertError } = await supabase.from('telegram_messages').insert({
+      chat_id: 0,
+      sender: 'bot',
+      text: botReply,
+    });
+
+    if (botInsertError) {
+      throw new Error(`Failed to store bot reply: ${botInsertError.message}`);
     }
 
     return new Response(JSON.stringify({ ok: true, reply: botReply }), {
