@@ -165,6 +165,7 @@ const TelegramChatWidget = () => {
                 <div
                   key={msg.id}
                   className={`flex ${msg.sender === "visitor" ? "justify-end" : "justify-start"}`}
+
                 >
                   <div
                     className={`max-w-[80%] px-2.5 py-1.5 rounded-xl text-xs ${
