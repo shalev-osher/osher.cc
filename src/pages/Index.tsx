@@ -13,7 +13,7 @@ import GitHubProjects from "@/components/GitHubProjects";
 import KonamiEasterEgg from "@/components/KonamiEasterEgg";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 import SkipToContent from "@/components/SkipToContent";
-import TelegramFloatingButton from "@/components/TelegramFloatingButton";
+import TelegramChatWidget from "@/components/TelegramChatWidget";
 
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -26,7 +26,7 @@ const Index = () => {
       <ParallaxBackground />
       <KonamiEasterEgg />
       <ScrollProgressBar />
-      <TelegramFloatingButton />
+      <TelegramChatWidget />
       <Navbar />
       <main id="main-content" role="main">
         <Hero />
