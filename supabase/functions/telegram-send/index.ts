@@ -5,7 +5,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
-const TELEGRAM_API = 'https://api.telegram.org';
+const N8N_WEBHOOK_URL = 'https://n8n.osher.cc/webhook/website-chat-jackie';
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -13,12 +13,6 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const BOT_TOKEN = Deno.env.get('TELEGRAM_BOT_TOKEN');
-    if (!BOT_TOKEN) throw new Error('TELEGRAM_BOT_TOKEN is not configured');
-
-    const CHAT_ID = Deno.env.get('TELEGRAM_CHAT_ID');
-    if (!CHAT_ID) throw new Error('TELEGRAM_CHAT_ID is not configured');
-
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -31,30 +25,40 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Send message via Telegram Bot API
-    const response = await fetch(`${TELEGRAM_API}/bot${BOT_TOKEN}/sendMessage`, {
+    const trimmedText = text.trim();
+
+    // Store visitor message in DB
+    await supabase.from('telegram_messages').insert({
+      chat_id: 0,
+      sender: 'visitor',
+      text: trimmedText,
+    });
+
+    // Send to N8N webhook and get response
+    const response = await fetch(N8N_WEBHOOK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text: text.trim(),
-        parse_mode: 'HTML',
-      }),
+      body: JSON.stringify({ message: trimmedText }),
     });
 
     const data = await response.json();
     if (!response.ok) {
-      throw new Error(`Telegram API failed [${response.status}]: ${JSON.stringify(data)}`);
+      throw new Error(`N8N webhook failed [${response.status}]: ${JSON.stringify(data)}`);
     }
 
-    // Store the sent message in DB
-    await supabase.from('telegram_messages').insert({
-      chat_id: parseInt(CHAT_ID),
-      sender: 'visitor',
-      text: text.trim(),
-    });
+    // Extract bot response - try common N8N output fields
+    const botReply = data.output || data.text || data.message || data.response || (typeof data === 'string' ? data : JSON.stringify(data));
 
-    return new Response(JSON.stringify({ ok: true }), {
+    // Store bot reply in DB
+    if (botReply) {
+      await supabase.from('telegram_messages').insert({
+        chat_id: 0,
+        sender: 'bot',
+        text: typeof botReply === 'string' ? botReply : JSON.stringify(botReply),
+      });
+    }
+
+    return new Response(JSON.stringify({ ok: true, reply: botReply }), {
       status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
