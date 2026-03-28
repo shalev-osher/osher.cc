@@ -41,20 +41,26 @@ Deno.serve(async (req) => {
       body: JSON.stringify({ message: trimmedText }),
     });
 
-    const data = await response.json();
+    const responseText = await response.text();
     if (!response.ok) {
-      throw new Error(`N8N webhook failed [${response.status}]: ${JSON.stringify(data)}`);
+      throw new Error(`N8N webhook failed [${response.status}]: ${responseText}`);
     }
 
-    // Extract bot response - try common N8N output fields
-    const botReply = data.output || data.text || data.message || data.response || (typeof data === 'string' ? data : JSON.stringify(data));
+    // Parse response - handle both JSON and plain text
+    let botReply: string;
+    try {
+      const data = JSON.parse(responseText);
+      botReply = data.output || data.text || data.message || data.response || responseText;
+    } catch {
+      botReply = responseText;
+    }
 
     // Store bot reply in DB
-    if (botReply) {
+    if (botReply && botReply.trim().length > 0) {
       await supabase.from('telegram_messages').insert({
         chat_id: 0,
         sender: 'bot',
-        text: typeof botReply === 'string' ? botReply : JSON.stringify(botReply),
+        text: botReply.trim(),
       });
     }
 
