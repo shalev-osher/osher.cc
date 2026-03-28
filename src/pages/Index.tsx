@@ -13,6 +13,7 @@ import GitHubProjects from "@/components/GitHubProjects";
 import KonamiEasterEgg from "@/components/KonamiEasterEgg";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 import SkipToContent from "@/components/SkipToContent";
+import TelegramFloatingButton from "@/components/TelegramFloatingButton";
 
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
