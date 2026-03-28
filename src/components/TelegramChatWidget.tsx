@@ -76,7 +76,7 @@ const TelegramChatWidget = () => {
 
     try {
       const { error } = await supabase.functions.invoke("telegram-send", {
-        body: { text: trimmed },
+        body: { text: trimmed, sessionId: SESSION_ID },
       });
       if (error) throw error;
     } catch (err) {
