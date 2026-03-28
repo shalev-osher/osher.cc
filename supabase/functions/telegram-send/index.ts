@@ -77,6 +77,10 @@ Deno.serve(async (req) => {
       throw new Error(`Failed to store visitor message: ${visitorInsertError.message}`);
     }
 
+    const sessionId = typeof (requestBody as { sessionId?: unknown })?.sessionId === 'string'
+      ? (requestBody as { sessionId: string }).sessionId
+      : `web-${Date.now()}`;
+
     const response = await fetch(N8N_WEBHOOK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -84,6 +88,7 @@ Deno.serve(async (req) => {
         message: text,
         text,
         chatInput: text,
+        sessionId,
       }),
     });
 
