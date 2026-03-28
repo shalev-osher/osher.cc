@@ -10,6 +10,8 @@ interface Message {
   created_at: string;
 }
 
+const SESSION_ID = `web-${Math.random().toString(36).slice(2, 10)}`;
+
 const TelegramChatWidget = () => {
   const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
