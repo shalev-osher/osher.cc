@@ -13,6 +13,7 @@ const extractBotReply = (payload: unknown): string => {
   if (payload && typeof payload === 'object') {
     const record = payload as Record<string, unknown>;
     const candidate =
+      record.reply ??
       record.output ??
       record.text ??
       record.message ??
