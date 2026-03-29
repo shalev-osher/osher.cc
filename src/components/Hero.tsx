@@ -51,6 +51,8 @@ const Hero = () => {
     text: helloText,
     speed: 80,
     delay: 300,
+    loop: true,
+    pauseDuration: 3000,
   });
 
   const nameTypewriter = useTypewriter({
