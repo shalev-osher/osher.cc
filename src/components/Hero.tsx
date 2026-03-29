@@ -90,14 +90,6 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         >
-          <motion.p
-            className="text-primary font-medium mb-6 tracking-[0.3em] uppercase text-xs"
-            initial={{ opacity: 0, letterSpacing: '0.5em' }}
-            animate={{ opacity: 1, letterSpacing: '0.3em' }}
-            transition={{ duration: 1.2, delay: 0.3 }}
-          >
-            {t("hero.portfolio")}
-          </motion.p>
           
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight" id="hero-title">
             <motion.span
