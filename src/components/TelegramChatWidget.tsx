@@ -96,7 +96,7 @@ const TelegramChatWidget = () => {
 
   return (
     <motion.div
-      className="fixed bottom-6 left-6 z-[150]"
+      className="fixed bottom-20 left-6 z-[150] sm:bottom-6"
       initial={{ y: 80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 1.5, type: "spring", stiffness: 200, damping: 20 }}
