@@ -17,7 +17,7 @@ const SESSION_ID = `web-${Math.random().toString(36).slice(2, 10)}`;
 const TelegramChatWidget = () => {
   const { lang } = useLanguage();
   const isHebrew = lang === "he";
-  const [isMinimized, setIsMinimized] = useState(false);
+  const desktopChatPositionClass = isHebrew ? "sm:right-8 sm:left-auto" : "sm:left-8 sm:right-auto";
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
