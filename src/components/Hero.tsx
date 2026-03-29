@@ -44,6 +44,14 @@ const Hero = () => {
 
   const roles = [t("hero.role1"), t("hero.role2"), t("hero.role3"), t("hero.role4")];
 
+  const nameTypewriter = useTypewriter({
+    texts: ["Shalev Osher", "שליו אושר"],
+    speed: 100,
+    delay: 800,
+    pauseDuration: 3000,
+    loop: true,
+  });
+
   const roleTypewriter = useTypewriter({
     texts: roles,
     speed: 80,
@@ -106,7 +114,8 @@ const Hero = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              {lang === "he" ? "שליו אושר" : "Shalev Osher"}
+              {nameTypewriter.displayedText}
+              <span className={`inline-block w-[3px] h-[0.8em] bg-primary ms-1 align-middle transition-opacity duration-100 ${nameTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
             </motion.span>
           </h1>
           
