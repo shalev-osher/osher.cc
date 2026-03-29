@@ -140,7 +140,7 @@ const AccessibilityWidget = () => {
 
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-8 end-24 z-[60] w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2"
+        className="fixed bottom-8 start-24 z-[60] w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2"
         style={{
           backgroundColor: "#2563eb",
           color: "#ffffff",
