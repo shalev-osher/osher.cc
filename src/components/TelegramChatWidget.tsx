@@ -135,17 +135,35 @@ const TelegramChatWidget = () => {
 
   const handleOptionClick = (option: string) => {
     const isMainMenu = option === "Main menu" || option === "תפריט ראשי";
+    const isBack = option === "Back" || option === "חזרה";
+
+    if (isBack && optionsHistory.length > 0) {
+      const prev = optionsHistory[optionsHistory.length - 1];
+      setOptionsHistory((h) => h.slice(0, -1));
+      setMessages((prev_msgs) => [
+        ...prev_msgs.map((m, i) =>
+          i === prev_msgs.length - 1 && m.sender === "bot" ? { ...m, options: undefined } : m
+        ),
+        {
+          id: `bot-back-${crypto.randomUUID()}`,
+          sender: "bot",
+          text: prev.text,
+          created_at: new Date().toISOString(),
+          options: prev.options,
+        },
+      ]);
+      return;
+    }
 
     if (isMainMenu) {
+      setOptionsHistory([]);
       setMessages((prev) => {
         const lastMessage = prev[prev.length - 1];
         const alreadyOnMainMenu =
           lastMessage?.sender === "bot" &&
           (lastMessage.id === "bot-welcome" || lastMessage.id.startsWith("bot-menu-"));
 
-        if (alreadyOnMainMenu) {
-          return prev;
-        }
+        if (alreadyOnMainMenu) return prev;
 
         return [
           ...prev.map((m, i) =>
@@ -161,6 +179,11 @@ const TelegramChatWidget = () => {
         ];
       });
       return;
+    }
+
+    // Save current options to history before navigating away
+    if (lastBotMsg?.options && lastBotMsg.options.length > 0) {
+      setOptionsHistory((h) => [...h, { text: lastBotMsg.text || "", options: lastBotMsg.options! }]);
     }
 
     handleSend(option);
