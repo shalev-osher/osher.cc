@@ -157,6 +157,36 @@ const TelegramChatWidget = () => {
   const handleOptionClick = (option: string) => {
     const isMainMenu = option === "Main menu" || option === "תפריט ראשי";
     const isBack = option === "Back" || option === "חזרה";
+    const isFreeText = option === "שאלה אחרת" || option === "Other question";
+
+    if (isFreeText) {
+      if (freeTextCount >= MAX_FREE_TEXT_PER_SESSION) {
+        const limitMsg: Message = {
+          id: `bot-limit-free-${crypto.randomUUID()}`,
+          sender: "bot",
+          text: isHebrew
+            ? "⏳ הגעת למגבלת השאלות החופשיות. ניתן להמשיך עם הכפתורים או ליצור קשר דרך הטופס באתר."
+            : "⏳ You've reached the free question limit. You can continue with the buttons or use the contact form.",
+          created_at: new Date().toISOString(),
+        };
+        setMessages((prev) => [...prev, limitMsg]);
+        return;
+      }
+      setFreeTextMode(true);
+      // Remove options from last bot message to unlock input
+      setMessages((prev) => {
+        const updated = [...prev];
+        for (let i = updated.length - 1; i >= 0; i--) {
+          if (updated[i].sender === "bot") {
+            updated[i] = { ...updated[i], options: undefined };
+            break;
+          }
+        }
+        return updated;
+      });
+      setTimeout(() => inputRef.current?.focus(), 100);
+      return;
+    }
 
     if (isBack && optionsHistory.length > 0) {
       const prev = optionsHistory[optionsHistory.length - 1];
