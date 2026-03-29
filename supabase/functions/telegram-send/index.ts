@@ -30,16 +30,13 @@ What would you like to know?`;
 const FALLBACK_OPTIONS_HE = ['ניסיון', 'כישורים', 'טכנולוגיות', 'תפקיד נוכחי', 'יצירת קשר'];
 const FALLBACK_OPTIONS_EN = ['Experience', 'Skills', 'Technologies', 'Current Role', 'Contact'];
 
-// Only block patterns that indicate the AI is misrepresenting Shalev as a developer
-// Note: NO /g flag — using /g with .test() causes alternating true/false bug
-const FORBIDDEN_PATTERNS = [
-  /שלו אושר/i,
-  /\bשלו\b/,
-  /Pixel Perfect Developer/i,
-  /Full-?Stack\s+(Developer|Engineer)/i,
-  /\b(frontend|backend)\s+(developer|engineer|מפתח)\b/i,
-  /UI\/UX\s+(designer|expert|מעצב)/i,
-];
+// Only block the name misspelling — the system prompt handles everything else
+const sanitizeReply = (reply: string): string => {
+  return reply
+    .replaceAll('שלו אושר', 'שליו אושר')
+    .replace(/שלו(?=\s+אושר)/g, 'שליו')
+    .trim();
+};
 
 const SYSTEM_PROMPT = `You are the AI assistant for Shalev Osher's portfolio website.
 
@@ -83,10 +80,10 @@ Rules:
 - If the user asks broad questions like "everything", "tell me everything", "הכל", or "ספר לי הכל", do not dump too much at once. Instead, guide them with a short clarifying question and offer options such as experience, skills, technologies, current role, previous work, or contact details.
 - If the user asks something unclear, still return a helpful answer instead of staying silent.
 - Always answer in plain text.
-- If the user writes in Hebrew, answer in Hebrew.
-- If the user writes in English, answer in English.
 
-IMPORTANT: You MUST use the respond_with_options tool for EVERY response. Always include suggested follow-up options that make sense in context. The options should be in the same language as your response text.
+CRITICAL LANGUAGE RULE: A "lang" field is provided in the conversation. You MUST respond in the language specified by that field. If lang=he, respond in Hebrew. If lang=en, respond in English. Do NOT switch languages based on conversation history — always follow the lang field.
+
+IMPORTANT: You MUST use the respond_with_options tool for EVERY response. Always include suggested follow-up options that make sense in context. The options MUST be in the same language as your response text.
 
 Contact details:
 - Email: shalev@osher.cc
@@ -94,17 +91,6 @@ Contact details:
 - LinkedIn: linkedin.com/in/shalev-osher/
 
 If unsure, provide a short professional summary of Shalev Osher and ask what the visitor would like to know next.`;
-
-const sanitizeReply = (reply: string): string => {
-  return reply
-    .replaceAll('שלו אושר', 'שליו אושר')
-    .replace(/\bשלו\b(?=\s+אושר)/g, 'שליו')
-    .trim();
-};
-
-const containsForbiddenContent = (reply: string): boolean => {
-  return FORBIDDEN_PATTERNS.some((pattern) => pattern.test(reply));
-};
 
 interface StructuredReply {
   text: string;
@@ -125,17 +111,20 @@ function getFallback(isHebrew: boolean): StructuredReply {
 }
 
 async function getAIReply(userMessage: string, history?: { role: string; content: string }[], lang?: string): Promise<StructuredReply> {
-  const isHebrew = lang === 'he' || isHebrewText(userMessage);
+  const isHebrew = lang === 'he';
   const apiKey = Deno.env.get('LOVABLE_API_KEY');
   if (!apiKey) {
-    console.error('LOVABLE_API_KEY not configured for AI fallback');
+    console.error('LOVABLE_API_KEY not configured');
     return { text: '' };
   }
 
   try {
+    // Inject language instruction as a system-level hint so the AI always follows site language
+    const langHint = { role: 'system', content: `The user's interface language is: ${lang === 'he' ? 'Hebrew' : 'English'}. You MUST respond in ${lang === 'he' ? 'Hebrew' : 'English'} regardless of what language appears in the conversation history.` };
+
     const conversationMessages = history && history.length > 0
-      ? [{ role: 'system', content: SYSTEM_PROMPT }, ...history]
-      : [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: userMessage }];
+      ? [{ role: 'system', content: SYSTEM_PROMPT }, langHint, ...history]
+      : [{ role: 'system', content: SYSTEM_PROMPT }, langHint, { role: 'user', content: userMessage }];
 
     const response = await fetch(AI_GATEWAY_URL, {
       method: 'POST',
@@ -162,7 +151,7 @@ async function getAIReply(userMessage: string, history?: { role: string; content
                   options: {
                     type: 'array',
                     items: { type: 'string' },
-                    description: 'Short follow-up button labels for the user to click. 2-6 items. In the same language as the text.',
+                    description: 'Short follow-up button labels for the user to click. 2-6 items. MUST be in the same language as the text.',
                   },
                 },
                 required: ['text'],
@@ -176,8 +165,8 @@ async function getAIReply(userMessage: string, history?: { role: string; content
     });
 
     if (!response.ok) {
-      console.error('AI fallback error:', response.status);
-      return { text: '' };
+      console.error('AI error:', response.status, await response.text());
+      return getFallback(isHebrew);
     }
 
     const data = await response.json();
@@ -189,7 +178,7 @@ async function getAIReply(userMessage: string, history?: { role: string; content
       try {
         const parsed = JSON.parse(toolCall.function.arguments) as StructuredReply;
         const cleanText = sanitizeReply(parsed.text || '');
-        if (!cleanText || containsForbiddenContent(cleanText)) {
+        if (!cleanText) {
           return getFallback(isHebrew);
         }
         return { text: cleanText, options: parsed.options };
@@ -198,15 +187,15 @@ async function getAIReply(userMessage: string, history?: { role: string; content
       }
     }
 
-    // Fallback to plain text
+    // Fallback to plain text content
     const rawReply = message?.content?.trim() || '';
     const cleanReply = sanitizeReply(rawReply);
-    if (!cleanReply || containsForbiddenContent(cleanReply)) {
+    if (!cleanReply) {
       return getFallback(isHebrew);
     }
     return { text: cleanReply };
   } catch (err) {
-    console.error('AI fallback fetch error:', err);
+    console.error('AI fetch error:', err);
     return { text: '' };
   }
 }
