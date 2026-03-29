@@ -415,7 +415,6 @@ const TelegramChatWidget = () => {
                       {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
                     </button>
                   </div>
-                  )}
                 </div>
               )}
               {!hasOptions && lastBotMsg && lastBotMsg.id !== "bot-welcome" && !lastBotMsg.id.startsWith("bot-menu-") && !sending && (
