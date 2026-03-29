@@ -15,6 +15,7 @@ interface Message {
 
 const SESSION_ID = `web-${Math.random().toString(36).slice(2, 10)}`;
 const MAX_MESSAGES_PER_SESSION = 30;
+const MAX_FREE_TEXT_PER_SESSION = 5;
 
 const TelegramChatWidget = () => {
   const { lang } = useLanguage();
@@ -28,6 +29,8 @@ const TelegramChatWidget = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [messageCount, setMessageCount] = useState(0);
+  const [freeTextCount, setFreeTextCount] = useState(0);
+  const [freeTextMode, setFreeTextMode] = useState(false);
 
   const getMenuOptions = useCallback(
     () =>
