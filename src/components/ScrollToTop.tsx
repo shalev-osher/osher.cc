@@ -40,7 +40,7 @@ const ScrollToTop = () => {
   };
 
   return (
-    <div className="fixed bottom-8 end-8 z-50 flex flex-col rounded-full border border-primary/30 overflow-hidden glass-effect">
+    <div className={`fixed bottom-8 end-8 z-50 flex flex-col rounded-full border border-primary/30 overflow-hidden glass-effect transition-all duration-300 ${isNearBottom ? 'opacity-0 pointer-events-none translate-y-4' : 'opacity-100'}`}>
       {/* Scroll to top - always rendered for consistent shape, hidden when not scrolled */}
       <button
         onClick={scrollToTop}
