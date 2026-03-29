@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, Bot } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -130,7 +131,7 @@ const TelegramChatWidget = () => {
           /* Chat Window - compact */
           <motion.div
             key="chat"
-            className="w-[300px] h-[380px] max-w-[calc(100vw-48px)] max-h-[calc(100vh-48px)] rounded-2xl overflow-hidden shadow-2xl flex flex-col bg-background border border-border"
+            className="w-[380px] h-[500px] max-w-[calc(100vw-48px)] max-h-[calc(100vh-48px)] rounded-2xl overflow-hidden shadow-2xl flex flex-col bg-background border border-border"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
@@ -176,7 +177,13 @@ const TelegramChatWidget = () => {
                         : "bg-card text-foreground border border-border rounded-bl-sm"
                     }`}
                   >
-                    <p className="break-words">{msg.text}</p>
+                    {msg.sender === "visitor" ? (
+                      <p className="break-words">{msg.text}</p>
+                    ) : (
+                      <div className="break-words prose prose-xs prose-neutral dark:prose-invert max-w-none [&>p]:m-0 [&>ul]:my-1 [&>ol]:my-1 [&>li]:my-0.5 [&>h1]:text-sm [&>h2]:text-xs [&>h3]:text-xs [&>h4]:text-xs [&>p]:text-xs [&>ul]:text-xs [&>ol]:text-xs [&>li]:text-xs [&_strong]:font-bold [&_em]:italic">
+                        <ReactMarkdown>{msg.text || ""}</ReactMarkdown>
+                      </div>
+                    )}
                     <p
                       className={`text-[9px] mt-0.5 ${
                         msg.sender === "visitor" ? "text-white/60" : "text-muted-foreground"
