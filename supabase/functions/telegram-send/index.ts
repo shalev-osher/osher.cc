@@ -101,7 +101,7 @@ const containsForbiddenContent = (reply: string): boolean => {
   return FORBIDDEN_PATTERNS.some((pattern) => pattern.test(reply));
 };
 
-async function getAIReply(userMessage: string): Promise<string> {
+async function getAIReply(userMessage: string, history?: { role: string; content: string }[]): Promise<string> {
   const apiKey = Deno.env.get('LOVABLE_API_KEY');
   if (!apiKey) {
     console.error('LOVABLE_API_KEY not configured for AI fallback');
@@ -109,6 +109,10 @@ async function getAIReply(userMessage: string): Promise<string> {
   }
 
   try {
+    const conversationMessages = history && history.length > 0
+      ? [{ role: 'system', content: SYSTEM_PROMPT }, ...history]
+      : [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: userMessage }];
+
     const response = await fetch(AI_GATEWAY_URL, {
       method: 'POST',
       headers: {
@@ -117,10 +121,7 @@ async function getAIReply(userMessage: string): Promise<string> {
       },
       body: JSON.stringify({
         model: 'google/gemini-3-flash-preview',
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: userMessage },
-        ],
+        messages: conversationMessages,
       }),
     });
 
@@ -193,7 +194,11 @@ Deno.serve(async (req) => {
       throw new Error(`Failed to store visitor message: ${visitorInsertError.message}`);
     }
 
-    let botReply = await getAIReply(text);
+    const history = Array.isArray((requestBody as { history?: unknown })?.history)
+      ? (requestBody as { history: { role: string; content: string }[] }).history
+      : undefined;
+
+    let botReply = await getAIReply(text, history);
 
     if (!botReply) {
       botReply = 'מצטער, לא הצלחתי לעבד את הבקשה כרגע. נסה שוב בבקשה 🙏';
