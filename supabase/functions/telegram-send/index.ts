@@ -186,7 +186,7 @@ async function getAIReply(userMessage: string, history?: { role: string; content
     if (toolCall?.function?.arguments) {
       try {
         const parsed = JSON.parse(toolCall.function.arguments) as StructuredReply;
-        const cleanText = sanitizeReply(parsed.text || '');
+        const cleanText = sanitizeReply(parsed.text || '', lang === 'he' ? 'he' : 'en');
         if (!cleanText) {
           return getFallback(isHebrew);
         }
@@ -198,7 +198,7 @@ async function getAIReply(userMessage: string, history?: { role: string; content
 
     // Fallback to plain text content
     const rawReply = message?.content?.trim() || '';
-    const cleanReply = sanitizeReply(rawReply);
+    const cleanReply = sanitizeReply(rawReply, lang === 'he' ? 'he' : 'en');
     if (!cleanReply) {
       return getFallback(isHebrew);
     }
