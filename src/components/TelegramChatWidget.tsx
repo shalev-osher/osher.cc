@@ -209,7 +209,7 @@ const TelegramChatWidget = () => {
               </div>
 
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-3 space-y-2.5 bg-card/50 backdrop-blur-sm">
+              <div className="flex-1 overflow-y-auto p-3 space-y-2.5 bg-card/50 backdrop-blur-sm scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent hover:scrollbar-thumb-primary/50" style={{ scrollbarWidth: 'thin', scrollbarColor: 'hsl(var(--primary) / 0.3) transparent' }}>
                 {messages.map((msg, idx) => (
                   <div key={msg.id}>
                     <div
