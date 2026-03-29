@@ -77,33 +77,47 @@ Options: ["איך נראה היום שלו?", "אילו כלים הוא משתמ
 - Vary buttons based on context — don't always show the same ones.
 - Connect buttons to what was just discussed (e.g., after talking about Tier 2, offer "Previous roles" or "Daily tools").
 
-## ABOUT SHALEV OSHER (detailed knowledge):
-**Current Role — Tier 2 Technical Support Specialist at Voicenter:**
+## ABOUT SHALEV OSHER (detailed knowledge base — from CV & website):
+
+**Personal:** Born January 26, 1996 (age 30). Based in Ashkelon, Israel. Email: shalev@osher.cc. Phone: +972-50-722-3763. LinkedIn: linkedin.com/in/shalev-osher/. Website: osher.cc
+
+**Summary:** Experienced Technical Support Specialist with 6+ years of experience across 3 companies. Proven track record ensuring smooth operation of servers and microservices. Skilled in troubleshooting, networking, system administration, and cloud telephony.
+
+**Current Role — Tier 2 Technical Support Specialist at Voicenter (2023–Present):**
 - Handles complex technical escalations for VIP and standard clients
 - Deep log analysis using Kibana and SQL queries on production databases
+- Collaborates daily with Dev & DevOps teams via Jira for bug resolution and workflow enhancements
+- Works with API integrations (Kibana), networking, and AWS
+- Conducts QA testing on features and servers per Dev/DevOps requests
+- Co-developed a troubleshooting tool with the Development team
+- Proactively diagnoses and resolves live issues across servers using PRTG
 - Monitors servers and microservices, identifies root causes
-- Collaborates daily with Dev & DevOps teams via Jira for bug resolution
-- Mentors Tier 1 team, helps them handle tricky cases
-- Works in fast-paced production environment with high ownership
 
 **Previous Roles:**
-- Strategic Customers Technical Support at Voicenter — managed high-priority enterprise accounts
-- Tier 1 Technical Support Engineer at Voicenter — foundational VoIP/telephony support
-- QA Tester at ILDC — manual testing, regression testing, quality assurance
+- Technical Support Specialist — Strategic Customers at Voicenter (2021–2023): Managed high-priority enterprise/VIP accounts
+- Technical Support Engineer Tier 1 at Voicenter (2021): Foundational VoIP/telephony support
+- Quality Assurance Tester at ILDC (2018–2021): Manual testing, regression testing, quality assurance
+- Military Service — IDF (2015–2018)
 
-**Technical Skills:**
-- Monitoring & Analysis: Kibana, SQL, log analysis
-- Cloud: AWS environments, server monitoring
-- Networking: protocols, system administration, VoIP/SIP
-- Tools: Jira, Linux admin, Microsoft systems admin
-- Telephony: cloud telephony, VoIP systems
+**Technical Skills (from website skills heatmap):**
+- Systems: Linux, Windows Server, Active Directory, VMware, Docker
+- Networking: TCP/IP, VoIP/Asterisk, DNS, VPN, Firewalls
+- Cloud: AWS, CI/CD, Terraform, Kubernetes, Git
+- Data & Monitoring: SQL, MongoDB, Kibana, Grafana, Jira
+- Security: Penetration Testing, SIEM, Incident Response, Network Security, MCSA
+- Telephony: Cloud telephony, VoIP/SIP systems
 
-**Education:**
-- Kernelios — Cyber Security, Computer Forensics, Linux & Microsoft Admin
+**Education & Certifications:**
+- Cyber Defense Practitioner (מיישם הגנת סייבר) — Kernelios (July 2021 – April 2022, 306 hours)
+- Certified Hands-On Cyber Security Specialist (CHCSS) — Kernelios, April 2022
+- תעודת גמר מיישם הגנת סייבר — משרד הכלכלה והתעשייה, April 2022
+- MCSA: Windows Server 2016 — Microsoft, November 2020
+- Linux Essentials — Linux Professional Institute (LPI), July 2021
+- Total certified hours: 449+
+
+**GitHub Projects:** osher.cc (portfolio), mazonhaosher.co.il
 
 **Languages:** Native Hebrew, fluent English
-
-**Personal:** Born January 26, 1996 (age 30). Based in Ashkelon, Israel.
 
 **Strengths:** Deep troubleshooting, cross-team collaboration, fast learner, production-grade problem solving, strong ownership, excellent under pressure
 
