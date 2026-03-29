@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, Bot, Sparkles, Trash2, Download } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import jsPDF from "jspdf";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -74,31 +75,80 @@ const TelegramChatWidget = () => {
   }, [getWelcomeText, getMenuOptions]);
 
   const handleExportPDF = useCallback(() => {
-    const chatContent = messages
-      .map((m) => {
-        const time = new Date(m.created_at).toLocaleTimeString(isHebrew ? "he-IL" : "en-US", { hour: "2-digit", minute: "2-digit" });
-        const sender = m.sender === "bot" ? (isHebrew ? "עוזר AI" : "AI Assistant") : (isHebrew ? "מבקר" : "Visitor");
-        return `[${time}] ${sender}: ${m.text || ""}`;
-      })
-      .join("\n\n");
+    if (messages.length === 0) return;
 
-    // Create a printable HTML and trigger print-to-PDF
-    const printWindow = window.open("", "_blank");
-    if (!printWindow) return;
-    printWindow.document.write(`
-      <html dir="${isHebrew ? "rtl" : "ltr"}">
-      <head><title>Chat Export - Shalev Osher</title>
-      <style>
-        body { font-family: Arial, sans-serif; padding: 40px; line-height: 1.8; white-space: pre-wrap; color: #222; }
-        h1 { font-size: 18px; border-bottom: 2px solid #ccc; padding-bottom: 8px; margin-bottom: 20px; }
-      </style></head>
-      <body>
-        <h1>${isHebrew ? "יצוא שיחה – שליו אושר" : "Chat Export – Shalev Osher"}</h1>
-        ${chatContent.replace(/\n/g, "<br>")}
-      </body></html>
-    `);
-    printWindow.document.close();
-    printWindow.print();
+    const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 20;
+    const contentWidth = pageWidth - margin * 2;
+    let y = margin;
+
+    // Title
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(40, 40, 40);
+    const title = isHebrew ? "Chat Export - Shalev Osher" : "Chat Export - Shalev Osher";
+    doc.text(title, pageWidth / 2, y, { align: "center" });
+    y += 6;
+
+    // Date line
+    doc.setFontSize(9);
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(120, 120, 120);
+    doc.text(new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }), pageWidth / 2, y, { align: "center" });
+    y += 4;
+
+    // Divider
+    doc.setDrawColor(200, 180, 120);
+    doc.setLineWidth(0.5);
+    doc.line(margin, y, pageWidth - margin, y);
+    y += 8;
+
+    messages.forEach((m) => {
+      if (!m.text) return;
+      const time = new Date(m.created_at).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+      const isBot = m.sender === "bot";
+      const sender = isBot ? "AI Assistant" : "Visitor";
+
+      // Check page break
+      if (y > pageHeight - 30) {
+        doc.addPage();
+        y = margin;
+      }
+
+      // Sender label with time
+      doc.setFontSize(8);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(isBot ? 100 : 50, isBot ? 100 : 50, isBot ? 100 : 50);
+      doc.text(`${sender}  •  ${time}`, margin, y);
+      y += 5;
+
+      // Message bubble background
+      const lines = doc.setFontSize(10).setFont("helvetica", "normal").splitTextToSize(m.text, contentWidth - 10);
+      const blockHeight = lines.length * 5 + 6;
+
+      if (y + blockHeight > pageHeight - 20) {
+        doc.addPage();
+        y = margin;
+      }
+
+      // Background rect
+      doc.setFillColor(isBot ? 245 : 235, isBot ? 245 : 240, isBot ? 250 : 220);
+      doc.roundedRect(margin, y - 2, contentWidth, blockHeight, 2, 2, "F");
+
+      // Text
+      doc.setTextColor(30, 30, 30);
+      doc.text(lines, margin + 5, y + 3);
+      y += blockHeight + 4;
+    });
+
+    // Footer
+    doc.setFontSize(7);
+    doc.setTextColor(160, 160, 160);
+    doc.text("osher.cc", pageWidth / 2, pageHeight - 10, { align: "center" });
+
+    doc.save("shalev-osher-chat.pdf");
   }, [messages, isHebrew]);
 
   const scrollToBottom = useCallback(() => {
