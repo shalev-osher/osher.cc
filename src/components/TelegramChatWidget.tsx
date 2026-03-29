@@ -138,6 +138,8 @@ const TelegramChatWidget = () => {
 
   // Find the last bot message index to know which one should show options
   const lastBotIdx = messages.reduce((acc, m, i) => (m.sender === "bot" ? i : acc), -1);
+  const lastBotMsg = lastBotIdx >= 0 ? messages[lastBotIdx] : null;
+  const hasOptions = !!(lastBotMsg?.options && lastBotMsg.options.length > 0);
 
   return (
     <motion.div
