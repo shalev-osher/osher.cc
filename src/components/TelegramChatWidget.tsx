@@ -25,6 +25,27 @@ const TelegramChatWidget = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const getMenuOptions = useCallback(
+    () =>
+      isHebrew
+        ? ["ניסיון", "כישורים", "טכנולוגיות", "תפקיד נוכחי", "יצירת קשר"]
+        : ["Experience", "Skills", "Technologies", "Current Role", "Contact"],
+    [isHebrew]
+  );
+
+  const getWelcomeText = useCallback(
+    () =>
+      isHebrew
+        ? "👋 היי! אני העוזר הדיגיטלי של שליו אושר.\nאיך אפשר לעזור?"
+        : "👋 Hi! I'm Shalev Osher's AI assistant.\nHow can I help you?",
+    [isHebrew]
+  );
+
+  const getMainMenuPrompt = useCallback(
+    () => (isHebrew ? "על מה תרצה/י לשמוע?" : "What would you like to know about?"),
+    [isHebrew]
+  );
+
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
@@ -36,25 +57,19 @@ const TelegramChatWidget = () => {
   useEffect(() => {
     if (!isMinimized) {
       inputRef.current?.focus();
-      // Add welcome message on first open
       if (messages.length === 0) {
-        const welcomeOptions = isHebrew
-          ? ["ניסיון", "כישורים", "טכנולוגיות", "תפקיד נוכחי", "יצירת קשר"]
-          : ["Experience", "Skills", "Technologies", "Current Role", "Contact"];
         setMessages([
           {
-            id: `bot-welcome`,
+            id: "bot-welcome",
             sender: "bot",
-            text: isHebrew
-              ? "👋 היי! אני העוזר הדיגיטלי של שליו אושר.\nאיך אפשר לעזור?"
-              : "👋 Hi! I'm Shalev Osher's AI assistant.\nHow can I help you?",
+            text: getWelcomeText(),
             created_at: new Date().toISOString(),
-            options: welcomeOptions,
+            options: getMenuOptions(),
           },
         ]);
       }
     }
-  }, [isMinimized]);
+  }, [getMenuOptions, getWelcomeText, isMinimized, messages.length]);
 
   const handleSend = async (messageText: string) => {
     const trimmed = messageText.trim();
@@ -67,7 +82,6 @@ const TelegramChatWidget = () => {
       created_at: new Date().toISOString(),
     };
 
-    // Clear options from the last bot message when user sends something
     setMessages((prev) =>
       prev.map((m, i) =>
         i === prev.length - 1 && m.sender === "bot" ? { ...m, options: undefined } : m
@@ -120,29 +134,34 @@ const TelegramChatWidget = () => {
 
   const handleOptionClick = (option: string) => {
     const isMainMenu = option === "Main menu" || option === "תפריט ראשי";
+
     if (isMainMenu) {
-      // Handle main menu locally – no API call, just show the welcome menu again
-      const welcomeOptions = isHebrew
-        ? ["ניסיון", "כישורים", "טכנולוגיות", "תפקיד נוכחי", "יצירת קשר"]
-        : ["Experience", "Skills", "Technologies", "Current Role", "Contact"];
-      const menuMsg: Message = {
-        id: `bot-menu-${crypto.randomUUID()}`,
-        sender: "bot",
-        text: isHebrew
-          ? "על מה תרצה/י לשמוע?"
-          : "What would you like to know about?",
-        created_at: new Date().toISOString(),
-        options: welcomeOptions,
-      };
-      // Clear options from last bot message, then add menu
-      setMessages((prev) => [
-        ...prev.map((m, i) =>
-          i === prev.length - 1 && m.sender === "bot" ? { ...m, options: undefined } : m
-        ),
-        menuMsg,
-      ]);
+      setMessages((prev) => {
+        const lastMessage = prev[prev.length - 1];
+        const alreadyOnMainMenu =
+          lastMessage?.sender === "bot" &&
+          (lastMessage.id === "bot-welcome" || lastMessage.id.startsWith("bot-menu-"));
+
+        if (alreadyOnMainMenu) {
+          return prev;
+        }
+
+        return [
+          ...prev.map((m, i) =>
+            i === prev.length - 1 && m.sender === "bot" ? { ...m, options: undefined } : m
+          ),
+          {
+            id: `bot-menu-${crypto.randomUUID()}`,
+            sender: "bot",
+            text: getMainMenuPrompt(),
+            created_at: new Date().toISOString(),
+            options: getMenuOptions(),
+          },
+        ];
+      });
       return;
     }
+
     handleSend(option);
   };
 
@@ -160,7 +179,6 @@ const TelegramChatWidget = () => {
     });
   };
 
-  // Find the last bot message index to know which one should show options
   const lastBotIdx = messages.reduce((acc, m, i) => (m.sender === "bot" ? i : acc), -1);
   const lastBotMsg = lastBotIdx >= 0 ? messages[lastBotIdx] : null;
   const hasOptions = !!(lastBotMsg?.options && lastBotMsg.options.length > 0);
@@ -189,7 +207,6 @@ const TelegramChatWidget = () => {
           </motion.button>
         ) : (
           <>
-            {/* Click outside to close */}
             <motion.div
               key="overlay"
               className="fixed inset-0 z-[-1]"
@@ -206,7 +223,6 @@ const TelegramChatWidget = () => {
               exit={{ scale: 0.8, opacity: 0 }}
               transition={{ type: "spring", stiffness: 300, damping: 25 }}
             >
-              {/* Header */}
               <div className="relative flex items-center justify-between px-4 py-3 text-foreground overflow-hidden">
                 <div className="absolute inset-0 bg-secondary" />
                 <div className="absolute inset-0 border-b-2 border-primary/30" />
@@ -232,8 +248,10 @@ const TelegramChatWidget = () => {
                 </button>
               </div>
 
-              {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-3 space-y-2.5 bg-card/50 backdrop-blur-sm scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent hover:scrollbar-thumb-primary/50" style={{ scrollbarWidth: 'thin', scrollbarColor: 'hsl(var(--primary) / 0.3) transparent' }}>
+              <div
+                className="flex-1 overflow-y-auto p-3 space-y-2.5 bg-card/50 backdrop-blur-sm scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent hover:scrollbar-thumb-primary/50"
+                style={{ scrollbarWidth: "thin", scrollbarColor: "hsl(var(--primary) / 0.3) transparent" }}
+              >
                 {messages.map((msg, idx) => (
                   <div key={msg.id}>
                     <div
@@ -262,13 +280,13 @@ const TelegramChatWidget = () => {
                         </p>
                       </div>
                     </div>
-                    {/* WhatsApp-style stacked reply buttons – only on the last bot message */}
+
                     {msg.sender === "bot" &&
                       idx === lastBotIdx &&
                       msg.options &&
                       msg.options.length > 0 && (
                         <motion.div
-                          className="flex flex-wrap gap-1.5 mt-2"
+                          className="mt-2 flex flex-col gap-1.5 max-h-40 overflow-y-auto pe-1 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent"
                           initial={{ opacity: 0, y: 6 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.25 }}
@@ -278,17 +296,18 @@ const TelegramChatWidget = () => {
                               key={opt}
                               onClick={() => handleOptionClick(opt)}
                               disabled={sending}
-                              className="px-3 py-1.5 text-[11px] sm:text-xs font-bold font-display rounded-lg border border-primary/30 text-primary-foreground bg-primary/80 hover:bg-primary hover:border-primary/50 transition-all shadow-sm text-center disabled:opacity-50"
+                              className="w-full px-3 py-2 text-[11px] sm:text-xs leading-tight font-bold font-display rounded-lg border border-primary/30 text-primary-foreground bg-primary/80 hover:bg-primary hover:border-primary/50 transition-all shadow-sm text-center disabled:opacity-50"
                             >
                               {opt}
                             </button>
                           ))}
                         </motion.div>
                       )}
-                    {/* Back to main menu button – on last bot message, after first exchange */}
+
                     {msg.sender === "bot" &&
                       idx === lastBotIdx &&
                       msg.id !== "bot-welcome" &&
+                      !msg.id.startsWith("bot-menu-") &&
                       !sending && (
                         <motion.div
                           className="mt-1.5"
@@ -297,12 +316,8 @@ const TelegramChatWidget = () => {
                           transition={{ delay: 0.3, duration: 0.25 }}
                         >
                           <button
-                            onClick={() =>
-                              handleOptionClick(
-                                isHebrew ? "תפריט ראשי" : "Main menu"
-                              )
-                            }
-                            className="px-3 py-1.5 text-[11px] sm:text-xs font-medium rounded-lg border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
+                            onClick={() => handleOptionClick(isHebrew ? "תפריט ראשי" : "Main menu")}
+                            className="w-full px-3 py-2 text-[11px] sm:text-xs leading-tight font-medium rounded-lg border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
                           >
                             {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
                           </button>
@@ -310,7 +325,7 @@ const TelegramChatWidget = () => {
                       )}
                   </div>
                 ))}
-                {/* Typing indicator */}
+
                 {sending && (
                   <motion.div
                     className="flex justify-start"
@@ -327,7 +342,6 @@ const TelegramChatWidget = () => {
                 <div ref={messagesEndRef} />
               </div>
 
-              {/* Input – disabled when reply options are showing */}
               <div className={`p-2.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm transition-opacity ${hasOptions ? "opacity-50 pointer-events-none" : ""}`}>
                 <div className="flex items-center gap-2">
                   <input
@@ -338,8 +352,12 @@ const TelegramChatWidget = () => {
                     onKeyDown={handleKeyDown}
                     placeholder={
                       hasOptions
-                        ? isHebrew ? "בחר אפשרות מלמעלה..." : "Select an option above..."
-                        : isHebrew ? "כתוב הודעה..." : "Type a message..."
+                        ? isHebrew
+                          ? "בחר אפשרות מלמעלה..."
+                          : "Select an option above..."
+                        : isHebrew
+                          ? "כתוב הודעה..."
+                          : "Type a message..."
                     }
                     className={`flex-1 px-3 py-2 rounded-full bg-muted text-foreground text-xs sm:text-sm outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/30 transition-shadow ${isHebrew ? "text-right" : "text-left"}`}
                     disabled={sending || hasOptions}
