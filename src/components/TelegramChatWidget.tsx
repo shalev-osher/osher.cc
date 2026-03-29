@@ -101,7 +101,7 @@ const TelegramChatWidget = () => {
 
   return (
     <motion.div
-      className={`fixed bottom-20 sm:bottom-6 z-[150] ${positionClass}`}
+      className="fixed bottom-8 start-24 z-[60]"
       initial={{ y: 80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 1.5, type: "spring", stiffness: 200, damping: 20 }}
