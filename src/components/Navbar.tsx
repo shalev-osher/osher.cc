@@ -43,7 +43,7 @@ const Navbar = () => {
                 <a
                   key={link.href}
                   href={link.href}
-                  className={`text-sm font-medium px-3 py-1.5 rounded-lg border transition-colors duration-300 ${
+                  className={`text-sm font-bold font-display px-3 py-1.5 rounded-lg border transition-colors duration-300 ${
                     activeSection === link.id
                       ? "bg-primary/25 text-primary border-primary/40 shadow-sm shadow-primary/10"
                       : "bg-primary/10 text-foreground/80 border-border/60 hover:bg-primary/20 hover:text-primary hover:border-primary/30"
@@ -56,14 +56,14 @@ const Navbar = () => {
               <a
                 href="/cv/shalev-osher-cv.pdf"
                 download
-                className="text-sm font-medium px-3 py-1.5 rounded-lg border border-border/60 bg-primary/10 text-foreground/80 hover:bg-primary/20 hover:text-primary hover:border-primary/30 transition-colors duration-300"
+                className="text-sm font-bold font-display px-3 py-1.5 rounded-lg border border-border/60 bg-primary/10 text-foreground/80 hover:bg-primary/20 hover:text-primary hover:border-primary/30 transition-colors duration-300"
                 aria-label="Download CV"
               >
                 CV
               </a>
               <button
                 onClick={toggleLang}
-                className="text-sm font-medium px-3 py-1.5 rounded-lg border border-border/60 bg-primary/10 text-foreground/80 hover:bg-primary/20 hover:text-primary hover:border-primary/30 transition-colors duration-300"
+                className="text-sm font-bold font-display px-3 py-1.5 rounded-lg border border-border/60 bg-primary/10 text-foreground/80 hover:bg-primary/20 hover:text-primary hover:border-primary/30 transition-colors duration-300"
                 aria-label={`Switch to ${lang === "en" ? "Hebrew" : "English"}`}
               >
                 {lang === "en" ? "HE" : "EN"}
