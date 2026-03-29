@@ -150,7 +150,7 @@ const TelegramChatWidget = () => {
             <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-muted/30">
               {messages.length === 0 && (
                 <div className="text-center text-muted-foreground text-xs mt-6">
-                  <p>{isHebrew ? "👋 היי! שלח הודעה ואחזור אליך" : "👋 Hi! Send a message and I'll get back to you"}</p>
+                  <p>{isHebrew ? "👋 היי! מה תרצה לדעת על שליו אושר?" : "👋 Hi! What would you like to know about Shalev Osher?"}</p>
                 </div>
               )}
               {messages.map((msg) => (
