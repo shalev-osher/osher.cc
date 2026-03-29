@@ -238,13 +238,13 @@ const TelegramChatWidget = () => {
                         </p>
                       </div>
                     </div>
-                    {/* Quick-reply option chips – only on the last bot message */}
+                    {/* WhatsApp-style stacked reply buttons – only on the last bot message */}
                     {msg.sender === "bot" &&
                       idx === lastBotIdx &&
                       msg.options &&
                       msg.options.length > 0 && (
                         <motion.div
-                          className="flex flex-wrap gap-1.5 mt-2 ps-2"
+                          className="flex flex-col gap-1.5 mt-2"
                           initial={{ opacity: 0, y: 6 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.25 }}
@@ -254,7 +254,7 @@ const TelegramChatWidget = () => {
                               key={opt}
                               onClick={() => handleOptionClick(opt)}
                               disabled={sending}
-                              className="px-3 py-1.5 text-[11px] font-medium rounded-full border border-primary/30 text-primary bg-primary/5 hover:bg-primary/15 hover:border-primary/50 transition-all disabled:opacity-50"
+                              className="w-full px-4 py-2.5 text-xs font-medium rounded-xl border border-primary/20 text-primary bg-card hover:bg-primary/10 hover:border-primary/40 transition-all shadow-sm text-center disabled:opacity-50"
                             >
                               {opt}
                             </button>
@@ -267,7 +267,7 @@ const TelegramChatWidget = () => {
                       msg.id !== "bot-welcome" &&
                       !sending && (
                         <motion.div
-                          className="mt-1.5 ps-2"
+                          className="mt-1.5"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.3, duration: 0.25 }}
@@ -278,7 +278,7 @@ const TelegramChatWidget = () => {
                                 isHebrew ? "תפריט ראשי" : "Main menu"
                               )
                             }
-                            className="px-3 py-1.5 text-[11px] font-medium rounded-full border border-muted-foreground/30 text-muted-foreground bg-muted/50 hover:bg-muted hover:border-muted-foreground/50 transition-all"
+                            className="w-full px-4 py-2.5 text-xs font-medium rounded-xl border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
                           >
                             {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
                           </button>
