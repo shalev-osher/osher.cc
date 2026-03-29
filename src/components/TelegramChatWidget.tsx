@@ -265,7 +265,7 @@ const TelegramChatWidget = () => {
               transition={{ type: "spring", stiffness: 300, damping: 25 }}
             >
               <div className="relative flex items-center justify-between px-4 py-3 text-foreground overflow-hidden">
-                <div className="absolute inset-0 bg-secondary" />
+                <div className="absolute inset-0 bg-background/60 backdrop-blur-sm" />
                 <div className="absolute inset-0 border-b-2 border-primary/30" />
                 <div className="flex items-center gap-3 relative z-10">
                   <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center ring-2 ring-primary/30">
