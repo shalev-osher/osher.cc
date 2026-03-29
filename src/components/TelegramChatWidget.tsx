@@ -359,14 +359,14 @@ const TelegramChatWidget = () => {
                       {optionsHistory.length > 0 && (
                         <button
                           onClick={() => handleOptionClick(isHebrew ? "חזרה" : "Back")}
-                          className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
+                          className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center whitespace-nowrap"
                         >
                           {isHebrew ? "← חזרה" : "← Back"}
                         </button>
                       )}
                       <button
                         onClick={() => handleOptionClick(isHebrew ? "תפריט ראשי" : "Main menu")}
-                        className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
+                        className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center whitespace-nowrap"
                       >
                         {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
                       </button>
@@ -379,14 +379,14 @@ const TelegramChatWidget = () => {
                   {optionsHistory.length > 0 && (
                     <button
                       onClick={() => handleOptionClick(isHebrew ? "חזרה" : "Back")}
-                      className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
+                      className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center whitespace-nowrap"
                     >
                       {isHebrew ? "← חזרה" : "← Back"}
                     </button>
                   )}
                   <button
                     onClick={() => handleOptionClick(isHebrew ? "תפריט ראשי" : "Main menu")}
-                    className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
+                    className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center whitespace-nowrap"
                   >
                     {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
                   </button>
