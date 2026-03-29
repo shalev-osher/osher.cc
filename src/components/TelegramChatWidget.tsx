@@ -191,7 +191,7 @@ const TelegramChatWidget = () => {
                     <Sparkles className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm tracking-tight text-primary">
+                    <p className="font-bold text-sm sm:text-base tracking-tight text-primary">
                       {isHebrew ? "שליו אושר" : "Shalev Osher"}
                     </p>
                     <p className="text-[11px] text-muted-foreground font-medium">
@@ -216,7 +216,7 @@ const TelegramChatWidget = () => {
                       className={`flex ${msg.sender === "visitor" ? "justify-end" : "justify-start"}`}
                     >
                       <div
-                        className={`max-w-[80%] px-3 py-2 rounded-2xl text-xs ${
+                        className={`max-w-[80%] px-3 py-2 rounded-2xl text-xs sm:text-sm ${
                           msg.sender === "visitor"
                             ? "bg-primary text-primary-foreground rounded-br-sm shadow-sm"
                             : "bg-card text-foreground border border-border rounded-bl-sm shadow-sm"
@@ -225,7 +225,7 @@ const TelegramChatWidget = () => {
                         {msg.sender === "visitor" ? (
                           <p className="break-words">{msg.text}</p>
                         ) : (
-                          <div className="break-words prose prose-xs prose-neutral dark:prose-invert max-w-none [&>p]:m-0 [&>ul]:my-1 [&>ol]:my-1 [&>ul]:ps-4 [&>ol]:ps-4 [&>ul]:list-disc [&>ol]:list-decimal [&>li]:my-0.5 [&>h1]:text-sm [&>h2]:text-xs [&>h3]:text-xs [&>h4]:text-xs [&>p]:text-xs [&>ul]:text-xs [&>ol]:text-xs [&>li]:text-xs [&_strong]:font-bold [&_em]:italic">
+                          <div className="break-words prose prose-xs sm:prose-sm prose-neutral dark:prose-invert max-w-none [&>p]:m-0 [&>ul]:my-1 [&>ol]:my-1 [&>ul]:ps-4 [&>ol]:ps-4 [&>ul]:list-disc [&>ol]:list-decimal [&>li]:my-0.5 [&>h1]:text-sm sm:[&>h1]:text-base [&>h2]:text-xs sm:[&>h2]:text-sm [&>h3]:text-xs sm:[&>h3]:text-sm [&>h4]:text-xs sm:[&>h4]:text-sm [&>p]:text-xs sm:[&>p]:text-sm [&>ul]:text-xs sm:[&>ul]:text-sm [&>ol]:text-xs sm:[&>ol]:text-sm [&>li]:text-xs sm:[&>li]:text-sm [&_strong]:font-bold [&_em]:italic">
                             <ReactMarkdown>{msg.text || ""}</ReactMarkdown>
                           </div>
                         )}
@@ -254,7 +254,7 @@ const TelegramChatWidget = () => {
                               key={opt}
                               onClick={() => handleOptionClick(opt)}
                               disabled={sending}
-                              className="w-full px-4 py-2.5 text-xs font-medium rounded-xl border border-primary/20 text-primary bg-card hover:bg-primary/10 hover:border-primary/40 transition-all shadow-sm text-center disabled:opacity-50"
+                              className="w-full px-4 py-2.5 text-xs sm:text-sm font-medium rounded-xl border border-primary/20 text-primary bg-card hover:bg-primary/10 hover:border-primary/40 transition-all shadow-sm text-center disabled:opacity-50"
                             >
                               {opt}
                             </button>
@@ -278,7 +278,7 @@ const TelegramChatWidget = () => {
                                 isHebrew ? "תפריט ראשי" : "Main menu"
                               )
                             }
-                            className="w-full px-4 py-2.5 text-xs font-medium rounded-xl border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
+                            className="w-full px-4 py-2.5 text-xs sm:text-sm font-medium rounded-xl border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
                           >
                             {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
                           </button>
@@ -317,7 +317,7 @@ const TelegramChatWidget = () => {
                         ? isHebrew ? "בחר אפשרות מלמעלה..." : "Select an option above..."
                         : isHebrew ? "כתוב הודעה..." : "Type a message..."
                     }
-                    className={`flex-1 px-3 py-2 rounded-full bg-muted text-foreground text-xs outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/30 transition-shadow ${isHebrew ? "text-right" : "text-left"}`}
+                    className={`flex-1 px-3 py-2 rounded-full bg-muted text-foreground text-xs sm:text-sm outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/30 transition-shadow ${isHebrew ? "text-right" : "text-left"}`}
                     disabled={sending || hasOptions}
                     dir={isHebrew ? "rtl" : "ltr"}
                   />
