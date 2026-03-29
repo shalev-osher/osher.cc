@@ -317,7 +317,7 @@ const TelegramChatWidget = () => {
                         >
                           <button
                             onClick={() => handleOptionClick(isHebrew ? "תפריט ראשי" : "Main menu")}
-                            className="w-full px-3 py-2 text-[11px] sm:text-xs leading-tight font-medium rounded-lg border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
+                            className="w-full px-2 py-1 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
                           >
                             {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
                           </button>
