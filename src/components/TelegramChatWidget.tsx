@@ -199,10 +199,10 @@ const TelegramChatWidget = () => {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder={isHebrew ? "כתוב הודעה..." : "Type a message..."}
+                  placeholder={isHebrew ? "...כתוב הודעה" : "Type a message..."}
                   className={`flex-1 px-3 py-2 rounded-full bg-muted text-foreground text-xs outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/30 transition-shadow ${isHebrew ? "text-right" : "text-left"}`}
                   disabled={sending}
-                  dir="auto"
+                  dir={isHebrew ? "rtl" : "ltr"}
                 />
                 <button
                   onClick={sendMessage}
