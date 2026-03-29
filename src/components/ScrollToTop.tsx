@@ -41,9 +41,7 @@ const ScrollToTop = () => {
       {/* Scroll to top - always rendered for consistent shape, hidden when not scrolled */}
       <button
         onClick={scrollToTop}
-        className={`w-14 h-14 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 ${
-          isVisible ? "opacity-100" : "opacity-40 pointer-events-none"
-        }`}
+        className="w-14 h-14 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300"
         aria-label="Scroll to top"
       >
         <ArrowUp size={20} />
