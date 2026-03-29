@@ -7,6 +7,49 @@ const corsHeaders = {
 
 const N8N_WEBHOOK_URL = 'https://n8n.osher.cc/webhook/website-chat-jackie';
 
+const AI_GATEWAY_URL = 'https://ai.gateway.lovable.dev/v1/chat/completions';
+
+const SYSTEM_PROMPT = `אתה העוזר החכם של אתר הפורטפוליו של שלו אושר (Shalev Osher).
+אתה עוזר למבקרים באתר להבין מי הוא שלו, מה הניסיון שלו, הכישורים הטכניים שלו, וכיצד ליצור איתו קשר.
+ענה תמיד בעברית אלא אם המשתמש פונה בשפה אחרת.
+היה ידידותי, תמציתי ומקצועי.`;
+
+async function fallbackToAI(userMessage: string): Promise<string> {
+  const apiKey = Deno.env.get('LOVABLE_API_KEY');
+  if (!apiKey) {
+    console.error('LOVABLE_API_KEY not configured for AI fallback');
+    return '';
+  }
+
+  try {
+    const response = await fetch(AI_GATEWAY_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-3-flash-preview',
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'user', content: userMessage },
+        ],
+      }),
+    });
+
+    if (!response.ok) {
+      console.error('AI fallback error:', response.status);
+      return '';
+    }
+
+    const data = await response.json();
+    return data.choices?.[0]?.message?.content?.trim() || '';
+  } catch (err) {
+    console.error('AI fallback fetch error:', err);
+    return '';
+  }
+}
+
 const extractBotReply = (payload: unknown): string => {
   if (typeof payload === 'string') return payload.trim();
 
@@ -111,7 +154,12 @@ Deno.serve(async (req) => {
     }
 
     if (!botReply) {
-      botReply = 'ההודעה התקבלה, אחזור אליך בהקדם 👋';
+      console.log('N8N returned empty, falling back to AI...');
+      botReply = await fallbackToAI(text);
+    }
+
+    if (!botReply) {
+      botReply = 'מצטער, לא הצלחתי לעבד את הבקשה כרגע. נסה שוב בבקשה 🙏';
     }
 
     const { error: botInsertError } = await supabase.from('telegram_messages').insert({
