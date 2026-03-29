@@ -49,6 +49,8 @@ const Hero = () => {
     text: nameText,
     speed: 100,
     delay: 800,
+    loop: true,
+    pauseDuration: 3000,
   });
 
   const roleTypewriter = useTypewriter({
