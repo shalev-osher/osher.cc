@@ -45,10 +45,18 @@ const Hero = () => {
   const roles = [t("hero.role1"), t("hero.role2"), t("hero.role3"), t("hero.role4")];
 
   const nameText = lang === "he" ? "שליו אושר" : "Shalev Osher";
+  const helloText = lang === "he" ? "שלום, אני" : "Hello, I'm";
+
+  const helloTypewriter = useTypewriter({
+    text: helloText,
+    speed: 80,
+    delay: 300,
+  });
+
   const nameTypewriter = useTypewriter({
     text: nameText,
     speed: 100,
-    delay: 800,
+    delay: 800 + helloText.length * 80 + 200,
     loop: true,
     pauseDuration: 3000,
   });
