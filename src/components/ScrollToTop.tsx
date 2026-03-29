@@ -37,29 +37,31 @@ const ScrollToTop = () => {
   };
 
   return (
-    <>
-      {/* Scroll to top - above the down arrow */}
+    <div className="fixed bottom-8 end-8 z-50 flex flex-col rounded-full border border-primary/30 overflow-hidden glass-effect">
+      {/* Scroll to top */}
       <button
         onClick={scrollToTop}
-        className={`fixed bottom-24 end-8 w-14 h-14 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 z-50 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+        className={`w-14 h-14 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 ${
+          isVisible ? "opacity-100" : "opacity-30 pointer-events-none"
         }`}
         aria-label="Scroll to top"
       >
         <ArrowUp size={20} />
       </button>
 
+      <div className="h-px bg-primary/20" />
+
       {/* Scroll to next section */}
       <button
         onClick={scrollToNextSection}
-        className={`fixed bottom-8 end-8 w-14 h-14 rounded-full border border-primary/30 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 z-50 glass-effect ${
-          canScrollDown ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+        className={`w-14 h-14 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 ${
+          canScrollDown ? "opacity-100" : "opacity-30 pointer-events-none"
         }`}
         aria-label="Scroll to next section"
       >
-        <ArrowDown size={24} />
+        <ArrowDown size={20} />
       </button>
-    </>
+    </div>
   );
 };
 
