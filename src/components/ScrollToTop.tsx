@@ -4,6 +4,7 @@ import { ArrowUp, ArrowDown } from "lucide-react";
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [canScrollDown, setCanScrollDown] = useState(true);
+  const [isNearBottom, setIsNearBottom] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -11,8 +12,9 @@ const ScrollToTop = () => {
       const maxScrollY = document.documentElement.scrollHeight - window.innerHeight;
 
       setIsVisible(currentY > 400);
-      // Hide down arrow AND fade out near bottom to avoid overlapping footer icons
       setCanScrollDown(currentY < maxScrollY - 200);
+      // Hide entire pill when near the footer to avoid overlapping social icons
+      setIsNearBottom(currentY > maxScrollY - 300);
     };
 
     window.addEventListener("scroll", handleScroll);
