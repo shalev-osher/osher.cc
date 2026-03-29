@@ -15,6 +15,7 @@ interface Message {
 
 const SESSION_ID = `web-${Math.random().toString(36).slice(2, 10)}`;
 const MAX_MESSAGES_PER_SESSION = 30;
+const MAX_FREE_TEXT_PER_SESSION = 5;
 
 const TelegramChatWidget = () => {
   const { lang } = useLanguage();
@@ -28,6 +29,8 @@ const TelegramChatWidget = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [messageCount, setMessageCount] = useState(0);
+  const [freeTextCount, setFreeTextCount] = useState(0);
+  const [freeTextMode, setFreeTextMode] = useState(false);
 
   const getMenuOptions = useCallback(
     () =>
@@ -93,6 +96,10 @@ const TelegramChatWidget = () => {
     }
 
     setMessageCount((c) => c + 1);
+    if (freeTextMode) {
+      setFreeTextCount((c) => c + 1);
+      setFreeTextMode(false);
+    }
 
     const visitorMessage: Message = {
       id: `visitor-${crypto.randomUUID()}`,
@@ -154,6 +161,36 @@ const TelegramChatWidget = () => {
   const handleOptionClick = (option: string) => {
     const isMainMenu = option === "Main menu" || option === "תפריט ראשי";
     const isBack = option === "Back" || option === "חזרה";
+    const isFreeText = option === "שאלה אחרת" || option === "Other question";
+
+    if (isFreeText) {
+      if (freeTextCount >= MAX_FREE_TEXT_PER_SESSION) {
+        const limitMsg: Message = {
+          id: `bot-limit-free-${crypto.randomUUID()}`,
+          sender: "bot",
+          text: isHebrew
+            ? "⏳ הגעת למגבלת השאלות החופשיות. ניתן להמשיך עם הכפתורים או ליצור קשר דרך הטופס באתר."
+            : "⏳ You've reached the free question limit. You can continue with the buttons or use the contact form.",
+          created_at: new Date().toISOString(),
+        };
+        setMessages((prev) => [...prev, limitMsg]);
+        return;
+      }
+      setFreeTextMode(true);
+      // Remove options from last bot message to unlock input
+      setMessages((prev) => {
+        const updated = [...prev];
+        for (let i = updated.length - 1; i >= 0; i--) {
+          if (updated[i].sender === "bot") {
+            updated[i] = { ...updated[i], options: undefined };
+            break;
+          }
+        }
+        return updated;
+      });
+      setTimeout(() => inputRef.current?.focus(), 100);
+      return;
+    }
 
     if (isBack && optionsHistory.length > 0) {
       const prev = optionsHistory[optionsHistory.length - 1];
@@ -354,24 +391,30 @@ const TelegramChatWidget = () => {
                       {opt}
                     </button>
                   ))}
-                  {lastBotMsg.id !== "bot-welcome" && !lastBotMsg.id.startsWith("bot-menu-") && (
-                    <div className="flex gap-1 mt-0.5">
-                      {optionsHistory.length > 0 && (
-                        <button
-                          onClick={() => handleOptionClick(isHebrew ? "חזרה" : "Back")}
-                          className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center whitespace-nowrap"
-                        >
-                          {isHebrew ? "← חזרה" : "← Back"}
-                        </button>
-                      )}
+                  <div className="flex gap-1 mt-0.5">
+                    {lastBotMsg.id !== "bot-welcome" && !lastBotMsg.id.startsWith("bot-menu-") && optionsHistory.length > 0 && (
                       <button
-                        onClick={() => handleOptionClick(isHebrew ? "תפריט ראשי" : "Main menu")}
+                        onClick={() => handleOptionClick(isHebrew ? "חזרה" : "Back")}
                         className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center whitespace-nowrap"
                       >
-                        {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
+                        {isHebrew ? "← חזרה" : "← Back"}
                       </button>
-                    </div>
-                  )}
+                    )}
+                    {freeTextCount < MAX_FREE_TEXT_PER_SESSION && (
+                      <button
+                        onClick={() => handleOptionClick(isHebrew ? "שאלה אחרת" : "Other question")}
+                        className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-accent/30 text-accent-foreground bg-accent/20 hover:bg-accent/40 hover:border-accent/50 transition-all text-center whitespace-nowrap"
+                      >
+                        {isHebrew ? "✏️ שאלה אחרת" : "✏️ Other question"}
+                      </button>
+                    )}
+                    <button
+                      onClick={() => handleOptionClick(isHebrew ? "תפריט ראשי" : "Main menu")}
+                      className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center whitespace-nowrap"
+                    >
+                      {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
+                    </button>
+                  </div>
                 </div>
               )}
               {!hasOptions && lastBotMsg && lastBotMsg.id !== "bot-welcome" && !lastBotMsg.id.startsWith("bot-menu-") && !sending && (
