@@ -1,8 +1,16 @@
 import { useState, useEffect, useMemo } from "react";
 import { Menu, X, Download } from "lucide-react";
+import { motion } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 import useActiveSection from "@/hooks/useActiveSection";
 import { useLanguage } from "@/contexts/LanguageContext";
+
+const navButtonHover = {
+  scale: 1.07,
+  y: -2,
+  transition: { type: "spring" as const, stiffness: 400, damping: 15 },
+};
+const navButtonTap = { scale: 0.95 };
 
 const Navbar = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -40,9 +48,11 @@ const Navbar = () => {
             </a>
             <div className="hidden md:flex items-center gap-2">
               {navLinks.map((link) => (
-                <a
+                <motion.a
                   key={link.href}
                   href={link.href}
+                  whileHover={navButtonHover}
+                  whileTap={navButtonTap}
                   className={`text-sm font-bold font-display px-3 py-1.5 rounded-lg border transition-colors duration-300 ${
                     activeSection === link.id
                       ? "bg-primary/25 text-primary border-primary/40 shadow-sm shadow-primary/10"
@@ -51,23 +61,27 @@ const Navbar = () => {
                   aria-current={activeSection === link.id ? "true" : undefined}
                 >
                   {link.label}
-                </a>
+                </motion.a>
               ))}
-              <a
+              <motion.a
                 href="/cv/shalev-osher-cv.pdf"
                 download
+                whileHover={navButtonHover}
+                whileTap={navButtonTap}
                 className="text-sm font-bold font-display px-3 py-1.5 rounded-lg border border-border/60 bg-primary/10 text-foreground/80 hover:bg-primary/20 hover:text-primary hover:border-primary/30 transition-colors duration-300"
                 aria-label="Download CV"
               >
                 CV
-              </a>
-              <button
+              </motion.a>
+              <motion.button
                 onClick={toggleLang}
+                whileHover={navButtonHover}
+                whileTap={navButtonTap}
                 className="text-sm font-bold font-display px-3 py-1.5 rounded-lg border border-border/60 bg-primary/10 text-foreground/80 hover:bg-primary/20 hover:text-primary hover:border-primary/30 transition-colors duration-300"
                 aria-label={`Switch to ${lang === "en" ? "Hebrew" : "English"}`}
               >
                 {lang === "en" ? "HE" : "EN"}
-              </button>
+              </motion.button>
               <ThemeToggle />
             </div>
             <div className="flex items-center gap-2 md:hidden">
