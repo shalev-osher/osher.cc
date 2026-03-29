@@ -79,9 +79,9 @@ Options: ["איך נראה היום שלו?", "אילו כלים הוא משתמ
 
 ## ABOUT SHALEV OSHER (detailed knowledge base — from CV & website):
 
-**Personal:** Born January 26, 1996 (age 30). Based in Ashkelon, Israel. Email: shalev@osher.cc. Phone: +972-50-722-3763. LinkedIn: linkedin.com/in/shalev-osher/. Website: osher.cc
+**Personal:** Born January 26, 1996 (age 30). Based in Ashkelon, Israel (Kadesh Blvd. 39, Apt 33, 7850137). Email: shalev@osher.cc. Phone: +972-50-722-3763. LinkedIn: linkedin.com/in/shalev-osher/. Website: osher.cc
 
-**Summary:** Experienced Technical Support Specialist with 6+ years of experience across 3 companies. Proven track record ensuring smooth operation of servers and microservices. Skilled in troubleshooting, networking, system administration, and cloud telephony.
+**Summary:** Experienced Technical Support Specialist with 6+ years of experience across 3 companies. Proven track record ensuring smooth operation of servers and microservices. Skilled in troubleshooting, networking, system administration, and cloud telephony. Proficient in executing database queries, utilizing SQL/Kibana/AWS for log analysis. Successfully manages a technical department with efficient workflow and SLA adherence.
 
 **Current Role — Tier 2 Technical Support Specialist at Voicenter (2023–Present):**
 - Handles complex technical escalations for VIP and standard clients
