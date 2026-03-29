@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, Bot, Sparkles, Trash2, Download } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import jsPDF from "jspdf";
+
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -77,78 +77,50 @@ const TelegramChatWidget = () => {
   const handleExportPDF = useCallback(() => {
     if (messages.length === 0) return;
 
-    const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
-    const margin = 20;
-    const contentWidth = pageWidth - margin * 2;
-    let y = margin;
+    const dateStr = new Date().toLocaleDateString(isHebrew ? "he-IL" : "en-US", { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" });
 
-    // Title
-    doc.setFontSize(16);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(40, 40, 40);
-    const title = isHebrew ? "Chat Export - Shalev Osher" : "Chat Export - Shalev Osher";
-    doc.text(title, pageWidth / 2, y, { align: "center" });
-    y += 6;
+    const msgHtml = messages
+      .filter((m) => m.text)
+      .map((m) => {
+        const time = new Date(m.created_at).toLocaleTimeString(isHebrew ? "he-IL" : "en-US", { hour: "2-digit", minute: "2-digit" });
+        const isBot = m.sender === "bot";
+        return `<div style="display:flex;justify-content:${isBot ? "flex-end" : "flex-start"};margin-bottom:12px;">
+          <div style="max-width:75%;padding:10px 14px;border-radius:${isBot ? "14px 14px 4px 14px" : "14px 14px 14px 4px"};background:${isBot ? "linear-gradient(135deg,#1a1a2e,#16213e)" : "linear-gradient(135deg,#c9a84c,#b8942e)"};color:${isBot ? "#e0e0e0" : "#1a1a1a"};font-size:14px;line-height:1.6;box-shadow:0 2px 8px rgba(0,0,0,0.15);">
+            <div style="font-size:11px;opacity:0.7;margin-bottom:4px;font-weight:600;">${isBot ? "🤖 AI Assistant" : "👤 Visitor"} · ${time}</div>
+            <div>${m.text}</div>
+          </div>
+        </div>`;
+      })
+      .join("");
 
-    // Date line
-    doc.setFontSize(9);
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(120, 120, 120);
-    doc.text(new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }), pageWidth / 2, y, { align: "center" });
-    y += 4;
+    const html = `<!DOCTYPE html><html dir="${isHebrew ? "rtl" : "ltr"}" lang="${isHebrew ? "he" : "en"}">
+<head><meta charset="utf-8"><title>Chat Export - Shalev Osher</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;color:#f0f0f0;padding:40px 20px;min-height:100vh}
+.container{max-width:600px;margin:0 auto;background:#111;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+.header{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:24px;text-align:center;border-bottom:2px solid #c9a84c}
+.header h1{font-size:20px;color:#c9a84c;margin-bottom:4px}
+.header p{font-size:12px;color:#888}
+.messages{padding:20px}
+.footer{text-align:center;padding:16px;font-size:11px;color:#555;border-top:1px solid #222}
+@media print{body{background:#fff;padding:0}.container{box-shadow:none;border-radius:0}}
+</style></head>
+<body>
+<div class="container">
+  <div class="header"><h1>💬 ${isHebrew ? "ייצוא שיחה – שליו אושר" : "Chat Export – Shalev Osher"}</h1><p>${dateStr}</p></div>
+  <div class="messages">${msgHtml}</div>
+  <div class="footer">osher.cc</div>
+</div>
+</body></html>`;
 
-    // Divider
-    doc.setDrawColor(200, 180, 120);
-    doc.setLineWidth(0.5);
-    doc.line(margin, y, pageWidth - margin, y);
-    y += 8;
-
-    messages.forEach((m) => {
-      if (!m.text) return;
-      const time = new Date(m.created_at).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
-      const isBot = m.sender === "bot";
-      const sender = isBot ? "AI Assistant" : "Visitor";
-
-      // Check page break
-      if (y > pageHeight - 30) {
-        doc.addPage();
-        y = margin;
-      }
-
-      // Sender label with time
-      doc.setFontSize(8);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(isBot ? 100 : 50, isBot ? 100 : 50, isBot ? 100 : 50);
-      doc.text(`${sender}  •  ${time}`, margin, y);
-      y += 5;
-
-      // Message bubble background
-      const lines = doc.setFontSize(10).setFont("helvetica", "normal").splitTextToSize(m.text, contentWidth - 10);
-      const blockHeight = lines.length * 5 + 6;
-
-      if (y + blockHeight > pageHeight - 20) {
-        doc.addPage();
-        y = margin;
-      }
-
-      // Background rect
-      doc.setFillColor(isBot ? 245 : 235, isBot ? 245 : 240, isBot ? 250 : 220);
-      doc.roundedRect(margin, y - 2, contentWidth, blockHeight, 2, 2, "F");
-
-      // Text
-      doc.setTextColor(30, 30, 30);
-      doc.text(lines, margin + 5, y + 3);
-      y += blockHeight + 4;
-    });
-
-    // Footer
-    doc.setFontSize(7);
-    doc.setTextColor(160, 160, 160);
-    doc.text("osher.cc", pageWidth / 2, pageHeight - 10, { align: "center" });
-
-    doc.save("shalev-osher-chat.pdf");
+    const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "shalev-osher-chat.html";
+    a.click();
+    URL.revokeObjectURL(url);
   }, [messages, isHebrew]);
 
   const scrollToBottom = useCallback(() => {
