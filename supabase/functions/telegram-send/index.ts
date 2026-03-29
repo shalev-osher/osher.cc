@@ -103,7 +103,7 @@ Options: ["איך נראה היום שלו?", "אילו כלים הוא משתמ
 
 **Languages:** Native Hebrew, fluent English
 
-**Personal:** Born January 26, 1996 (age 30). Based in Israel.
+**Personal:** Born January 26, 1996 (age 30). Based in Ashkelon, Israel.
 
 **Strengths:** Deep troubleshooting, cross-team collaboration, fast learner, production-grade problem solving, strong ownership, excellent under pressure
 
