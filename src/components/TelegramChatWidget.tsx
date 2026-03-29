@@ -259,6 +259,29 @@ const TelegramChatWidget = () => {
                           ))}
                         </motion.div>
                       )}
+                    {/* Back to main menu button – on last bot message, after first exchange */}
+                    {msg.sender === "bot" &&
+                      idx === lastBotIdx &&
+                      msg.id !== "bot-welcome" &&
+                      !sending && (
+                        <motion.div
+                          className="mt-1.5 ps-2"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.3, duration: 0.25 }}
+                        >
+                          <button
+                            onClick={() =>
+                              handleOptionClick(
+                                isHebrew ? "תפריט ראשי" : "Main menu"
+                              )
+                            }
+                            className="px-3 py-1.5 text-[11px] font-medium rounded-full border border-muted-foreground/30 text-muted-foreground bg-muted/50 hover:bg-muted hover:border-muted-foreground/50 transition-all"
+                          >
+                            {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
+                          </button>
+                        </motion.div>
+                      )}
                   </div>
                 ))}
                 {/* Typing indicator */}
