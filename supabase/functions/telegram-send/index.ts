@@ -7,6 +7,31 @@ const corsHeaders = {
 
 const AI_GATEWAY_URL = 'https://ai.gateway.lovable.dev/v1/chat/completions';
 
+const SAFE_FALLBACK_REPLY = `שלום! אני העוזר הדיגיטלי של שליו אושר (Shalev Osher).
+
+אני יכול לעזור במידע על:
+1. הניסיון המקצועי שלו
+2. הכישורים והטכנולוגיות שלו
+3. התפקיד הנוכחי והניסיון הקודם
+4. פרטי התקשרות
+
+על מה תרצה/י שאפרט?`;
+
+const FORBIDDEN_PATTERNS = [
+  /שלו אושר/g,
+  /Pixel Perfect Developer/gi,
+  /Full-?Stack/gi,
+  /UI\/UX/gi,
+  /Next\.js/gi,
+  /React/gi,
+  /Node\.js/gi,
+  /MongoDB/gi,
+  /PostgreSQL/gi,
+  /Tailwind/gi,
+  /Vercel/gi,
+  /Docker/gi,
+];
+
 const SYSTEM_PROMPT = `You are the AI assistant for Shalev Osher's portfolio website.
 
 Important naming rules:
@@ -56,6 +81,14 @@ Contact details:
 
 If unsure, provide a short professional summary of Shalev Osher and ask what the visitor would like to know next.`;
 
+const sanitizeReply = (reply: string): string => {
+  return reply.replaceAll('שלו אושר', 'שליו אושר').trim();
+};
+
+const containsForbiddenContent = (reply: string): boolean => {
+  return FORBIDDEN_PATTERNS.some((pattern) => pattern.test(reply));
+};
+
 async function getAIReply(userMessage: string): Promise<string> {
   const apiKey = Deno.env.get('LOVABLE_API_KEY');
   if (!apiKey) {
@@ -85,7 +118,14 @@ async function getAIReply(userMessage: string): Promise<string> {
     }
 
     const data = await response.json();
-    return data.choices?.[0]?.message?.content?.trim() || '';
+    const rawReply = data.choices?.[0]?.message?.content?.trim() || '';
+    const cleanReply = sanitizeReply(rawReply);
+
+    if (!cleanReply || containsForbiddenContent(cleanReply)) {
+      return SAFE_FALLBACK_REPLY;
+    }
+
+    return cleanReply;
   } catch (err) {
     console.error('AI fallback fetch error:', err);
     return '';
