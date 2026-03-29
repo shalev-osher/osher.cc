@@ -140,18 +140,17 @@ const TelegramChatWidget = () => {
     if (isBack && optionsHistory.length > 0) {
       const prev = optionsHistory[optionsHistory.length - 1];
       setOptionsHistory((h) => h.slice(0, -1));
-      setMessages((prev_msgs) => [
-        ...prev_msgs.map((m, i) =>
-          i === prev_msgs.length - 1 && m.sender === "bot" ? { ...m, options: undefined } : m
-        ),
-        {
-          id: `bot-back-${crypto.randomUUID()}`,
-          sender: "bot",
-          text: prev.text,
-          created_at: new Date().toISOString(),
-          options: prev.options,
-        },
-      ]);
+      // Just restore previous options on the last bot message without adding a new message
+      setMessages((prev_msgs) => {
+        const updated = [...prev_msgs];
+        for (let i = updated.length - 1; i >= 0; i--) {
+          if (updated[i].sender === "bot") {
+            updated[i] = { ...updated[i], options: prev.options };
+            break;
+          }
+        }
+        return updated;
+      });
       return;
     }
 
