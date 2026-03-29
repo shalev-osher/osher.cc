@@ -96,6 +96,10 @@ const TelegramChatWidget = () => {
     }
 
     setMessageCount((c) => c + 1);
+    if (freeTextMode) {
+      setFreeTextCount((c) => c + 1);
+      setFreeTextMode(false);
+    }
 
     const visitorMessage: Message = {
       id: `visitor-${crypto.randomUUID()}`,
