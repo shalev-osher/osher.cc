@@ -14,8 +14,8 @@ interface Message {
 const SESSION_ID = `web-${Math.random().toString(36).slice(2, 10)}`;
 
 const TelegramChatWidget = () => {
-  const { language } = useLanguage();
-  const isHebrew = language === "he";
+  const { lang } = useLanguage();
+  const isHebrew = lang === "he";
   const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
