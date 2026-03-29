@@ -11,7 +11,8 @@ const ScrollToTop = () => {
       const maxScrollY = document.documentElement.scrollHeight - window.innerHeight;
 
       setIsVisible(currentY > 400);
-      setCanScrollDown(currentY < maxScrollY - 120);
+      // Hide down arrow AND fade out near bottom to avoid overlapping footer icons
+      setCanScrollDown(currentY < maxScrollY - 200);
     };
 
     window.addEventListener("scroll", handleScroll);
