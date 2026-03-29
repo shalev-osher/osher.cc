@@ -268,7 +268,7 @@ const TelegramChatWidget = () => {
                       msg.options &&
                       msg.options.length > 0 && (
                         <motion.div
-                          className="flex flex-col gap-1.5 mt-2"
+                          className="flex flex-wrap gap-1.5 mt-2"
                           initial={{ opacity: 0, y: 6 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.25 }}
@@ -278,7 +278,7 @@ const TelegramChatWidget = () => {
                               key={opt}
                               onClick={() => handleOptionClick(opt)}
                               disabled={sending}
-                              className="w-full px-4 py-3 text-xs sm:text-sm font-bold font-display rounded-xl border border-primary/30 text-primary-foreground bg-primary/80 hover:bg-primary hover:border-primary/50 transition-all shadow-md text-center disabled:opacity-50"
+                              className="px-3 py-1.5 text-[11px] sm:text-xs font-bold font-display rounded-lg border border-primary/30 text-primary-foreground bg-primary/80 hover:bg-primary hover:border-primary/50 transition-all shadow-sm text-center disabled:opacity-50"
                             >
                               {opt}
                             </button>
@@ -302,7 +302,7 @@ const TelegramChatWidget = () => {
                                 isHebrew ? "תפריט ראשי" : "Main menu"
                               )
                             }
-                            className="w-full px-4 py-2.5 text-xs sm:text-sm font-medium rounded-xl border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
+                            className="px-3 py-1.5 text-[11px] sm:text-xs font-medium rounded-lg border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
                           >
                             {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
                           </button>
