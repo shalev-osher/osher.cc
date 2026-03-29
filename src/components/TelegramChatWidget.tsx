@@ -14,6 +14,7 @@ interface Message {
 }
 
 const SESSION_ID = `web-${Math.random().toString(36).slice(2, 10)}`;
+const MAX_MESSAGES_PER_SESSION = 30;
 
 const TelegramChatWidget = () => {
   const { lang } = useLanguage();
@@ -26,11 +27,13 @@ const TelegramChatWidget = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const [messageCount, setMessageCount] = useState(0);
+
   const getMenuOptions = useCallback(
     () =>
       isHebrew
-        ? ["מה הוא עושה?", "טכנולוגיות שהוא משתמש", "איך ליצור קשר?", "הניסיון שלו", "השכלה וקורסים", "פרויקטים"]
-        : ["What does he do?", "Technologies he uses", "How to contact him?", "His experience", "Education & courses", "Projects"],
+        ? ["תפקיד ותחומי אחריות", "סטאק טכנולוגי", "יצירת קשר", "ניסיון מקצועי", "השכלה והסמכות", "פרויקטים"]
+        : ["Role & responsibilities", "Tech stack", "Get in touch", "Professional experience", "Education & certifications", "Projects"],
     [isHebrew]
   );
 
