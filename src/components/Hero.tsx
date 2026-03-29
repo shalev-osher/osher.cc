@@ -44,6 +44,14 @@ const Hero = () => {
 
   const roles = [t("hero.role1"), t("hero.role2"), t("hero.role3"), t("hero.role4")];
 
+  const nameTypewriter = useTypewriter({
+    texts: ["Shalev Osher", "שליו אושר"],
+    speed: 100,
+    delay: 800,
+    pauseDuration: 3000,
+    loop: true,
+  });
+
   const roleTypewriter = useTypewriter({
     texts: roles,
     speed: 80,
