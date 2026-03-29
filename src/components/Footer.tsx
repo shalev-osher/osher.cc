@@ -17,7 +17,7 @@ const Footer = () => {
       
       <div className="container mx-auto px-6">
         <motion.div
-          className="flex flex-col items-center gap-6 text-center"
+          className="flex flex-col items-center gap-2 text-center"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
