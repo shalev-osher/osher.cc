@@ -86,10 +86,14 @@ const About = () => {
   const companies = useCountUp({ end: 4, duration: 1200 });
   const certHours = useCountUp({ end: 450, suffix: "+", duration: 2000 });
 
+  const label1Tw = useTypewriter({ text: t("about.yearsExp"), speed: 50, loop: true, pauseDuration: 4000 });
+  const label2Tw = useTypewriter({ text: t("about.companies"), speed: 50, delay: 300, loop: true, pauseDuration: 4000 });
+  const label3Tw = useTypewriter({ text: t("about.certHours"), speed: 50, delay: 600, loop: true, pauseDuration: 4000 });
+
   const stats = [
-    { ref: yearsExp.ref, display: yearsExp.display, isComplete: yearsExp.isComplete, label: t("about.yearsExp") },
-    { ref: companies.ref, display: companies.display, isComplete: companies.isComplete, label: t("about.companies") },
-    { ref: certHours.ref, display: certHours.display, isComplete: certHours.isComplete, label: t("about.certHours") },
+    { ref: yearsExp.ref, display: yearsExp.display, isComplete: yearsExp.isComplete, labelTw: label1Tw },
+    { ref: companies.ref, display: companies.display, isComplete: companies.isComplete, labelTw: label2Tw },
+    { ref: certHours.ref, display: certHours.display, isComplete: certHours.isComplete, labelTw: label3Tw },
   ];
 
   return (
