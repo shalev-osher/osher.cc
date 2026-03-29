@@ -19,8 +19,14 @@ const SAFE_FALLBACK_REPLY = `שלום! אני העוזר הדיגיטלי של �
 
 const FORBIDDEN_PATTERNS = [
   /שלו אושר/g,
+  /שלו\b/g,
   /Pixel Perfect Developer/gi,
   /Full-?Stack/gi,
+  /developer/gi,
+  /מפתח/gi,
+  /פיתוח/gi,
+  /Frontend/gi,
+  /Backend/gi,
   /UI\/UX/gi,
   /Next\.js/gi,
   /React/gi,
@@ -68,6 +74,9 @@ Rules:
 - Focus only on portfolio-related topics: background, experience, skills, technologies, strengths, and contact details.
 - Do not claim access to private systems, emails, calendars, reminders, or tasks.
 - Do not invent facts, projects, certifications, or achievements that were not explicitly provided.
+- Never describe Shalev Osher as a Full-Stack developer, frontend developer, UI/UX expert, Pixel Perfect Developer, or software developer unless that exact information was explicitly provided.
+- Never mention React, Next.js, Node.js, MongoDB, PostgreSQL, Tailwind, Vercel, Docker, or similar software-stack claims unless they were explicitly provided.
+- If asked about projects or technologies that were not explicitly provided, say that the verified public information currently focuses on technical support, systems, networking, cloud telephony, SQL, Kibana, AWS, troubleshooting, and technical operations.
 - If the user asks broad questions like "everything", "tell me everything", "הכל", or "ספר לי הכל", do not dump too much at once. Instead, guide them with a short clarifying question and offer options such as experience, skills, technologies, current role, previous work, or contact details.
 - If the user asks something unclear, still return a helpful answer instead of staying silent.
 - Always answer in plain text.
@@ -82,7 +91,10 @@ Contact details:
 If unsure, provide a short professional summary of Shalev Osher and ask what the visitor would like to know next.`;
 
 const sanitizeReply = (reply: string): string => {
-  return reply.replaceAll('שלו אושר', 'שליו אושר').trim();
+  return reply
+    .replaceAll('שלו אושר', 'שליו אושר')
+    .replace(/\bשלו\b(?=\s+אושר)/g, 'שליו')
+    .trim();
 };
 
 const containsForbiddenContent = (reply: string): boolean => {

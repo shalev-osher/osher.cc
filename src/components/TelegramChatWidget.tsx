@@ -28,41 +28,6 @@ const TelegramChatWidget = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
-  // Load messages
-  useEffect(() => {
-
-    const fetchMessages = async () => {
-      const { data } = await supabase
-        .from("telegram_messages")
-        .select("id, sender, text, created_at")
-        .order("created_at", { ascending: true })
-        .limit(100);
-      if (data) setMessages(data);
-    };
-
-    fetchMessages();
-
-    // Realtime subscription
-    const channel = supabase
-      .channel("telegram-chat")
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "telegram_messages" },
-        (payload) => {
-          const newMsg = payload.new as Message;
-          setMessages((prev) => {
-            if (prev.some((m) => m.id === newMsg.id)) return prev;
-            return [...prev, newMsg];
-          });
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
   useEffect(() => {
     scrollToBottom();
   }, [messages, scrollToBottom]);
@@ -75,14 +40,38 @@ const TelegramChatWidget = () => {
     const trimmed = input.trim();
     if (!trimmed || sending) return;
 
+    const visitorMessage: Message = {
+      id: `visitor-${crypto.randomUUID()}`,
+      sender: "visitor",
+      text: trimmed,
+      created_at: new Date().toISOString(),
+    };
+
+    setMessages((prev) => [...prev, visitorMessage]);
     setSending(true);
     setInput("");
 
     try {
-      const { error } = await supabase.functions.invoke("telegram-send", {
+      const { data, error } = await supabase.functions.invoke("telegram-send", {
         body: { text: trimmed, sessionId: SESSION_ID },
       });
       if (error) throw error;
+
+      const reply = typeof data?.reply === "string"
+        ? data.reply
+        : isHebrew
+          ? "מצטער, לא הצלחתי לעבד את הבקשה כרגע."
+          : "Sorry, I couldn't process the request right now.";
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `bot-${crypto.randomUUID()}`,
+          sender: "bot",
+          text: reply,
+          created_at: new Date().toISOString(),
+        },
+      ]);
     } catch (err) {
       console.error("Failed to send:", err);
       setInput(trimmed);
@@ -180,7 +169,7 @@ const TelegramChatWidget = () => {
                     {msg.sender === "visitor" ? (
                       <p className="break-words">{msg.text}</p>
                     ) : (
-                      <div className="break-words prose prose-xs prose-neutral dark:prose-invert max-w-none [&>p]:m-0 [&>ul]:my-1 [&>ol]:my-1 [&>li]:my-0.5 [&>h1]:text-sm [&>h2]:text-xs [&>h3]:text-xs [&>h4]:text-xs [&>p]:text-xs [&>ul]:text-xs [&>ol]:text-xs [&>li]:text-xs [&_strong]:font-bold [&_em]:italic">
+                      <div className="break-words prose prose-xs prose-neutral dark:prose-invert max-w-none [&>p]:m-0 [&>ul]:my-1 [&>ol]:my-1 [&>ul]:ps-4 [&>ol]:ps-4 [&>ul]:list-disc [&>ol]:list-decimal [&>li]:my-0.5 [&>h1]:text-sm [&>h2]:text-xs [&>h3]:text-xs [&>h4]:text-xs [&>p]:text-xs [&>ul]:text-xs [&>ol]:text-xs [&>li]:text-xs [&_strong]:font-bold [&_em]:italic">
                         <ReactMarkdown>{msg.text || ""}</ReactMarkdown>
                       </div>
                     )}
