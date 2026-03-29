@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send, Bot } from "lucide-react";
+import { X, Send, Bot, Sparkles } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -94,52 +94,58 @@ const TelegramChatWidget = () => {
     });
   };
 
+  // Position: Hebrew = right side, English = left side
+  const positionClass = isHebrew
+    ? "right-4 sm:right-6"
+    : "left-4 sm:left-6";
+
   return (
     <motion.div
-      className="fixed bottom-20 left-6 z-[150] sm:bottom-6"
+      className={`fixed bottom-20 sm:bottom-6 z-[150] ${positionClass}`}
       initial={{ y: 80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 1.5, type: "spring", stiffness: 200, damping: 20 }}
     >
       <AnimatePresence mode="wait">
         {isMinimized ? (
-          /* Minimized bar */
           <motion.button
             key="minimized"
             onClick={() => setIsMinimized(false)}
-            className="w-14 h-14 rounded-full bg-gradient-to-br from-violet-500 via-fuchsia-500 to-amber-400 text-white shadow-lg hover:shadow-2xl hover:shadow-fuchsia-500/30 transition-shadow flex items-center justify-center"
+            className="w-14 h-14 rounded-full bg-gradient-to-br from-violet-500 via-fuchsia-500 to-amber-400 text-white shadow-lg hover:shadow-2xl hover:shadow-fuchsia-500/30 transition-all flex items-center justify-center relative overflow-hidden group"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
-            <Bot className="w-6 h-6" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <Bot className="w-6 h-6 relative z-10" />
           </motion.button>
         ) : (
-          /* Chat Window - compact */
           <motion.div
             key="chat"
-            className="w-[380px] h-[500px] max-w-[calc(100vw-48px)] max-h-[calc(100vh-48px)] rounded-2xl overflow-hidden shadow-2xl flex flex-col bg-background border border-border"
+            className="w-[380px] h-[520px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-48px)] rounded-2xl overflow-hidden shadow-2xl flex flex-col border border-border relative"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
-            {/* Header */}
-            <div className="flex items-center justify-between px-3 py-2 bg-[#0088cc] text-white">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                  <Bot className="w-4 h-4" />
+            {/* Header - gradient */}
+            <div className="relative flex items-center justify-between px-4 py-3 text-white overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-violet-600 via-fuchsia-500 to-amber-400" />
+              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIi8+PC9zdmc+')] opacity-30" />
+              <div className="flex items-center gap-3 relative z-10">
+                <div className="w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center ring-2 ring-white/30">
+                  <Sparkles className="w-4 h-4" />
                 </div>
                 <div>
-                  <p className="font-semibold text-xs">{isHebrew ? "שליו אושר" : "Shalev Osher"}</p>
-                  <p className="text-[10px] text-white/70">{isHebrew ? "עוזר AI" : "AI Assistant"}</p>
+                  <p className="font-bold text-sm tracking-tight">{isHebrew ? "שליו אושר" : "Shalev Osher"}</p>
+                  <p className="text-[11px] text-white/80 font-medium">{isHebrew ? "עוזר AI" : "AI Assistant"}</p>
                 </div>
               </div>
               <button
                 onClick={() => setIsMinimized(true)}
-                className="p-1 rounded-full hover:bg-white/20 transition-colors"
+                className="p-1.5 rounded-full hover:bg-white/20 transition-colors relative z-10"
                 aria-label={isHebrew ? "מזער צ'אט" : "Minimize chat"}
               >
                 <X className="w-4 h-4" />
@@ -147,23 +153,25 @@ const TelegramChatWidget = () => {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-muted/30">
+            <div className="flex-1 overflow-y-auto p-3 space-y-2.5 bg-muted/20">
               {messages.length === 0 && (
-                <div className="text-center text-muted-foreground text-xs mt-6">
-                  <p>{isHebrew ? "👋 היי! מה תרצה לדעת על שליו אושר?" : "👋 Hi! What would you like to know about Shalev Osher?"}</p>
+                <div className="text-center text-muted-foreground text-xs mt-8 space-y-2">
+                  <div className="w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-violet-500/10 via-fuchsia-500/10 to-amber-400/10 flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-fuchsia-500" />
+                  </div>
+                  <p className="font-medium">{isHebrew ? "👋 היי! מה תרצה לדעת על שליו אושר?" : "👋 Hi! What would you like to know about Shalev Osher?"}</p>
                 </div>
               )}
               {messages.map((msg) => (
                 <div
                   key={msg.id}
                   className={`flex ${msg.sender === "visitor" ? "justify-end" : "justify-start"}`}
-
                 >
                   <div
-                    className={`max-w-[80%] px-2.5 py-1.5 rounded-xl text-xs ${
+                    className={`max-w-[80%] px-3 py-2 rounded-2xl text-xs ${
                       msg.sender === "visitor"
-                        ? "bg-[#0088cc] text-white rounded-br-sm"
-                        : "bg-card text-foreground border border-border rounded-bl-sm"
+                        ? "bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white rounded-br-sm shadow-sm"
+                        : "bg-card text-foreground border border-border rounded-bl-sm shadow-sm"
                     }`}
                   >
                     {msg.sender === "visitor" ? (
@@ -174,7 +182,7 @@ const TelegramChatWidget = () => {
                       </div>
                     )}
                     <p
-                      className={`text-[9px] mt-0.5 ${
+                      className={`text-[9px] mt-1 ${
                         msg.sender === "visitor" ? "text-white/60" : "text-muted-foreground"
                       }`}
                     >
@@ -187,8 +195,8 @@ const TelegramChatWidget = () => {
             </div>
 
             {/* Input */}
-            <div className="p-2 border-t border-border bg-background">
-              <div className="flex items-center gap-1.5">
+            <div className="p-2.5 border-t border-border bg-background">
+              <div className="flex items-center gap-2">
                 <input
                   ref={inputRef}
                   type="text"
@@ -196,14 +204,14 @@ const TelegramChatWidget = () => {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder={isHebrew ? "כתוב הודעה..." : "Type a message..."}
-                  className="flex-1 px-3 py-1.5 rounded-full bg-muted text-foreground text-xs outline-none placeholder:text-muted-foreground"
+                  className="flex-1 px-3 py-2 rounded-full bg-muted text-foreground text-xs outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-fuchsia-500/30 transition-shadow"
                   disabled={sending}
                   dir="auto"
                 />
                 <button
                   onClick={sendMessage}
                   disabled={!input.trim() || sending}
-                  className="p-2 rounded-full bg-[#0088cc] text-white disabled:opacity-50 hover:bg-[#006fa1] transition-colors"
+                  className="p-2 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white disabled:opacity-50 hover:shadow-lg hover:shadow-fuchsia-500/20 transition-all"
                   aria-label={isHebrew ? "שלח" : "Send"}
                 >
                   <Send className="w-3.5 h-3.5" />
