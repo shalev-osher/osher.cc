@@ -7,6 +7,24 @@ import SkillsHeatmap from "@/components/SkillsHeatmap";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCallback } from "react";
 
+const SkillCardContent = ({ title, description }: { title: string; description: string }) => {
+  const titleTw = useTypewriter({ text: title, speed: 60, loop: true, pauseDuration: 4000 });
+  const descTw = useTypewriter({ text: description, speed: 15, delay: title.length * 60 + 500, loop: true, pauseDuration: 4000 });
+
+  return (
+    <>
+      <h3 className="font-display text-xl font-semibold mb-3 min-h-[1.75rem]">
+        {titleTw.displayedText}
+        <span className={`inline-block w-[2px] h-[0.8em] bg-primary ms-1 align-middle transition-opacity duration-100 ${titleTw.showCursor ? 'opacity-100' : 'opacity-0'}`} />
+      </h3>
+      <p className="text-muted-foreground leading-relaxed min-h-[3rem]">
+        {descTw.displayedText}
+        <span className={`inline-block w-[1.5px] h-[0.9em] bg-muted-foreground ms-1 align-middle transition-opacity duration-100 ${descTw.showCursor ? 'opacity-100' : 'opacity-0'}`} />
+      </p>
+    </>
+  );
+};
+
 const SkillCard3D = ({ skill, index }: { skill: { icon: any; title: string; description: string }; index: number }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -36,7 +54,6 @@ const SkillCard3D = ({ skill, index }: { skill: { icon: any; title: string; desc
         onMouseLeave={handleMouseLeave}
         role="listitem"
       >
-        {/* Dynamic glow overlay */}
         <motion.div
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl"
           style={{
@@ -50,8 +67,7 @@ const SkillCard3D = ({ skill, index }: { skill: { icon: any; title: string; desc
           <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-all duration-500 group-hover:shadow-[0_0_30px_hsl(var(--primary)/0.25)]" aria-hidden="true">
             <skill.icon className="w-7 h-7 text-primary transition-transform duration-500 group-hover:scale-110" />
           </div>
-          <h3 className="font-display text-xl font-semibold mb-3">{skill.title}</h3>
-          <p className="text-muted-foreground leading-relaxed">{skill.description}</p>
+          <SkillCardContent title={skill.title} description={skill.description} />
         </div>
       </motion.div>
     </AnimatedSection>
