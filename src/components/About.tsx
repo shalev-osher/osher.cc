@@ -66,6 +66,22 @@ const About = () => {
     pauseDuration: 5000,
   });
 
+  const p1Typewriter = useTypewriter({
+    text: t("about.p1"),
+    speed: 20,
+    delay: 500,
+    loop: true,
+    pauseDuration: 4000,
+  });
+
+  const p2Typewriter = useTypewriter({
+    text: t("about.p2"),
+    speed: 20,
+    delay: 500 + t("about.p1").length * 20 + 1000,
+    loop: true,
+    pauseDuration: 4000,
+  });
+
   const yearsExp = useCountUp({ end: 7, suffix: "+", duration: 1500 });
   const companies = useCountUp({ end: 4, duration: 1200 });
   const certHours = useCountUp({ end: 450, suffix: "+", duration: 2000 });
@@ -92,11 +108,13 @@ const About = () => {
                 <GradientText>{titleTypewriter.displayedText}</GradientText>
                 <span className={`inline-block w-[3px] h-[0.8em] bg-primary ms-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
               </h2>
-              <p className="text-muted-foreground text-lg leading-relaxed mt-8">
-                <ScrollRevealText text={t("about.p1")} delay={0.2} />
+              <p className="text-muted-foreground text-lg leading-relaxed mt-8 min-h-[6rem]">
+                {p1Typewriter.displayedText}
+                <span className={`inline-block w-[2px] h-[1em] bg-primary ms-1 align-middle transition-opacity duration-100 ${p1Typewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
               </p>
-              <p className="text-muted-foreground text-lg leading-relaxed">
-                <ScrollRevealText text={t("about.p2")} delay={0.4} />
+              <p className="text-muted-foreground text-lg leading-relaxed min-h-[6rem]">
+                {p2Typewriter.displayedText}
+                <span className={`inline-block w-[2px] h-[1em] bg-primary ms-1 align-middle transition-opacity duration-100 ${p2Typewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
               </p>
               
               <div className="grid grid-cols-3 gap-4 pt-8" role="list" aria-label="Key statistics">
