@@ -30,20 +30,29 @@ What would you like to know?`;
 const FALLBACK_OPTIONS_HE = ['ניסיון', 'כישורים', 'טכנולוגיות', 'תפקיד נוכחי', 'יצירת קשר'];
 const FALLBACK_OPTIONS_EN = ['Experience', 'Skills', 'Technologies', 'Current Role', 'Contact'];
 
-// Only block the name misspelling — the system prompt handles everything else
-const sanitizeReply = (reply: string): string => {
-  return reply
+// Fix name misspellings and prevent Hebrew name in English responses
+const sanitizeReply = (reply: string, lang?: string): string => {
+  let cleaned = reply
     .replaceAll('שלו אושר', 'שליו אושר')
     .replace(/שלו(?=\s+אושר)/g, 'שליו')
     .trim();
+  
+  // In English responses, replace Hebrew name with English name
+  if (lang === 'en') {
+    cleaned = cleaned.replaceAll('שליו אושר', 'Shalev Osher');
+    // Remove any remaining standalone Hebrew name fragments
+    cleaned = cleaned.replace(/\(שליו אושר\)\s*/g, '');
+  }
+  
+  return cleaned;
 };
 
 const SYSTEM_PROMPT = `You are the AI assistant for Shalev Osher's portfolio website.
 
 Important naming rules:
-- In Hebrew, always write: שליו אושר
+- In Hebrew responses, write the name as: שליו אושר
 - Never write: שלו אושר
-- In English, always write: Shalev Osher
+- In English responses, ONLY write the name as: Shalev Osher — do NOT mix in Hebrew characters like "שליו אושר" in English text. Keep each response in one language only.
 
 Your job is to help visitors understand who Shalev Osher is, what experience he has, what technologies he works with, what his strengths are, and how to contact him.
 
@@ -177,7 +186,7 @@ async function getAIReply(userMessage: string, history?: { role: string; content
     if (toolCall?.function?.arguments) {
       try {
         const parsed = JSON.parse(toolCall.function.arguments) as StructuredReply;
-        const cleanText = sanitizeReply(parsed.text || '');
+        const cleanText = sanitizeReply(parsed.text || '', lang === 'he' ? 'he' : 'en');
         if (!cleanText) {
           return getFallback(isHebrew);
         }
@@ -189,7 +198,7 @@ async function getAIReply(userMessage: string, history?: { role: string; content
 
     // Fallback to plain text content
     const rawReply = message?.content?.trim() || '';
-    const cleanReply = sanitizeReply(rawReply);
+    const cleanReply = sanitizeReply(rawReply, lang === 'he' ? 'he' : 'en');
     if (!cleanReply) {
       return getFallback(isHebrew);
     }
