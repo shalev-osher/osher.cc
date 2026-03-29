@@ -107,14 +107,14 @@ const TelegramChatWidget = () => {
           <motion.button
             key="minimized"
             onClick={() => setIsMinimized(false)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#0088cc] text-white shadow-lg hover:shadow-xl transition-shadow"
+            className="w-14 h-14 rounded-full bg-gradient-to-br from-violet-500 via-fuchsia-500 to-amber-400 text-white shadow-lg hover:shadow-2xl hover:shadow-fuchsia-500/30 transition-shadow flex items-center justify-center"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
           >
-            <Bot className="w-5 h-5" />
+            <Bot className="w-6 h-6" />
           </motion.button>
         ) : (
           /* Chat Window - compact */
