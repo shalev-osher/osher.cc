@@ -254,7 +254,7 @@ const TelegramChatWidget = () => {
                               key={opt}
                               onClick={() => handleOptionClick(opt)}
                               disabled={sending}
-                              className="w-full px-4 py-2.5 text-xs sm:text-sm font-medium rounded-xl border border-primary/20 text-primary bg-card hover:bg-primary/10 hover:border-primary/40 transition-all shadow-sm text-center disabled:opacity-50"
+                              className="w-full px-4 py-3 text-xs sm:text-sm font-bold font-display rounded-xl border border-primary/30 text-primary-foreground bg-primary/80 hover:bg-primary hover:border-primary/50 transition-all shadow-md text-center disabled:opacity-50"
                             >
                               {opt}
                             </button>
