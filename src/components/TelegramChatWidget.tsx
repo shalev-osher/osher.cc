@@ -34,7 +34,26 @@ const TelegramChatWidget = () => {
   }, [messages, scrollToBottom]);
 
   useEffect(() => {
-    if (!isMinimized) inputRef.current?.focus();
+    if (!isMinimized) {
+      inputRef.current?.focus();
+      // Add welcome message on first open
+      if (messages.length === 0) {
+        const welcomeOptions = isHebrew
+          ? ["ניסיון", "כישורים", "טכנולוגיות", "תפקיד נוכחי", "יצירת קשר"]
+          : ["Experience", "Skills", "Technologies", "Current Role", "Contact"];
+        setMessages([
+          {
+            id: `bot-welcome`,
+            sender: "bot",
+            text: isHebrew
+              ? "👋 היי! אני העוזר הדיגיטלי של שליו אושר.\nאיך אפשר לעזור?"
+              : "👋 Hi! I'm Shalev Osher's AI assistant.\nHow can I help you?",
+            created_at: new Date().toISOString(),
+            options: welcomeOptions,
+          },
+        ]);
+      }
+    }
   }, [isMinimized]);
 
   const handleSend = async (messageText: string) => {
