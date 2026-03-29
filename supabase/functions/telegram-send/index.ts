@@ -35,12 +35,12 @@ const sanitizeReply = (reply: string, lang?: string): string => {
   let cleaned = reply
     .replaceAll('שלו אושר', 'שליו אושר')
     .replace(/שלו(?=\s+אושר)/g, 'שליו')
+    .replaceAll('הסלמה', 'אסקלציה')
     .trim();
   
   // In English responses, replace Hebrew name with English name
   if (lang === 'en') {
     cleaned = cleaned.replaceAll('שליו אושר', 'Shalev Osher');
-    // Remove any remaining standalone Hebrew name fragments
     cleaned = cleaned.replace(/\(שליו אושר\)\s*/g, '');
   }
   
