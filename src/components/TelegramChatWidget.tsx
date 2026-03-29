@@ -391,23 +391,30 @@ const TelegramChatWidget = () => {
                       {opt}
                     </button>
                   ))}
-                  {lastBotMsg.id !== "bot-welcome" && !lastBotMsg.id.startsWith("bot-menu-") && (
-                    <div className="flex gap-1 mt-0.5">
-                      {optionsHistory.length > 0 && (
-                        <button
-                          onClick={() => handleOptionClick(isHebrew ? "חזרה" : "Back")}
-                          className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center whitespace-nowrap"
-                        >
-                          {isHebrew ? "← חזרה" : "← Back"}
-                        </button>
-                      )}
+                  <div className="flex gap-1 mt-0.5">
+                    {lastBotMsg.id !== "bot-welcome" && !lastBotMsg.id.startsWith("bot-menu-") && optionsHistory.length > 0 && (
                       <button
-                        onClick={() => handleOptionClick(isHebrew ? "תפריט ראשי" : "Main menu")}
+                        onClick={() => handleOptionClick(isHebrew ? "חזרה" : "Back")}
                         className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center whitespace-nowrap"
                       >
-                        {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
+                        {isHebrew ? "← חזרה" : "← Back"}
                       </button>
-                    </div>
+                    )}
+                    {freeTextCount < MAX_FREE_TEXT_PER_SESSION && (
+                      <button
+                        onClick={() => handleOptionClick(isHebrew ? "שאלה אחרת" : "Other question")}
+                        className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-accent/30 text-accent-foreground bg-accent/20 hover:bg-accent/40 hover:border-accent/50 transition-all text-center whitespace-nowrap"
+                      >
+                        {isHebrew ? "✏️ שאלה אחרת" : "✏️ Other question"}
+                      </button>
+                    )}
+                    <button
+                      onClick={() => handleOptionClick(isHebrew ? "תפריט ראשי" : "Main menu")}
+                      className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center whitespace-nowrap"
+                    >
+                      {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
+                    </button>
+                  </div>
                   )}
                 </div>
               )}
