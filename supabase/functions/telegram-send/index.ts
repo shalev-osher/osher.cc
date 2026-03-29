@@ -111,17 +111,20 @@ function getFallback(isHebrew: boolean): StructuredReply {
 }
 
 async function getAIReply(userMessage: string, history?: { role: string; content: string }[], lang?: string): Promise<StructuredReply> {
-  const isHebrew = lang === 'he' || isHebrewText(userMessage);
+  const isHebrew = lang === 'he';
   const apiKey = Deno.env.get('LOVABLE_API_KEY');
   if (!apiKey) {
-    console.error('LOVABLE_API_KEY not configured for AI fallback');
+    console.error('LOVABLE_API_KEY not configured');
     return { text: '' };
   }
 
   try {
+    // Inject language instruction as a system-level hint so the AI always follows site language
+    const langHint = { role: 'system', content: `The user's interface language is: ${lang === 'he' ? 'Hebrew' : 'English'}. You MUST respond in ${lang === 'he' ? 'Hebrew' : 'English'} regardless of what language appears in the conversation history.` };
+
     const conversationMessages = history && history.length > 0
-      ? [{ role: 'system', content: SYSTEM_PROMPT }, ...history]
-      : [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: userMessage }];
+      ? [{ role: 'system', content: SYSTEM_PROMPT }, langHint, ...history]
+      : [{ role: 'system', content: SYSTEM_PROMPT }, langHint, { role: 'user', content: userMessage }];
 
     const response = await fetch(AI_GATEWAY_URL, {
       method: 'POST',
@@ -148,7 +151,7 @@ async function getAIReply(userMessage: string, history?: { role: string; content
                   options: {
                     type: 'array',
                     items: { type: 'string' },
-                    description: 'Short follow-up button labels for the user to click. 2-6 items. In the same language as the text.',
+                    description: 'Short follow-up button labels for the user to click. 2-6 items. MUST be in the same language as the text.',
                   },
                 },
                 required: ['text'],
@@ -162,8 +165,8 @@ async function getAIReply(userMessage: string, history?: { role: string; content
     });
 
     if (!response.ok) {
-      console.error('AI fallback error:', response.status);
-      return { text: '' };
+      console.error('AI error:', response.status, await response.text());
+      return getFallback(isHebrew);
     }
 
     const data = await response.json();
@@ -175,7 +178,7 @@ async function getAIReply(userMessage: string, history?: { role: string; content
       try {
         const parsed = JSON.parse(toolCall.function.arguments) as StructuredReply;
         const cleanText = sanitizeReply(parsed.text || '');
-        if (!cleanText || containsForbiddenContent(cleanText)) {
+        if (!cleanText) {
           return getFallback(isHebrew);
         }
         return { text: cleanText, options: parsed.options };
@@ -184,15 +187,15 @@ async function getAIReply(userMessage: string, history?: { role: string; content
       }
     }
 
-    // Fallback to plain text
+    // Fallback to plain text content
     const rawReply = message?.content?.trim() || '';
     const cleanReply = sanitizeReply(rawReply);
-    if (!cleanReply || containsForbiddenContent(cleanReply)) {
+    if (!cleanReply) {
       return getFallback(isHebrew);
     }
     return { text: cleanReply };
   } catch (err) {
-    console.error('AI fallback fetch error:', err);
+    console.error('AI fetch error:', err);
     return { text: '' };
   }
 }
