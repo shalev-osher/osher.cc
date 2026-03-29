@@ -30,12 +30,21 @@ What would you like to know?`;
 const FALLBACK_OPTIONS_HE = ['ניסיון', 'כישורים', 'טכנולוגיות', 'תפקיד נוכחי', 'יצירת קשר'];
 const FALLBACK_OPTIONS_EN = ['Experience', 'Skills', 'Technologies', 'Current Role', 'Contact'];
 
-// Only block the name misspelling — the system prompt handles everything else
-const sanitizeReply = (reply: string): string => {
-  return reply
+// Fix name misspellings and prevent Hebrew name in English responses
+const sanitizeReply = (reply: string, lang?: string): string => {
+  let cleaned = reply
     .replaceAll('שלו אושר', 'שליו אושר')
     .replace(/שלו(?=\s+אושר)/g, 'שליו')
     .trim();
+  
+  // In English responses, replace Hebrew name with English name
+  if (lang === 'en') {
+    cleaned = cleaned.replaceAll('שליו אושר', 'Shalev Osher');
+    // Remove any remaining standalone Hebrew name fragments
+    cleaned = cleaned.replace(/\(שליו אושר\)\s*/g, '');
+  }
+  
+  return cleaned;
 };
 
 const SYSTEM_PROMPT = `You are the AI assistant for Shalev Osher's portfolio website.
