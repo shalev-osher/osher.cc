@@ -29,8 +29,8 @@ const TelegramChatWidget = () => {
   const getMenuOptions = useCallback(
     () =>
       isHebrew
-        ? ["מה הוא עושה?", "טכנולוגיות שהוא משתמש", "איך ליצור קשר?", "הניסיון שלו"]
-        : ["What does he do?", "Technologies he uses", "How to contact him?", "His experience"],
+        ? ["מה הוא עושה?", "טכנולוגיות שהוא משתמש", "איך ליצור קשר?", "הניסיון שלו", "השכלה וקורסים", "פרויקטים"]
+        : ["What does he do?", "Technologies he uses", "How to contact him?", "His experience", "Education & courses", "Projects"],
     [isHebrew]
   );
 
