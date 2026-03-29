@@ -119,6 +119,30 @@ const TelegramChatWidget = () => {
   const sendMessage = () => handleSend(input);
 
   const handleOptionClick = (option: string) => {
+    const isMainMenu = option === "Main menu" || option === "תפריט ראשי";
+    if (isMainMenu) {
+      // Handle main menu locally – no API call, just show the welcome menu again
+      const welcomeOptions = isHebrew
+        ? ["ניסיון", "כישורים", "טכנולוגיות", "תפקיד נוכחי", "יצירת קשר"]
+        : ["Experience", "Skills", "Technologies", "Current Role", "Contact"];
+      const menuMsg: Message = {
+        id: `bot-menu-${crypto.randomUUID()}`,
+        sender: "bot",
+        text: isHebrew
+          ? "על מה תרצה/י לשמוע?"
+          : "What would you like to know about?",
+        created_at: new Date().toISOString(),
+        options: welcomeOptions,
+      };
+      // Clear options from last bot message, then add menu
+      setMessages((prev) => [
+        ...prev.map((m, i) =>
+          i === prev.length - 1 && m.sender === "bot" ? { ...m, options: undefined } : m
+        ),
+        menuMsg,
+      ]);
+      return;
+    }
     handleSend(option);
   };
 
