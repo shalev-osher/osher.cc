@@ -98,9 +98,9 @@ const TelegramChatWidget = () => {
   return (
     <motion.div
       className="fixed bottom-8 start-8 z-[60]"
-      initial={{ y: 80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 1.5, type: "spring", stiffness: 200, damping: 20 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1.5, duration: 0.35 }}
     >
       <AnimatePresence mode="wait">
         {isMinimized ? (

@@ -42,13 +42,13 @@ const ScrollToTop = () => {
       <button
         onClick={scrollToTop}
         className={`w-14 h-14 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 ${
-          isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+          isVisible ? "opacity-100" : "opacity-40 pointer-events-none"
         }`}
         aria-label="Scroll to top"
       >
         <ArrowUp size={20} />
       </button>
-      <div className={`h-px bg-primary/20 transition-opacity duration-300 ${isVisible ? "opacity-100" : "opacity-0"}`} />
+      <div className="h-px bg-primary/20" />
 
       {/* Scroll to next section */}
       <button
