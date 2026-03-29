@@ -84,20 +84,21 @@ Options: ["איך נראה היום שלו?", "אילו כלים הוא משתמ
 **Summary:** Experienced Technical Support Specialist with 6+ years of experience across 3 companies. Proven track record ensuring smooth operation of servers and microservices. Skilled in troubleshooting, networking, system administration, and cloud telephony. Proficient in executing database queries, utilizing SQL/Kibana/AWS for log analysis. Successfully manages a technical department with efficient workflow and SLA adherence.
 
 **Current Role — Tier 2 Technical Support Specialist at Voicenter (2023–Present):**
-- Handles complex technical escalations for VIP and standard clients
+- Handles complex technical escalations for VIP and standard clients across all products
 - Deep log analysis using Kibana and SQL queries on production databases
-- Collaborates daily with Dev & DevOps teams via Jira for bug resolution and workflow enhancements
+- Collaborates daily with Dev & DevOps teams via Jira for bug resolution, feature configuration, and workflow enhancements
 - Works with API integrations (Kibana), networking, and AWS
 - Conducts QA testing on features and servers per Dev/DevOps requests
-- Co-developed a troubleshooting tool with the Development team
-- Proactively diagnoses and resolves live issues across servers using PRTG
-- Monitors servers and microservices, identifies root causes
+- Co-developed a troubleshooting tool with the Development team to empower Tier 1 support
+- Proactively diagnoses and resolves live issues across servers using PRTG for predictive analysis
+- Offers advanced technical support to Tier 1 specialists on complex issues
+- Provides training and ongoing support to end-users on software, hardware, and network standards
 
 **Previous Roles:**
-- Technical Support Specialist — Strategic Customers at Voicenter (2021–2023): Managed high-priority enterprise/VIP accounts
-- Technical Support Engineer Tier 1 at Voicenter (2021): Foundational VoIP/telephony support
-- Quality Assurance Tester at ILDC (2018–2021): Manual testing, regression testing, quality assurance
-- Military Service — IDF (2015–2018)
+- Technical Support Specialist — Strategic Customers at Voicenter (2021–2023): Provided cloud telephony support, wrote guides and presentations, conducted apprenticeships, handled complex issues for strategic customers, managed largest client accounts on-site, worked with ASTERISK/SQL alongside IT/engineering/development departments
+- Technical Support Engineer Tier 1 at Voicenter (2021): Analyzed VoIP networks, resolved network complications, evaluated and enhanced security measures, assessed customer needs for advanced services, devised voice solutions, managed support tickets and escalations
+- Quality Assurance Tester at ILDC (2018–2021): Executed QA tests in Sagemcom LAB for Altice (HOT) products, focusing on set-top boxes, daily quality assurance testing
+- Military Service — IDF (2015–2018): Vehicle treatments, test equipment operation, assembly installation per procedures and safety protocols
 
 **Technical Skills (from website skills heatmap):**
 - Systems: Linux, Windows Server, Active Directory, VMware, Docker
