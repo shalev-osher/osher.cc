@@ -17,7 +17,7 @@ const SESSION_ID = `web-${Math.random().toString(36).slice(2, 10)}`;
 const TelegramChatWidget = () => {
   const { lang } = useLanguage();
   const isHebrew = lang === "he";
-  const desktopChatPositionClass = isHebrew ? "sm:right-8 sm:left-auto" : "sm:left-8 sm:right-auto";
+  const [isMinimized, setIsMinimized] = useState(true);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
@@ -130,11 +130,11 @@ const TelegramChatWidget = () => {
             />
             <motion.div
               key="chat"
-              className="fixed bottom-20 start-8 sm:bottom-20 w-[380px] h-[520px] max-w-[calc(100vw-16px)] sm:max-w-[380px] max-h-[calc(100vh-48px)] rounded-2xl overflow-hidden shadow-2xl flex flex-col border border-primary/20 bg-background/80 backdrop-blur-xl max-sm:start-1/2 max-sm:-translate-x-1/2"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="fixed bottom-20 left-1/2 -translate-x-1/2 sm:left-auto sm:start-8 sm:translate-x-0 w-[380px] max-w-[calc(100vw-24px)] h-[520px] max-h-[calc(100vh-48px)] rounded-2xl overflow-hidden shadow-2xl flex flex-col border border-primary/20 bg-background/80 backdrop-blur-xl"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
             {/* Header - gradient */}
             <div className="relative flex items-center justify-between px-4 py-3 text-foreground overflow-hidden">
