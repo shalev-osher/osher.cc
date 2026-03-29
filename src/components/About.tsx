@@ -66,6 +66,22 @@ const About = () => {
     pauseDuration: 5000,
   });
 
+  const p1Typewriter = useTypewriter({
+    text: t("about.p1"),
+    speed: 20,
+    delay: 500,
+    loop: true,
+    pauseDuration: 4000,
+  });
+
+  const p2Typewriter = useTypewriter({
+    text: t("about.p2"),
+    speed: 20,
+    delay: 500 + t("about.p1").length * 20 + 1000,
+    loop: true,
+    pauseDuration: 4000,
+  });
+
   const yearsExp = useCountUp({ end: 7, suffix: "+", duration: 1500 });
   const companies = useCountUp({ end: 4, duration: 1200 });
   const certHours = useCountUp({ end: 450, suffix: "+", duration: 2000 });
