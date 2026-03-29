@@ -86,10 +86,14 @@ const About = () => {
   const companies = useCountUp({ end: 4, duration: 1200 });
   const certHours = useCountUp({ end: 450, suffix: "+", duration: 2000 });
 
+  const label1Tw = useTypewriter({ text: t("about.yearsExp"), speed: 50, loop: true, pauseDuration: 4000 });
+  const label2Tw = useTypewriter({ text: t("about.companies"), speed: 50, delay: 300, loop: true, pauseDuration: 4000 });
+  const label3Tw = useTypewriter({ text: t("about.certHours"), speed: 50, delay: 600, loop: true, pauseDuration: 4000 });
+
   const stats = [
-    { ref: yearsExp.ref, display: yearsExp.display, isComplete: yearsExp.isComplete, label: t("about.yearsExp") },
-    { ref: companies.ref, display: companies.display, isComplete: companies.isComplete, label: t("about.companies") },
-    { ref: certHours.ref, display: certHours.display, isComplete: certHours.isComplete, label: t("about.certHours") },
+    { ref: yearsExp.ref, display: yearsExp.display, isComplete: yearsExp.isComplete, labelTw: label1Tw },
+    { ref: companies.ref, display: companies.display, isComplete: companies.isComplete, labelTw: label2Tw },
+    { ref: certHours.ref, display: certHours.display, isComplete: certHours.isComplete, labelTw: label3Tw },
   ];
 
   return (
@@ -120,7 +124,7 @@ const About = () => {
               <div className="grid grid-cols-3 gap-4 pt-8" role="list" aria-label="Key statistics">
                 {stats.map((stat, i) => (
                   <motion.div
-                    key={stat.label}
+                    key={i}
                     className="text-center p-5 card-premium relative overflow-hidden"
                     whileHover={{ y: -6, scale: 1.03 }}
                     initial={{ opacity: 0, y: 30, scale: 0.9 }}
@@ -144,7 +148,10 @@ const About = () => {
                     >
                       {stat.display}
                     </motion.span>
-                    <p className="text-muted-foreground text-sm mt-2 relative z-10">{stat.label}</p>
+                    <p className="text-muted-foreground text-sm mt-2 relative z-10 min-h-[1.25rem]">
+                      {stat.labelTw.displayedText}
+                      <span className={`inline-block w-[1.5px] h-[0.9em] bg-muted-foreground ms-0.5 align-middle transition-opacity duration-100 ${stat.labelTw.showCursor ? 'opacity-100' : 'opacity-0'}`} />
+                    </p>
                   </motion.div>
                 ))}
               </div>
