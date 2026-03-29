@@ -302,7 +302,7 @@ const TelegramChatWidget = () => {
                                 isHebrew ? "תפריט ראשי" : "Main menu"
                               )
                             }
-                            className="w-full px-4 py-2.5 text-xs sm:text-sm font-medium rounded-xl border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
+                            className="px-3 py-1.5 text-[11px] sm:text-xs font-medium rounded-lg border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
                           >
                             {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
                           </button>
