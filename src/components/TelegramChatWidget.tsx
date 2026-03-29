@@ -122,7 +122,6 @@ const TelegramChatWidget = () => {
             whileTap={{ scale: 0.97 }}
           >
             <Bot className="w-5 h-5" />
-            <span className="text-sm font-medium">צ'אט</span>
           </motion.button>
         ) : (
           /* Chat Window - compact */
