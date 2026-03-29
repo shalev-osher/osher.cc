@@ -130,7 +130,8 @@ const TelegramChatWidget = () => {
             />
             <motion.div
               key="chat"
-              className="w-[380px] h-[520px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-48px)] rounded-2xl overflow-hidden shadow-2xl flex flex-col border border-primary/20 relative bg-background/80 backdrop-blur-xl"
+              className="w-[380px] h-[520px] max-w-[calc(100vw-16px)] max-h-[calc(100vh-48px)] rounded-2xl overflow-hidden shadow-2xl flex flex-col border border-primary/20 relative bg-background/80 backdrop-blur-xl sm:max-w-[380px]"
+              style={{ position: "fixed", bottom: "4.5rem", insetInlineStart: "0.5rem", zIndex: 60 }}
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
