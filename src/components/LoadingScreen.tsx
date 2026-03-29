@@ -1,7 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
+  const { lang } = useLanguage();
+  const isHebrew = lang === "he";
   const [phase, setPhase] = useState<"logo" | "skeleton" | "reveal" | "done">("logo");
 
   useEffect(() => {
@@ -14,7 +17,7 @@ const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
     return () => { clearTimeout(t0); clearTimeout(t1); clearTimeout(t2); };
   }, [onComplete]);
 
-  const nameLetters = "Shalev Osher".split("");
+  const nameLetters = (isHebrew ? "שליו אושר" : "Shalev Osher").split("");
 
   return (
     <AnimatePresence>
