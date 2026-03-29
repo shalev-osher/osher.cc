@@ -38,19 +38,17 @@ const ScrollToTop = () => {
 
   return (
     <div className="fixed bottom-8 end-8 z-50 flex flex-col rounded-full border border-primary/30 overflow-hidden glass-effect">
-      {/* Scroll to top - only visible after scrolling */}
-      {isVisible && (
-        <>
-          <button
-            onClick={scrollToTop}
-            className="w-14 h-14 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-            aria-label="Scroll to top"
-          >
-            <ArrowUp size={20} />
-          </button>
-          <div className="h-px bg-primary/20" />
-        </>
-      )}
+      {/* Scroll to top - always rendered for consistent shape, hidden when not scrolled */}
+      <button
+        onClick={scrollToTop}
+        className={`w-14 h-14 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 ${
+          isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        aria-label="Scroll to top"
+      >
+        <ArrowUp size={20} />
+      </button>
+      <div className={`h-px bg-primary/20 transition-opacity duration-300 ${isVisible ? "opacity-100" : "opacity-0"}`} />
 
       {/* Scroll to next section */}
       <button
