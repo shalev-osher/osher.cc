@@ -1,8 +1,16 @@
 import { useState, useEffect, useMemo } from "react";
 import { Menu, X, Download } from "lucide-react";
+import { motion } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 import useActiveSection from "@/hooks/useActiveSection";
 import { useLanguage } from "@/contexts/LanguageContext";
+
+const navButtonHover = {
+  scale: 1.07,
+  y: -2,
+  transition: { type: "spring", stiffness: 400, damping: 15 },
+};
+const navButtonTap = { scale: 0.95 };
 
 const Navbar = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
