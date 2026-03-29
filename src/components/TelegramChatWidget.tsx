@@ -343,13 +343,13 @@ const TelegramChatWidget = () => {
 
               {/* Pinned option buttons above input */}
               {hasOptions && lastBotMsg?.options && (
-                <div className="px-2.5 py-1.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm flex flex-col gap-0.5">
+                <div className="px-2.5 py-1.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm flex flex-col items-center gap-0.5">
                   {lastBotMsg.options.map((opt) => (
                     <button
                       key={opt}
                       onClick={() => handleOptionClick(opt)}
                       disabled={sending}
-                      className="w-full px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-bold font-display rounded-md border border-primary/30 text-primary-foreground bg-primary/80 hover:bg-primary hover:border-primary/50 transition-all text-center disabled:opacity-50"
+                      className="w-auto min-w-[60%] max-w-[85%] px-3 py-1.5 text-[11px] sm:text-xs leading-snug font-bold font-display rounded-md border border-primary/30 text-primary-foreground bg-primary/80 hover:bg-primary hover:border-primary/50 transition-all text-center disabled:opacity-50"
                     >
                       {opt}
                     </button>
