@@ -22,6 +22,7 @@ const TelegramChatWidget = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
+  const [optionsHistory, setOptionsHistory] = useState<{ text: string; options: string[] }[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -134,17 +135,35 @@ const TelegramChatWidget = () => {
 
   const handleOptionClick = (option: string) => {
     const isMainMenu = option === "Main menu" || option === "תפריט ראשי";
+    const isBack = option === "Back" || option === "חזרה";
+
+    if (isBack && optionsHistory.length > 0) {
+      const prev = optionsHistory[optionsHistory.length - 1];
+      setOptionsHistory((h) => h.slice(0, -1));
+      setMessages((prev_msgs) => [
+        ...prev_msgs.map((m, i) =>
+          i === prev_msgs.length - 1 && m.sender === "bot" ? { ...m, options: undefined } : m
+        ),
+        {
+          id: `bot-back-${crypto.randomUUID()}`,
+          sender: "bot",
+          text: prev.text,
+          created_at: new Date().toISOString(),
+          options: prev.options,
+        },
+      ]);
+      return;
+    }
 
     if (isMainMenu) {
+      setOptionsHistory([]);
       setMessages((prev) => {
         const lastMessage = prev[prev.length - 1];
         const alreadyOnMainMenu =
           lastMessage?.sender === "bot" &&
           (lastMessage.id === "bot-welcome" || lastMessage.id.startsWith("bot-menu-"));
 
-        if (alreadyOnMainMenu) {
-          return prev;
-        }
+        if (alreadyOnMainMenu) return prev;
 
         return [
           ...prev.map((m, i) =>
@@ -160,6 +179,11 @@ const TelegramChatWidget = () => {
         ];
       });
       return;
+    }
+
+    // Save current options to history before navigating away
+    if (lastBotMsg?.options && lastBotMsg.options.length > 0) {
+      setOptionsHistory((h) => [...h, { text: lastBotMsg.text || "", options: lastBotMsg.options! }]);
     }
 
     handleSend(option);
@@ -314,20 +338,38 @@ const TelegramChatWidget = () => {
                     </button>
                   ))}
                   {lastBotMsg.id !== "bot-welcome" && !lastBotMsg.id.startsWith("bot-menu-") && (
-                    <button
-                      onClick={() => handleOptionClick(isHebrew ? "תפריט ראשי" : "Main menu")}
-                      className="w-full px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
-                    >
-                      {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
-                    </button>
+                    <div className="flex gap-1 mt-0.5">
+                      {optionsHistory.length > 0 && (
+                        <button
+                          onClick={() => handleOptionClick(isHebrew ? "חזרה" : "Back")}
+                          className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
+                        >
+                          {isHebrew ? "← חזרה" : "← Back"}
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleOptionClick(isHebrew ? "תפריט ראשי" : "Main menu")}
+                        className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
+                      >
+                        {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
+                      </button>
+                    </div>
                   )}
                 </div>
               )}
               {!hasOptions && lastBotMsg && lastBotMsg.id !== "bot-welcome" && !lastBotMsg.id.startsWith("bot-menu-") && !sending && (
-                <div className="px-2.5 py-1.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm">
+                <div className="px-2.5 py-1.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm flex gap-1">
+                  {optionsHistory.length > 0 && (
+                    <button
+                      onClick={() => handleOptionClick(isHebrew ? "חזרה" : "Back")}
+                      className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
+                    >
+                      {isHebrew ? "← חזרה" : "← Back"}
+                    </button>
+                  )}
                   <button
                     onClick={() => handleOptionClick(isHebrew ? "תפריט ראשי" : "Main menu")}
-                    className="w-full px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
+                    className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
                   >
                     {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
                   </button>
