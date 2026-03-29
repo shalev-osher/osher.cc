@@ -143,7 +143,7 @@ const TelegramChatWidget = () => {
                   <Bot className="w-4 h-4" />
                 </div>
                 <div>
-                  <p className="font-semibold text-xs">Shalev Osher</p>
+                  <p className="font-semibold text-xs">{isHebrew ? "שליו אושר" : "Shalev Osher"}</p>
                   <p className="text-[10px] text-white/70">{isHebrew ? "עוזר AI" : "AI Assistant"}</p>
                 </div>
               </div>
