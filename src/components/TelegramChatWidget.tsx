@@ -107,7 +107,7 @@ const TelegramChatWidget = () => {
           <motion.button
             key="minimized"
             onClick={() => setIsMinimized(false)}
-            className="w-14 h-14 rounded-full bg-gradient-to-br from-violet-500 via-fuchsia-500 to-amber-400 text-white shadow-lg hover:shadow-2xl hover:shadow-fuchsia-500/30 transition-all flex items-center justify-center relative overflow-hidden group"
+            className="w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-2xl hover:shadow-primary/30 transition-all flex items-center justify-center relative overflow-hidden group"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
@@ -127,21 +127,21 @@ const TelegramChatWidget = () => {
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
             {/* Header - gradient */}
-            <div className="relative flex items-center justify-between px-4 py-3 text-white overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-violet-600 via-fuchsia-500 to-amber-400" />
-              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIi8+PC9zdmc+')] opacity-30" />
+            <div className="relative flex items-center justify-between px-4 py-3 text-foreground overflow-hidden">
+              <div className="absolute inset-0 bg-secondary" />
+              <div className="absolute inset-0 border-b-2 border-primary/30" />
               <div className="flex items-center gap-3 relative z-10">
-                <div className="w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center ring-2 ring-white/30">
-                  <Sparkles className="w-4 h-4" />
+                <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center ring-2 ring-primary/30">
+                  <Sparkles className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <p className="font-bold text-sm tracking-tight">{isHebrew ? "שליו אושר" : "Shalev Osher"}</p>
-                  <p className="text-[11px] text-white/80 font-medium">{isHebrew ? "עוזר AI" : "AI Assistant"}</p>
+                  <p className="font-bold text-sm tracking-tight text-primary">{isHebrew ? "שליו אושר" : "Shalev Osher"}</p>
+                  <p className="text-[11px] text-muted-foreground font-medium">{isHebrew ? "עוזר AI" : "AI Assistant"}</p>
                 </div>
               </div>
               <button
                 onClick={() => setIsMinimized(true)}
-                className="p-1.5 rounded-full hover:bg-white/20 transition-colors relative z-10"
+                className="p-1.5 rounded-full hover:bg-muted transition-colors relative z-10 text-muted-foreground"
                 aria-label={isHebrew ? "מזער צ'אט" : "Minimize chat"}
               >
                 <X className="w-4 h-4" />
@@ -152,8 +152,8 @@ const TelegramChatWidget = () => {
             <div className="flex-1 overflow-y-auto p-3 space-y-2.5 bg-muted">
               {messages.length === 0 && (
                 <div className="text-center text-muted-foreground text-xs mt-8 space-y-2">
-                  <div className="w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-violet-500/10 via-fuchsia-500/10 to-amber-400/10 flex items-center justify-center">
-                    <Sparkles className="w-5 h-5 text-fuchsia-500" />
+                  <div className="w-12 h-12 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-primary" />
                   </div>
                   <p className="font-medium">{isHebrew ? "👋 היי! מה תרצה לדעת על שליו אושר?" : "👋 Hi! What would you like to know about Shalev Osher?"}</p>
                 </div>
@@ -166,7 +166,7 @@ const TelegramChatWidget = () => {
                   <div
                     className={`max-w-[80%] px-3 py-2 rounded-2xl text-xs ${
                       msg.sender === "visitor"
-                        ? "bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white rounded-br-sm shadow-sm"
+                        ? "bg-primary text-primary-foreground rounded-br-sm shadow-sm"
                         : "bg-card text-foreground border border-border rounded-bl-sm shadow-sm"
                     }`}
                   >
@@ -200,14 +200,14 @@ const TelegramChatWidget = () => {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder={isHebrew ? "כתוב הודעה..." : "Type a message..."}
-                  className={`flex-1 px-3 py-2 rounded-full bg-muted text-foreground text-xs outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-fuchsia-500/30 transition-shadow ${isHebrew ? "text-right" : "text-left"}`}
+                  className={`flex-1 px-3 py-2 rounded-full bg-muted text-foreground text-xs outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/30 transition-shadow ${isHebrew ? "text-right" : "text-left"}`}
                   disabled={sending}
                   dir="auto"
                 />
                 <button
                   onClick={sendMessage}
                   disabled={!input.trim() || sending}
-                  className="p-2 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white disabled:opacity-50 hover:shadow-lg hover:shadow-fuchsia-500/20 transition-all"
+                  className="p-2 rounded-full bg-primary text-primary-foreground disabled:opacity-50 hover:shadow-lg hover:shadow-primary/20 transition-all"
                   aria-label={isHebrew ? "שלח" : "Send"}
                 >
                   <Send className="w-3.5 h-3.5" />
