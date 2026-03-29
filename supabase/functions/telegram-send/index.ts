@@ -83,6 +83,8 @@ Rules:
 - If the user writes in Hebrew, answer in Hebrew.
 - If the user writes in English, answer in English.
 
+IMPORTANT: You MUST use the respond_with_options tool for EVERY response. Always include suggested follow-up options that make sense in context. The options should be in the same language as your response text.
+
 Contact details:
 - Email: shalev@osher.cc
 - Phone: +972507223763
@@ -101,11 +103,16 @@ const containsForbiddenContent = (reply: string): boolean => {
   return FORBIDDEN_PATTERNS.some((pattern) => pattern.test(reply));
 };
 
-async function getAIReply(userMessage: string, history?: { role: string; content: string }[]): Promise<string> {
+interface StructuredReply {
+  text: string;
+  options?: string[];
+}
+
+async function getAIReply(userMessage: string, history?: { role: string; content: string }[]): Promise<StructuredReply> {
   const apiKey = Deno.env.get('LOVABLE_API_KEY');
   if (!apiKey) {
     console.error('LOVABLE_API_KEY not configured for AI fallback');
-    return '';
+    return { text: '' };
   }
 
   try {
@@ -122,26 +129,68 @@ async function getAIReply(userMessage: string, history?: { role: string; content
       body: JSON.stringify({
         model: 'google/gemini-3-flash-preview',
         messages: conversationMessages,
+        tools: [
+          {
+            type: 'function',
+            function: {
+              name: 'respond_with_options',
+              description: 'Send a response to the user with optional follow-up quick-reply buttons.',
+              parameters: {
+                type: 'object',
+                properties: {
+                  text: {
+                    type: 'string',
+                    description: 'The main response text (markdown supported).',
+                  },
+                  options: {
+                    type: 'array',
+                    items: { type: 'string' },
+                    description: 'Short follow-up button labels for the user to click. 2-6 items. In the same language as the text.',
+                  },
+                },
+                required: ['text'],
+                additionalProperties: false,
+              },
+            },
+          },
+        ],
+        tool_choice: { type: 'function', function: { name: 'respond_with_options' } },
       }),
     });
 
     if (!response.ok) {
       console.error('AI fallback error:', response.status);
-      return '';
+      return { text: '' };
     }
 
     const data = await response.json();
-    const rawReply = data.choices?.[0]?.message?.content?.trim() || '';
-    const cleanReply = sanitizeReply(rawReply);
+    const message = data.choices?.[0]?.message;
 
-    if (!cleanReply || containsForbiddenContent(cleanReply)) {
-      return SAFE_FALLBACK_REPLY;
+    // Try tool call first
+    const toolCall = message?.tool_calls?.[0];
+    if (toolCall?.function?.arguments) {
+      try {
+        const parsed = JSON.parse(toolCall.function.arguments) as StructuredReply;
+        const cleanText = sanitizeReply(parsed.text || '');
+        if (!cleanText || containsForbiddenContent(cleanText)) {
+          return { text: SAFE_FALLBACK_REPLY, options: ['ניסיון', 'כישורים', 'טכנולוגיות', 'תפקיד נוכחי', 'יצירת קשר'] };
+        }
+        return { text: cleanText, options: parsed.options };
+      } catch {
+        // fall through to plain text
+      }
     }
 
-    return cleanReply;
+    // Fallback to plain text
+    const rawReply = message?.content?.trim() || '';
+    const cleanReply = sanitizeReply(rawReply);
+    if (!cleanReply || containsForbiddenContent(cleanReply)) {
+      return { text: SAFE_FALLBACK_REPLY, options: ['ניסיון', 'כישורים', 'טכנולוגיות', 'תפקיד נוכחי', 'יצירת קשר'] };
+    }
+    return { text: cleanReply };
   } catch (err) {
     console.error('AI fallback fetch error:', err);
-    return '';
+    return { text: '' };
   }
 }
 
@@ -198,23 +247,23 @@ Deno.serve(async (req) => {
       ? (requestBody as { history: { role: string; content: string }[] }).history
       : undefined;
 
-    let botReply = await getAIReply(text, history);
+    const result = await getAIReply(text, history);
 
-    if (!botReply) {
-      botReply = 'מצטער, לא הצלחתי לעבד את הבקשה כרגע. נסה שוב בבקשה 🙏';
+    if (!result.text) {
+      result.text = 'מצטער, לא הצלחתי לעבד את הבקשה כרגע. נסה שוב בבקשה 🙏';
     }
 
     const { error: botInsertError } = await supabase.from('telegram_messages').insert({
       chat_id: 0,
       sender: 'bot',
-      text: botReply,
+      text: result.text,
     });
 
     if (botInsertError) {
       throw new Error(`Failed to store bot reply: ${botInsertError.message}`);
     }
 
-    return new Response(JSON.stringify({ ok: true, reply: botReply }), {
+    return new Response(JSON.stringify({ ok: true, reply: result.text, options: result.options }), {
       status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
