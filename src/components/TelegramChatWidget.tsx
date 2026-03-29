@@ -120,7 +120,7 @@ const TelegramChatWidget = () => {
         ) : (
           <motion.div
             key="chat"
-            className="w-[380px] h-[520px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-48px)] rounded-2xl overflow-hidden shadow-2xl flex flex-col border border-border relative"
+            className="w-[380px] h-[520px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-48px)] rounded-2xl overflow-hidden shadow-2xl flex flex-col border border-border relative bg-background"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
@@ -149,7 +149,7 @@ const TelegramChatWidget = () => {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-3 space-y-2.5 bg-muted/20">
+            <div className="flex-1 overflow-y-auto p-3 space-y-2.5 bg-muted">
               {messages.length === 0 && (
                 <div className="text-center text-muted-foreground text-xs mt-8 space-y-2">
                   <div className="w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-violet-500/10 via-fuchsia-500/10 to-amber-400/10 flex items-center justify-center">
