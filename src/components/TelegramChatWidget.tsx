@@ -85,7 +85,7 @@ const TelegramChatWidget = () => {
       }));
 
       const { data, error } = await supabase.functions.invoke("telegram-send", {
-        body: { text: trimmed, sessionId: SESSION_ID, history },
+        body: { text: trimmed, sessionId: SESSION_ID, history, lang },
       });
       if (error) throw error;
 
