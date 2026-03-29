@@ -52,8 +52,13 @@ const TelegramChatWidget = () => {
     setInput("");
 
     try {
+      const history = [...messages, visitorMessage].map((m) => ({
+        role: m.sender === "visitor" ? "user" as const : "assistant" as const,
+        content: m.text || "",
+      }));
+
       const { data, error } = await supabase.functions.invoke("telegram-send", {
-        body: { text: trimmed, sessionId: SESSION_ID },
+        body: { text: trimmed, sessionId: SESSION_ID, history },
       });
       if (error) throw error;
 
