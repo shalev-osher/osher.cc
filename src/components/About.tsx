@@ -124,7 +124,7 @@ const About = () => {
               <div className="grid grid-cols-3 gap-4 pt-8" role="list" aria-label="Key statistics">
                 {stats.map((stat, i) => (
                   <motion.div
-                    key={stat.label}
+                    key={i}
                     className="text-center p-5 card-premium relative overflow-hidden"
                     whileHover={{ y: -6, scale: 1.03 }}
                     initial={{ opacity: 0, y: 30, scale: 0.9 }}
@@ -148,7 +148,10 @@ const About = () => {
                     >
                       {stat.display}
                     </motion.span>
-                    <p className="text-muted-foreground text-sm mt-2 relative z-10">{stat.label}</p>
+                    <p className="text-muted-foreground text-sm mt-2 relative z-10 min-h-[1.25rem]">
+                      {stat.labelTw.displayedText}
+                      <span className={`inline-block w-[1.5px] h-[0.9em] bg-muted-foreground ms-0.5 align-middle transition-opacity duration-100 ${stat.labelTw.showCursor ? 'opacity-100' : 'opacity-0'}`} />
+                    </p>
                   </motion.div>
                 ))}
               </div>
