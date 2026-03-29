@@ -23,7 +23,7 @@ const Footer = () => {
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="text-center md:text-start">
+          <div className="text-center md:text-start md:ps-16">
             <a href="#" className="font-display text-2xl font-bold text-gradient-warm" aria-label="Shalev Osher - Back to top">
               {lang === "he" ? "שליו אושר" : "Shalev Osher"}
             </a>
