@@ -94,10 +94,6 @@ const TelegramChatWidget = () => {
     });
   };
 
-  // Position: Hebrew = right side, English = left side
-  const positionClass = isHebrew
-    ? "right-4 sm:right-6"
-    : "left-4 sm:left-6";
 
   return (
     <motion.div
