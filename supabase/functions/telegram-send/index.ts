@@ -5,8 +5,6 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
-const N8N_WEBHOOK_URL = 'https://n8n.osher.cc/webhook/website-chat-jackie';
-
 const AI_GATEWAY_URL = 'https://ai.gateway.lovable.dev/v1/chat/completions';
 
 const SYSTEM_PROMPT = `You are the AI assistant for Shalev Osher's portfolio website.
@@ -58,7 +56,7 @@ Contact details:
 
 If unsure, provide a short professional summary of Shalev Osher and ask what the visitor would like to know next.`;
 
-async function fallbackToAI(userMessage: string): Promise<string> {
+async function getAIReply(userMessage: string): Promise<string> {
   const apiKey = Deno.env.get('LOVABLE_API_KEY');
   if (!apiKey) {
     console.error('LOVABLE_API_KEY not configured for AI fallback');
@@ -93,27 +91,6 @@ async function fallbackToAI(userMessage: string): Promise<string> {
     return '';
   }
 }
-
-const extractBotReply = (payload: unknown): string => {
-  if (typeof payload === 'string') return payload.trim();
-
-  if (payload && typeof payload === 'object') {
-    const record = payload as Record<string, unknown>;
-    const candidate =
-      record.reply ??
-      record.output ??
-      record.text ??
-      record.message ??
-      record.response ??
-      record.answer ??
-      record.content;
-
-    if (typeof candidate === 'string') return candidate.trim();
-    if (candidate && typeof candidate === 'object') return JSON.stringify(candidate);
-  }
-
-  return '';
-};
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -164,41 +141,7 @@ Deno.serve(async (req) => {
       throw new Error(`Failed to store visitor message: ${visitorInsertError.message}`);
     }
 
-    const sessionId = typeof (requestBody as { sessionId?: unknown })?.sessionId === 'string'
-      ? (requestBody as { sessionId: string }).sessionId
-      : `web-${Date.now()}`;
-
-    const response = await fetch(N8N_WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: text,
-        text,
-        chatInput: text,
-        sessionId,
-      }),
-    });
-
-    const responseText = await response.text();
-
-    let botReply = '';
-
-    if (response.ok && responseText.trim()) {
-      let parsedResponse: unknown = responseText;
-      try {
-        parsedResponse = JSON.parse(responseText);
-      } catch {
-        parsedResponse = responseText;
-      }
-      botReply = extractBotReply(parsedResponse);
-    } else if (!response.ok) {
-      console.log(`N8N returned error status ${response.status}, falling back to AI...`);
-    }
-
-    if (!botReply) {
-      console.log('N8N returned empty, falling back to AI...');
-      botReply = await fallbackToAI(text);
-    }
+    let botReply = await getAIReply(text);
 
     if (!botReply) {
       botReply = 'מצטער, לא הצלחתי לעבד את הבקשה כרגע. נסה שוב בבקשה 🙏';
