@@ -111,7 +111,21 @@ interface StructuredReply {
   options?: string[];
 }
 
-async function getAIReply(userMessage: string, history?: { role: string; content: string }[]): Promise<StructuredReply> {
+// Detect if text is primarily Hebrew
+function isHebrewText(text: string): boolean {
+  const hebrewChars = (text.match(/[\u0590-\u05FF]/g) || []).length;
+  return hebrewChars > 2;
+}
+
+function getFallback(isHebrew: boolean): StructuredReply {
+  return {
+    text: isHebrew ? SAFE_FALLBACK_REPLY_HE : SAFE_FALLBACK_REPLY_EN,
+    options: isHebrew ? FALLBACK_OPTIONS_HE : FALLBACK_OPTIONS_EN,
+  };
+}
+
+async function getAIReply(userMessage: string, history?: { role: string; content: string }[], lang?: string): Promise<StructuredReply> {
+  const isHebrew = lang === 'he' || isHebrewText(userMessage);
   const apiKey = Deno.env.get('LOVABLE_API_KEY');
   if (!apiKey) {
     console.error('LOVABLE_API_KEY not configured for AI fallback');
@@ -176,7 +190,7 @@ async function getAIReply(userMessage: string, history?: { role: string; content
         const parsed = JSON.parse(toolCall.function.arguments) as StructuredReply;
         const cleanText = sanitizeReply(parsed.text || '');
         if (!cleanText || containsForbiddenContent(cleanText)) {
-          return { text: SAFE_FALLBACK_REPLY, options: ['ניסיון', 'כישורים', 'טכנולוגיות', 'תפקיד נוכחי', 'יצירת קשר'] };
+          return getFallback(isHebrew);
         }
         return { text: cleanText, options: parsed.options };
       } catch {
@@ -188,7 +202,7 @@ async function getAIReply(userMessage: string, history?: { role: string; content
     const rawReply = message?.content?.trim() || '';
     const cleanReply = sanitizeReply(rawReply);
     if (!cleanReply || containsForbiddenContent(cleanReply)) {
-      return { text: SAFE_FALLBACK_REPLY, options: ['ניסיון', 'כישורים', 'טכנולוגיות', 'תפקיד נוכחי', 'יצירת קשר'] };
+      return getFallback(isHebrew);
     }
     return { text: cleanReply };
   } catch (err) {
