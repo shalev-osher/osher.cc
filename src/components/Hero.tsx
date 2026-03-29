@@ -114,7 +114,8 @@ const Hero = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              {lang === "he" ? "שליו אושר" : "Shalev Osher"}
+              {nameTypewriter.displayedText}
+              <span className={`inline-block w-[3px] h-[0.8em] bg-primary ms-1 align-middle transition-opacity duration-100 ${nameTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
             </motion.span>
           </h1>
           
