@@ -53,7 +53,54 @@ const TelegramChatWidget = () => {
     [isHebrew]
   );
 
-  const scrollToBottom = useCallback(() => {
+  const handleClearChat = useCallback(() => {
+    setMessages([]);
+    setOptionsHistory([]);
+    setMessageCount(0);
+    setFreeTextCount(0);
+    setFreeTextMode(false);
+    // Re-show welcome on next render
+    setTimeout(() => {
+      setMessages([
+        {
+          id: "bot-welcome",
+          sender: "bot",
+          text: getWelcomeText(),
+          created_at: new Date().toISOString(),
+          options: getMenuOptions(),
+        },
+      ]);
+    }, 100);
+  }, [getWelcomeText, getMenuOptions]);
+
+  const handleExportPDF = useCallback(() => {
+    const chatContent = messages
+      .map((m) => {
+        const time = new Date(m.created_at).toLocaleTimeString(isHebrew ? "he-IL" : "en-US", { hour: "2-digit", minute: "2-digit" });
+        const sender = m.sender === "bot" ? (isHebrew ? "עוזר AI" : "AI Assistant") : (isHebrew ? "מבקר" : "Visitor");
+        return `[${time}] ${sender}: ${m.text || ""}`;
+      })
+      .join("\n\n");
+
+    // Create a printable HTML and trigger print-to-PDF
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) return;
+    printWindow.document.write(`
+      <html dir="${isHebrew ? "rtl" : "ltr"}">
+      <head><title>Chat Export - Shalev Osher</title>
+      <style>
+        body { font-family: Arial, sans-serif; padding: 40px; line-height: 1.8; white-space: pre-wrap; color: #222; }
+        h1 { font-size: 18px; border-bottom: 2px solid #ccc; padding-bottom: 8px; margin-bottom: 20px; }
+      </style></head>
+      <body>
+        <h1>${isHebrew ? "יצוא שיחה – שליו אושר" : "Chat Export – Shalev Osher"}</h1>
+        ${chatContent.replace(/\n/g, "<br>")}
+      </body></html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+  }, [messages, isHebrew]);
+
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
