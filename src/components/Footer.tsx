@@ -12,7 +12,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="pt-8 pb-6 border-t border-border/50 relative" role="contentinfo">
+    <footer className="pt-4 pb-3 border-t border-border/50 relative" role="contentinfo">
       <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, hsl(var(--primary) / 0.3), transparent)' }} aria-hidden="true" />
       
       <div className="container mx-auto px-6">
