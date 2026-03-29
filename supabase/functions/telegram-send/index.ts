@@ -7,7 +7,7 @@ const corsHeaders = {
 
 const AI_GATEWAY_URL = 'https://ai.gateway.lovable.dev/v1/chat/completions';
 
-const SAFE_FALLBACK_REPLY = `שלום! אני העוזר הדיגיטלי של שליו אושר (Shalev Osher).
+const SAFE_FALLBACK_REPLY_HE = `שלום! אני העוזר הדיגיטלי של שליו אושר (Shalev Osher).
 
 אני יכול לעזור במידע על:
 1. הניסיון המקצועי שלו
@@ -17,25 +17,28 @@ const SAFE_FALLBACK_REPLY = `שלום! אני העוזר הדיגיטלי של �
 
 על מה תרצה/י שאפרט?`;
 
+const SAFE_FALLBACK_REPLY_EN = `Hi! I'm the digital assistant for Shalev Osher.
+
+I can help with information about:
+1. His professional experience
+2. His skills and technologies
+3. His current and previous roles
+4. Contact details
+
+What would you like to know?`;
+
+const FALLBACK_OPTIONS_HE = ['ניסיון', 'כישורים', 'טכנולוגיות', 'תפקיד נוכחי', 'יצירת קשר'];
+const FALLBACK_OPTIONS_EN = ['Experience', 'Skills', 'Technologies', 'Current Role', 'Contact'];
+
+// Only block patterns that indicate the AI is misrepresenting Shalev as a developer
+// Note: NO /g flag — using /g with .test() causes alternating true/false bug
 const FORBIDDEN_PATTERNS = [
-  /שלו אושר/g,
-  /שלו\b/g,
-  /Pixel Perfect Developer/gi,
-  /Full-?Stack/gi,
-  /developer/gi,
-  /מפתח/gi,
-  /פיתוח/gi,
-  /Frontend/gi,
-  /Backend/gi,
-  /UI\/UX/gi,
-  /Next\.js/gi,
-  /React/gi,
-  /Node\.js/gi,
-  /MongoDB/gi,
-  /PostgreSQL/gi,
-  /Tailwind/gi,
-  /Vercel/gi,
-  /Docker/gi,
+  /שלו אושר/i,
+  /\bשלו\b/,
+  /Pixel Perfect Developer/i,
+  /Full-?Stack\s+(Developer|Engineer)/i,
+  /\b(frontend|backend)\s+(developer|engineer|מפתח)\b/i,
+  /UI\/UX\s+(designer|expert|מעצב)/i,
 ];
 
 const SYSTEM_PROMPT = `You are the AI assistant for Shalev Osher's portfolio website.
