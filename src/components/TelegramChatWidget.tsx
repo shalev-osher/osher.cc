@@ -28,21 +28,21 @@ const TelegramChatWidget = () => {
   const getMenuOptions = useCallback(
     () =>
       isHebrew
-        ? ["ניסיון", "כישורים", "טכנולוגיות", "תפקיד נוכחי", "יצירת קשר"]
-        : ["Experience", "Skills", "Technologies", "Current Role", "Contact"],
+        ? ["מה הוא עושה?", "טכנולוגיות שהוא משתמש", "איך ליצור קשר?", "הניסיון שלו"]
+        : ["What does he do?", "Technologies he uses", "How to contact him?", "His experience"],
     [isHebrew]
   );
 
   const getWelcomeText = useCallback(
     () =>
       isHebrew
-        ? "👋 היי! אני העוזר הדיגיטלי של שליו אושר.\nאיך אפשר לעזור?"
-        : "👋 Hi! I'm Shalev Osher's AI assistant.\nHow can I help you?",
+        ? "👋 היי! מה תרצה/י לדעת על שליו אושר?"
+        : "👋 Hi! What would you like to know about Shalev Osher?",
     [isHebrew]
   );
 
   const getMainMenuPrompt = useCallback(
-    () => (isHebrew ? "על מה תרצה/י לשמוע?" : "What would you like to know about?"),
+    () => (isHebrew ? "👋 מה עוד מעניין אותך?" : "👋 What else interests you?"),
     [isHebrew]
   );
 
