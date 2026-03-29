@@ -7,7 +7,7 @@ const corsHeaders = {
 
 const AI_GATEWAY_URL = 'https://ai.gateway.lovable.dev/v1/chat/completions';
 
-const SAFE_FALLBACK_REPLY = `שלום! אני העוזר הדיגיטלי של שליו אושר (Shalev Osher).
+const SAFE_FALLBACK_REPLY_HE = `שלום! אני העוזר הדיגיטלי של שליו אושר (Shalev Osher).
 
 אני יכול לעזור במידע על:
 1. הניסיון המקצועי שלו
@@ -17,25 +17,28 @@ const SAFE_FALLBACK_REPLY = `שלום! אני העוזר הדיגיטלי של �
 
 על מה תרצה/י שאפרט?`;
 
+const SAFE_FALLBACK_REPLY_EN = `Hi! I'm the digital assistant for Shalev Osher.
+
+I can help with information about:
+1. His professional experience
+2. His skills and technologies
+3. His current and previous roles
+4. Contact details
+
+What would you like to know?`;
+
+const FALLBACK_OPTIONS_HE = ['ניסיון', 'כישורים', 'טכנולוגיות', 'תפקיד נוכחי', 'יצירת קשר'];
+const FALLBACK_OPTIONS_EN = ['Experience', 'Skills', 'Technologies', 'Current Role', 'Contact'];
+
+// Only block patterns that indicate the AI is misrepresenting Shalev as a developer
+// Note: NO /g flag — using /g with .test() causes alternating true/false bug
 const FORBIDDEN_PATTERNS = [
-  /שלו אושר/g,
-  /שלו\b/g,
-  /Pixel Perfect Developer/gi,
-  /Full-?Stack/gi,
-  /developer/gi,
-  /מפתח/gi,
-  /פיתוח/gi,
-  /Frontend/gi,
-  /Backend/gi,
-  /UI\/UX/gi,
-  /Next\.js/gi,
-  /React/gi,
-  /Node\.js/gi,
-  /MongoDB/gi,
-  /PostgreSQL/gi,
-  /Tailwind/gi,
-  /Vercel/gi,
-  /Docker/gi,
+  /שלו אושר/i,
+  /\bשלו\b/,
+  /Pixel Perfect Developer/i,
+  /Full-?Stack\s+(Developer|Engineer)/i,
+  /\b(frontend|backend)\s+(developer|engineer|מפתח)\b/i,
+  /UI\/UX\s+(designer|expert|מעצב)/i,
 ];
 
 const SYSTEM_PROMPT = `You are the AI assistant for Shalev Osher's portfolio website.
@@ -108,7 +111,21 @@ interface StructuredReply {
   options?: string[];
 }
 
-async function getAIReply(userMessage: string, history?: { role: string; content: string }[]): Promise<StructuredReply> {
+// Detect if text is primarily Hebrew
+function isHebrewText(text: string): boolean {
+  const hebrewChars = (text.match(/[\u0590-\u05FF]/g) || []).length;
+  return hebrewChars > 2;
+}
+
+function getFallback(isHebrew: boolean): StructuredReply {
+  return {
+    text: isHebrew ? SAFE_FALLBACK_REPLY_HE : SAFE_FALLBACK_REPLY_EN,
+    options: isHebrew ? FALLBACK_OPTIONS_HE : FALLBACK_OPTIONS_EN,
+  };
+}
+
+async function getAIReply(userMessage: string, history?: { role: string; content: string }[], lang?: string): Promise<StructuredReply> {
+  const isHebrew = lang === 'he' || isHebrewText(userMessage);
   const apiKey = Deno.env.get('LOVABLE_API_KEY');
   if (!apiKey) {
     console.error('LOVABLE_API_KEY not configured for AI fallback');
@@ -173,7 +190,7 @@ async function getAIReply(userMessage: string, history?: { role: string; content
         const parsed = JSON.parse(toolCall.function.arguments) as StructuredReply;
         const cleanText = sanitizeReply(parsed.text || '');
         if (!cleanText || containsForbiddenContent(cleanText)) {
-          return { text: SAFE_FALLBACK_REPLY, options: ['ניסיון', 'כישורים', 'טכנולוגיות', 'תפקיד נוכחי', 'יצירת קשר'] };
+          return getFallback(isHebrew);
         }
         return { text: cleanText, options: parsed.options };
       } catch {
@@ -185,7 +202,7 @@ async function getAIReply(userMessage: string, history?: { role: string; content
     const rawReply = message?.content?.trim() || '';
     const cleanReply = sanitizeReply(rawReply);
     if (!cleanReply || containsForbiddenContent(cleanReply)) {
-      return { text: SAFE_FALLBACK_REPLY, options: ['ניסיון', 'כישורים', 'טכנולוגיות', 'תפקיד נוכחי', 'יצירת קשר'] };
+      return getFallback(isHebrew);
     }
     return { text: cleanReply };
   } catch (err) {
@@ -247,10 +264,17 @@ Deno.serve(async (req) => {
       ? (requestBody as { history: { role: string; content: string }[] }).history
       : undefined;
 
-    const result = await getAIReply(text, history);
+    const lang = typeof (requestBody as { lang?: unknown })?.lang === 'string'
+      ? (requestBody as { lang: string }).lang
+      : undefined;
+
+    const result = await getAIReply(text, history, lang);
+    const isHebrew = lang === 'he' || isHebrewText(text);
 
     if (!result.text) {
-      result.text = 'מצטער, לא הצלחתי לעבד את הבקשה כרגע. נסה שוב בבקשה 🙏';
+      result.text = isHebrew
+        ? 'מצטער, לא הצלחתי לעבד את הבקשה כרגע. נסה שוב בבקשה 🙏'
+        : "Sorry, I couldn't process the request right now. Please try again 🙏";
     }
 
     const { error: botInsertError } = await supabase.from('telegram_messages').insert({
