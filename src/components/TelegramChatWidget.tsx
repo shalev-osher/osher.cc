@@ -79,6 +79,21 @@ const TelegramChatWidget = () => {
     const trimmed = messageText.trim();
     if (!trimmed || sending) return;
 
+    if (messageCount >= MAX_MESSAGES_PER_SESSION) {
+      const limitMsg: Message = {
+        id: `bot-limit-${crypto.randomUUID()}`,
+        sender: "bot",
+        text: isHebrew
+          ? "⏳ הגעת למגבלת ההודעות בשיחה זו. ניתן ליצור קשר ישירות דרך טופס יצירת הקשר באתר."
+          : "⏳ You've reached the message limit for this session. You can reach out directly via the contact form on the site.",
+        created_at: new Date().toISOString(),
+      };
+      setMessages((prev) => [...prev, limitMsg]);
+      return;
+    }
+
+    setMessageCount((c) => c + 1);
+
     const visitorMessage: Message = {
       id: `visitor-${crypto.randomUUID()}`,
       sender: "visitor",
