@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, Bot } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Message {
   id: string;
@@ -13,6 +14,8 @@ interface Message {
 const SESSION_ID = `web-${Math.random().toString(36).slice(2, 10)}`;
 
 const TelegramChatWidget = () => {
+  const { language } = useLanguage();
+  const isHebrew = language === "he";
   const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -141,13 +144,13 @@ const TelegramChatWidget = () => {
                 </div>
                 <div>
                   <p className="font-semibold text-xs">Shalev Osher</p>
-                  <p className="text-[10px] text-white/70">AI Assistant</p>
+                  <p className="text-[10px] text-white/70">{isHebrew ? "עוזר AI" : "AI Assistant"}</p>
                 </div>
               </div>
               <button
                 onClick={() => setIsMinimized(true)}
                 className="p-1 rounded-full hover:bg-white/20 transition-colors"
-                aria-label="מזער צ'אט"
+                aria-label={isHebrew ? "מזער צ'אט" : "Minimize chat"}
               >
                 <X className="w-4 h-4" />
               </button>
@@ -157,7 +160,7 @@ const TelegramChatWidget = () => {
             <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-muted/30">
               {messages.length === 0 && (
                 <div className="text-center text-muted-foreground text-xs mt-6">
-                  <p>👋 היי! שלח הודעה ואחזור אליך</p>
+                  <p>{isHebrew ? "👋 היי! שלח הודעה ואחזור אליך" : "👋 Hi! Send a message and I'll get back to you"}</p>
                 </div>
               )}
               {messages.map((msg) => (
@@ -196,7 +199,7 @@ const TelegramChatWidget = () => {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="כתוב הודעה..."
+                  placeholder={isHebrew ? "כתוב הודעה..." : "Type a message..."}
                   className="flex-1 px-3 py-1.5 rounded-full bg-muted text-foreground text-xs outline-none placeholder:text-muted-foreground"
                   disabled={sending}
                   dir="auto"
@@ -205,7 +208,7 @@ const TelegramChatWidget = () => {
                   onClick={sendMessage}
                   disabled={!input.trim() || sending}
                   className="p-2 rounded-full bg-[#0088cc] text-white disabled:opacity-50 hover:bg-[#006fa1] transition-colors"
-                  aria-label="שלח"
+                  aria-label={isHebrew ? "שלח" : "Send"}
                 >
                   <Send className="w-3.5 h-3.5" />
                 </button>
