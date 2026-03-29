@@ -225,6 +225,7 @@ const TelegramChatWidget = () => {
               </div>
             </div>
           </motion.div>
+          </>
         )}
       </AnimatePresence>
     </motion.div>
