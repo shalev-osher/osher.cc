@@ -34,7 +34,26 @@ const TelegramChatWidget = () => {
   }, [messages, scrollToBottom]);
 
   useEffect(() => {
-    if (!isMinimized) inputRef.current?.focus();
+    if (!isMinimized) {
+      inputRef.current?.focus();
+      // Add welcome message on first open
+      if (messages.length === 0) {
+        const welcomeOptions = isHebrew
+          ? ["ניסיון", "כישורים", "טכנולוגיות", "תפקיד נוכחי", "יצירת קשר"]
+          : ["Experience", "Skills", "Technologies", "Current Role", "Contact"];
+        setMessages([
+          {
+            id: `bot-welcome`,
+            sender: "bot",
+            text: isHebrew
+              ? "👋 היי! אני העוזר הדיגיטלי של שליו אושר.\nאיך אפשר לעזור?"
+              : "👋 Hi! I'm Shalev Osher's AI assistant.\nHow can I help you?",
+            created_at: new Date().toISOString(),
+            options: welcomeOptions,
+          },
+        ]);
+      }
+    }
   }, [isMinimized]);
 
   const handleSend = async (messageText: string) => {
@@ -189,34 +208,6 @@ const TelegramChatWidget = () => {
 
               {/* Messages */}
               <div className="flex-1 overflow-y-auto p-3 space-y-2.5 bg-card/50 backdrop-blur-sm">
-                {messages.length === 0 && (
-                  <div className="text-center text-muted-foreground text-xs mt-8 space-y-3">
-                    <div className="w-12 h-12 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
-                      <Sparkles className="w-5 h-5 text-primary" />
-                    </div>
-                    <p className="font-medium">
-                      {isHebrew
-                        ? "👋 היי! מה תרצה לדעת על שליו אושר?"
-                        : "👋 Hi! What would you like to know about Shalev Osher?"}
-                    </p>
-                    {/* Initial quick-reply buttons */}
-                    <div className="flex flex-wrap justify-center gap-1.5 mt-2 px-2">
-                      {(isHebrew
-                        ? ["ניסיון", "כישורים", "טכנולוגיות", "תפקיד נוכחי", "יצירת קשר"]
-                        : ["Experience", "Skills", "Technologies", "Current Role", "Contact"]
-                      ).map((opt) => (
-                        <button
-                          key={opt}
-                          onClick={() => handleOptionClick(opt)}
-                          disabled={sending}
-                          className="px-3 py-1.5 text-[11px] font-medium rounded-full border border-primary/30 text-primary bg-primary/5 hover:bg-primary/15 hover:border-primary/50 transition-all disabled:opacity-50"
-                        >
-                          {opt}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
                 {messages.map((msg, idx) => (
                   <div key={msg.id}>
                     <div
