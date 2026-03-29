@@ -300,6 +300,40 @@ const TelegramChatWidget = () => {
                 <div ref={messagesEndRef} />
               </div>
 
+              {/* Pinned option buttons above input */}
+              {hasOptions && lastBotMsg?.options && (
+                <div className="px-2.5 py-1.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm flex flex-col gap-0.5">
+                  {lastBotMsg.options.map((opt) => (
+                    <button
+                      key={opt}
+                      onClick={() => handleOptionClick(opt)}
+                      disabled={sending}
+                      className="w-full px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-bold font-display rounded-md border border-primary/30 text-primary-foreground bg-primary/80 hover:bg-primary hover:border-primary/50 transition-all text-center disabled:opacity-50"
+                    >
+                      {opt}
+                    </button>
+                  ))}
+                  {lastBotMsg.id !== "bot-welcome" && !lastBotMsg.id.startsWith("bot-menu-") && (
+                    <button
+                      onClick={() => handleOptionClick(isHebrew ? "תפריט ראשי" : "Main menu")}
+                      className="w-full px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
+                    >
+                      {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
+                    </button>
+                  )}
+                </div>
+              )}
+              {!hasOptions && lastBotMsg && lastBotMsg.id !== "bot-welcome" && !lastBotMsg.id.startsWith("bot-menu-") && !sending && (
+                <div className="px-2.5 py-1.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm">
+                  <button
+                    onClick={() => handleOptionClick(isHebrew ? "תפריט ראשי" : "Main menu")}
+                    className="w-full px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center"
+                  >
+                    {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
+                  </button>
+                </div>
+              )}
+
               <div className={`p-2.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm transition-opacity ${hasOptions ? "opacity-50 pointer-events-none" : ""}`}>
                 <div className="flex items-center gap-2">
                   <input
