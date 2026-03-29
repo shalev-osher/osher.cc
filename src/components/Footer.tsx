@@ -17,13 +17,13 @@ const Footer = () => {
       
       <div className="container mx-auto px-6">
         <motion.div
-          className="flex flex-col md:flex-row items-center justify-between gap-6"
+          className="flex flex-col items-center gap-6 text-center"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="text-center md:text-start md:ps-16">
+          <div>
             <a href="#" className="font-display text-2xl font-bold text-gradient-warm" aria-label="Shalev Osher - Back to top">
               {lang === "he" ? "שליו אושר" : "Shalev Osher"}
             </a>
