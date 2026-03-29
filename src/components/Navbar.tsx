@@ -8,7 +8,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const navButtonHover = {
   scale: 1.07,
   y: -2,
-  transition: { type: "spring", stiffness: 400, damping: 15 },
+  transition: { type: "spring" as const, stiffness: 400, damping: 15 },
 };
 const navButtonTap = { scale: 0.95 };
 
