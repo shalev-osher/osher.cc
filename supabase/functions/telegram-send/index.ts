@@ -120,6 +120,8 @@ Options: ["איך נראה היום שלו?", "אילו כלים הוא משתמ
 
 **Languages:** Native Hebrew, fluent English
 
+**Key Skills (from CV):** Troubleshoots and executes server queries, monitors systems, creates and works swiftly, understands network workflows, leads teams and assumes responsibilities, motivated and learns quickly.
+
 **Strengths:** Deep troubleshooting, cross-team collaboration, fast learner, production-grade problem solving, strong ownership, excellent under pressure
 
 ## NAMING:
