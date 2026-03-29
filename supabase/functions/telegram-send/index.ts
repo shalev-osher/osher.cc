@@ -264,10 +264,17 @@ Deno.serve(async (req) => {
       ? (requestBody as { history: { role: string; content: string }[] }).history
       : undefined;
 
-    const result = await getAIReply(text, history);
+    const lang = typeof (requestBody as { lang?: unknown })?.lang === 'string'
+      ? (requestBody as { lang: string }).lang
+      : undefined;
+
+    const result = await getAIReply(text, history, lang);
+    const isHebrew = lang === 'he' || isHebrewText(text);
 
     if (!result.text) {
-      result.text = 'מצטער, לא הצלחתי לעבד את הבקשה כרגע. נסה שוב בבקשה 🙏';
+      result.text = isHebrew
+        ? 'מצטער, לא הצלחתי לעבד את הבקשה כרגע. נסה שוב בבקשה 🙏'
+        : "Sorry, I couldn't process the request right now. Please try again 🙏";
     }
 
     const { error: botInsertError } = await supabase.from('telegram_messages').insert({
