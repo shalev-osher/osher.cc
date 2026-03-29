@@ -101,6 +101,7 @@ const TelegramChatWidget = () => {
     printWindow.print();
   }, [messages, isHebrew]);
 
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
