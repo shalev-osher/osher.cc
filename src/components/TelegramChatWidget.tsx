@@ -365,13 +365,31 @@ const TelegramChatWidget = () => {
                     </p>
                   </div>
                 </div>
-                <button
-                  onClick={() => setIsMinimized(true)}
-                  className="p-1.5 rounded-full hover:bg-muted transition-colors relative z-10 text-muted-foreground"
-                  aria-label={isHebrew ? "מזער צ'אט" : "Minimize chat"}
-                >
-                  <X className="w-4 h-4" />
-                </button>
+                <div className="flex items-center gap-1 relative z-10">
+                  <button
+                    onClick={handleExportPDF}
+                    className="p-1.5 rounded-full hover:bg-muted transition-colors text-muted-foreground"
+                    aria-label={isHebrew ? "ייצוא שיחה" : "Export chat"}
+                    title={isHebrew ? "ייצוא PDF" : "Export PDF"}
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    onClick={handleClearChat}
+                    className="p-1.5 rounded-full hover:bg-muted transition-colors text-muted-foreground"
+                    aria-label={isHebrew ? "נקה צ'אט" : "Clear chat"}
+                    title={isHebrew ? "נקה צ'אט" : "Clear chat"}
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    onClick={() => setIsMinimized(true)}
+                    className="p-1.5 rounded-full hover:bg-muted transition-colors text-muted-foreground"
+                    aria-label={isHebrew ? "מזער צ'אט" : "Minimize chat"}
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
 
               <div
