@@ -403,7 +403,7 @@ const TelegramChatWidget = () => {
                     {freeTextCount < MAX_FREE_TEXT_PER_SESSION && (
                       <button
                         onClick={() => handleOptionClick(isHebrew ? "שאלה אחרת" : "Other question")}
-                        className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-accent/30 text-accent-foreground bg-accent/20 hover:bg-accent/40 hover:border-accent/50 transition-all text-center whitespace-nowrap"
+                        className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center whitespace-nowrap"
                       >
                         {isHebrew ? "✏️ שאלה אחרת" : "✏️ Other question"}
                       </button>
