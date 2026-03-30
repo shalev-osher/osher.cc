@@ -34,10 +34,17 @@ const TelegramChatWidget = () => {
   const [freeTextMode, setFreeTextMode] = useState(false);
 
   const getMenuOptions = useCallback(
-    () =>
-      isHebrew
+    () => {
+      const options = isHebrew
         ? ["תפקיד ותחומי אחריות", "סטאק טכנולוגי", "יצירת קשר", "ניסיון מקצועי", "השכלה והסמכות", "פרויקטים"]
-        : ["Role & responsibilities", "Tech stack", "Get in touch", "Professional experience", "Education & certifications", "Projects"],
+        : ["Role & responsibilities", "Tech stack", "Get in touch", "Professional experience", "Education & certifications", "Projects"];
+      // Fisher-Yates shuffle for random order each session
+      for (let i = options.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [options[i], options[j]] = [options[j], options[i]];
+      }
+      return options;
+    },
     [isHebrew]
   );
 
