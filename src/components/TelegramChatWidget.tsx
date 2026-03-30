@@ -35,15 +35,34 @@ const TelegramChatWidget = () => {
 
   const getMenuOptions = useCallback(
     () => {
-      const options = isHebrew
-        ? ["תפקיד ותחומי אחריות", "סטאק טכנולוגי", "יצירת קשר", "ניסיון מקצועי", "השכלה והסמכות", "פרויקטים"]
-        : ["Role & responsibilities", "Tech stack", "Get in touch", "Professional experience", "Education & certifications", "Projects"];
-      // Fisher-Yates shuffle for random order each session
-      for (let i = options.length - 1; i > 0; i--) {
+      const pool = isHebrew
+        ? [
+            ["תפקיד ותחומי אחריות", "מה התפקיד של שליו?", "במה שליו מתמחה?"],
+            ["סטאק טכנולוגי", "טכנולוגיות וכלים", "עם אילו כלים שליו עובד?"],
+            ["יצירת קשר", "איך ליצור קשר?", "דרכי התקשרות"],
+            ["ניסיון מקצועי", "ניסיון תעסוקתי", "היסטוריה מקצועית"],
+            ["השכלה והסמכות", "הכשרות ותעודות", "לימודים וקורסים"],
+            ["פרויקטים", "פרויקטים בולטים", "עבודות שבוצעו"],
+            ["חוזקות מקצועיות", "יתרונות ייחודיים", "מה מייחד את שליו?"],
+            ["שירותים שניתן לקבל", "מה שליו יכול להציע?", "תחומי מומחיות"],
+          ]
+        : [
+            ["Role & responsibilities", "What does Shalev do?", "Shalev's expertise"],
+            ["Tech stack", "Technologies & tools", "What tools does Shalev use?"],
+            ["Get in touch", "Contact information", "How to reach Shalev"],
+            ["Professional experience", "Work history", "Career background"],
+            ["Education & certifications", "Training & credentials", "Courses & degrees"],
+            ["Projects", "Notable projects", "Portfolio highlights"],
+            ["Key strengths", "What sets Shalev apart?", "Unique advantages"],
+            ["Services offered", "What can Shalev help with?", "Areas of expertise"],
+          ];
+      // Shuffle pool
+      for (let i = pool.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [options[i], options[j]] = [options[j], options[i]];
+        [pool[i], pool[j]] = [pool[j], pool[i]];
       }
-      return options;
+      // Pick 6 categories, random phrasing each
+      return pool.slice(0, 6).map(variants => variants[Math.floor(Math.random() * variants.length)]);
     },
     [isHebrew]
   );
