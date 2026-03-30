@@ -45,6 +45,12 @@ const TelegramChatWidget = () => {
             ["פרויקטים", "פרויקטים בולטים", "עבודות שבוצעו"],
             ["חוזקות מקצועיות", "יתרונות ייחודיים", "מה מייחד את שליו?"],
             ["שירותים שניתן לקבל", "מה שליו יכול להציע?", "תחומי מומחיות"],
+            ["ניהול שרתים", "ניסיון בשרתים ותשתיות", "תחזוקת שרתים"],
+            ["אבטחת מידע", "סייבר ואבטחה", "ניסיון באבטחת סייבר"],
+            ["ניהול צוותים", "ניסיון ניהולי", "הובלת צוותים טכניים"],
+            ["יום עבודה טיפוסי", "איך נראה יום של שליו?", "שגרת עבודה"],
+            ["הישגים בולטים", "הצלחות מקצועיות", "על מה שליו גאה?"],
+            ["רשתות ותקשורת", "ניסיון ב-Networking", "תשתיות רשת ו-VoIP"],
           ]
         : [
             ["Role & responsibilities", "What does Shalev do?", "Shalev's expertise"],
@@ -55,6 +61,12 @@ const TelegramChatWidget = () => {
             ["Projects", "Notable projects", "Portfolio highlights"],
             ["Key strengths", "What sets Shalev apart?", "Unique advantages"],
             ["Services offered", "What can Shalev help with?", "Areas of expertise"],
+            ["Server management", "Infrastructure experience", "Server & systems admin"],
+            ["Cyber security", "Security expertise", "InfoSec background"],
+            ["Team leadership", "Management experience", "Leading technical teams"],
+            ["A typical workday", "What does Shalev's day look like?", "Daily routine"],
+            ["Notable achievements", "Professional milestones", "What is Shalev proud of?"],
+            ["Networking & VoIP", "Network infrastructure", "Communication systems"],
           ];
       // Shuffle pool
       for (let i = pool.length - 1; i > 0; i--) {
