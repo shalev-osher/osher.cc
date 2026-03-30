@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, Bot, Sparkles, Trash2, Download } from "lucide-react";
 import ReactMarkdown from "react-markdown";
@@ -16,34 +16,121 @@ interface Message {
 
 const SESSION_ID = `web-${Math.random().toString(36).slice(2, 10)}`;
 const MAX_MESSAGES_PER_SESSION = 30;
-const MAX_FREE_TEXT_PER_SESSION = 5;
+const MAX_FREE_TEXT_PER_SESSION = 2;
 
 const TelegramChatWidget = () => {
   const { lang } = useLanguage();
   const isHebrew = lang === "he";
-  const [isMinimized, setIsMinimized] = useState(true);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [messages, setMessages] = useState<Message[]>(() => {
+    try {
+      const saved = localStorage.getItem("chat-history");
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return [];
+  });
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
   const [optionsHistory, setOptionsHistory] = useState<{ text: string; options: string[] }[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [messageCount, setMessageCount] = useState(0);
-  const [freeTextCount, setFreeTextCount] = useState(0);
+  const [messageCount, setMessageCount] = useState(() => {
+    try {
+      return Number(localStorage.getItem("chat-msgCount")) || 0;
+    } catch { return 0; }
+  });
+  const [freeTextCount, setFreeTextCount] = useState(() => {
+    try {
+      return Number(localStorage.getItem("chat-freeCount")) || 0;
+    } catch { return 0; }
+  });
   const [freeTextMode, setFreeTextMode] = useState(false);
+
+  // Persist to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem("chat-history", JSON.stringify(messages));
+    } catch {}
+  }, [messages]);
+  useEffect(() => {
+    try {
+      localStorage.setItem("chat-msgCount", String(messageCount));
+    } catch {}
+  }, [messageCount]);
+  useEffect(() => {
+    try {
+      localStorage.setItem("chat-freeCount", String(freeTextCount));
+    } catch {}
+  }, [freeTextCount]);
+
+  // Notification sound
+  const notificationSound = useMemo(() => {
+    if (typeof window === "undefined") return null;
+    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    return ctx;
+  }, []);
+
+  const playNotificationSound = useCallback(() => {
+    try {
+      if (!notificationSound) return;
+      const ctx = notificationSound;
+      if (ctx.state === "suspended") ctx.resume();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.setValueAtTime(800, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.2);
+    } catch {}
+  }, [notificationSound]);
 
   const getMenuOptions = useCallback(
     () => {
-      const options = isHebrew
-        ? ["תפקיד ותחומי אחריות", "סטאק טכנולוגי", "יצירת קשר", "ניסיון מקצועי", "השכלה והסמכות", "פרויקטים"]
-        : ["Role & responsibilities", "Tech stack", "Get in touch", "Professional experience", "Education & certifications", "Projects"];
-      // Fisher-Yates shuffle for random order each session
-      for (let i = options.length - 1; i > 0; i--) {
+      const pool = isHebrew
+        ? [
+            ["תפקיד ותחומי אחריות", "מה התפקיד של שליו?", "במה שליו מתמחה?"],
+            ["סטאק טכנולוגי", "טכנולוגיות וכלים", "עם אילו כלים שליו עובד?"],
+            ["יצירת קשר", "איך ליצור קשר?", "דרכי התקשרות"],
+            ["ניסיון מקצועי", "ניסיון תעסוקתי", "היסטוריה מקצועית"],
+            ["השכלה והסמכות", "הכשרות ותעודות", "לימודים וקורסים"],
+            ["פרויקטים", "פרויקטים בולטים", "עבודות שבוצעו"],
+            ["חוזקות מקצועיות", "יתרונות ייחודיים", "מה מייחד את שליו?"],
+            ["שירותים שניתן לקבל", "מה שליו יכול להציע?", "תחומי מומחיות"],
+            ["ניהול שרתים", "ניסיון בשרתים ותשתיות", "תחזוקת שרתים"],
+            ["אבטחת מידע", "סייבר ואבטחה", "ניסיון באבטחת סייבר"],
+            ["ניהול צוותים", "ניסיון ניהולי", "הובלת צוותים טכניים"],
+            ["יום עבודה טיפוסי", "איך נראה יום של שליו?", "שגרת עבודה"],
+            ["הישגים בולטים", "הצלחות מקצועיות", "על מה שליו גאה?"],
+            ["רשתות ותקשורת", "ניסיון ב-Networking", "תשתיות רשת ו-VoIP"],
+          ]
+        : [
+            ["Role & responsibilities", "What does Shalev do?", "Shalev's expertise"],
+            ["Tech stack", "Technologies & tools", "What tools does Shalev use?"],
+            ["Get in touch", "Contact information", "How to reach Shalev"],
+            ["Professional experience", "Work history", "Career background"],
+            ["Education & certifications", "Training & credentials", "Courses & degrees"],
+            ["Projects", "Notable projects", "Portfolio highlights"],
+            ["Key strengths", "What sets Shalev apart?", "Unique advantages"],
+            ["Services offered", "What can Shalev help with?", "Areas of expertise"],
+            ["Server management", "Infrastructure experience", "Server & systems admin"],
+            ["Cyber security", "Security expertise", "InfoSec background"],
+            ["Team leadership", "Management experience", "Leading technical teams"],
+            ["A typical workday", "What does Shalev's day look like?", "Daily routine"],
+            ["Notable achievements", "Professional milestones", "What is Shalev proud of?"],
+            ["Networking & VoIP", "Network infrastructure", "Communication systems"],
+          ];
+      // Shuffle pool
+      for (let i = pool.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [options[i], options[j]] = [options[j], options[i]];
+        [pool[i], pool[j]] = [pool[j], pool[i]];
       }
-      return options;
+      // Pick 6 categories, random phrasing each
+      return pool.slice(0, 6).map(variants => variants[Math.floor(Math.random() * variants.length)]);
     },
     [isHebrew]
   );
@@ -67,6 +154,11 @@ const TelegramChatWidget = () => {
     setMessageCount(0);
     setFreeTextCount(0);
     setFreeTextMode(false);
+    try {
+      localStorage.removeItem("chat-history");
+      localStorage.removeItem("chat-msgCount");
+      localStorage.removeItem("chat-freeCount");
+    } catch {}
     // Re-show welcome on next render
     setTimeout(() => {
       setMessages([
@@ -155,7 +247,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
     }
   }, [getMenuOptions, getWelcomeText, isMinimized, messages.length]);
 
-  const handleSend = async (messageText: string) => {
+  const handleSend = async (messageText: string, isFreeTextSend = false) => {
     const trimmed = messageText.trim();
     if (!trimmed || sending) return;
 
@@ -173,7 +265,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
     }
 
     setMessageCount((c) => c + 1);
-    if (freeTextMode) {
+    if (isFreeTextSend || freeTextMode) {
       setFreeTextCount((c) => c + 1);
       setFreeTextMode(false);
     }
@@ -225,6 +317,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
           options,
         },
       ]);
+      playNotificationSound();
     } catch (err) {
       console.error("Failed to send:", err);
       setInput(trimmed);
@@ -233,7 +326,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
     }
   };
 
-  const sendMessage = () => handleSend(input);
+  const sendMessage = () => handleSend(input, true);
 
   const handleOptionClick = (option: string) => {
     const isMainMenu = option === "Main menu" || option === "תפריט ראשי";
@@ -475,16 +568,23 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
 
               {/* Pinned option buttons above input */}
               {hasOptions && lastBotMsg?.options && (
-                <div className="px-2.5 py-1.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm flex flex-col items-center gap-0.5">
+                <motion.div
+                  className="px-2.5 py-1.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm flex flex-col items-center gap-0.5"
+                  initial="hidden"
+                  animate="visible"
+                  variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
+                >
                   {lastBotMsg.options.map((opt) => (
-                    <button
+                    <motion.button
                       key={opt}
                       onClick={() => handleOptionClick(opt)}
                       disabled={sending}
                       className="w-auto min-w-[60%] max-w-[85%] px-3 py-1.5 text-[11px] sm:text-xs leading-snug font-bold font-display rounded-md border border-primary/30 text-primary-foreground bg-primary/80 hover:bg-primary hover:border-primary/50 transition-all text-center disabled:opacity-50"
+                      variants={{ hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0 } }}
+                      transition={{ duration: 0.2 }}
                     >
                       {opt}
-                    </button>
+                    </motion.button>
                   ))}
                   <div className="flex gap-1 mt-0.5">
                     {lastBotMsg.id !== "bot-welcome" && !lastBotMsg.id.startsWith("bot-menu-") && optionsHistory.length > 0 && (
@@ -495,14 +595,6 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
                         {isHebrew ? "← חזרה" : "← Back"}
                       </button>
                     )}
-                    {freeTextCount < MAX_FREE_TEXT_PER_SESSION && (
-                      <button
-                        onClick={() => handleOptionClick(isHebrew ? "שאלה אחרת" : "Other question")}
-                        className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center whitespace-nowrap"
-                      >
-                        {isHebrew ? "✏️ שאלה אחרת" : "✏️ Other question"}
-                      </button>
-                    )}
                     <button
                       onClick={() => handleOptionClick(isHebrew ? "תפריט ראשי" : "Main menu")}
                       className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center whitespace-nowrap"
@@ -510,7 +602,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
                       {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
                     </button>
                   </div>
-                </div>
+                </motion.div>
               )}
               {!hasOptions && lastBotMsg && lastBotMsg.id !== "bot-welcome" && !lastBotMsg.id.startsWith("bot-menu-") && !sending && (
                 <div className="px-2.5 py-1.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm flex gap-1">
@@ -531,30 +623,36 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
                 </div>
               )}
 
-              <div className={`p-2.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm transition-opacity ${hasOptions ? "opacity-50 pointer-events-none" : ""}`}>
+              <div className="p-2.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm">
+                {freeTextCount < MAX_FREE_TEXT_PER_SESSION && input.length > 0 && (
+                  <div className={`flex justify-end text-[10px] text-muted-foreground mb-1 px-3`}>
+                    <span>{50 - input.length} / 50</span>
+                  </div>
+                )}
                 <div className="flex items-center gap-2">
                   <input
                     ref={inputRef}
                     type="text"
                     value={input}
-                    onChange={(e) => setInput(e.target.value)}
+                    maxLength={50}
+                    onChange={(e) => setInput(e.target.value.slice(0, 50))}
                     onKeyDown={handleKeyDown}
                     placeholder={
-                      hasOptions
+                      freeTextCount >= MAX_FREE_TEXT_PER_SESSION
                         ? isHebrew
-                          ? "בחר אפשרות מלמעלה..."
-                          : "Select an option above..."
+                          ? "הגעת למגבלת השאלות החופשיות"
+                          : "Free question limit reached"
                         : isHebrew
                           ? "כתוב הודעה..."
                           : "Type a message..."
                     }
                     className={`flex-1 px-3 py-2 rounded-full bg-muted text-foreground text-xs sm:text-sm outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/30 transition-shadow ${isHebrew ? "text-right" : "text-left"}`}
-                    disabled={sending || hasOptions}
+                    disabled={sending || freeTextCount >= MAX_FREE_TEXT_PER_SESSION}
                     dir={isHebrew ? "rtl" : "ltr"}
                   />
                   <button
                     onClick={sendMessage}
-                    disabled={!input.trim() || sending || hasOptions}
+                    disabled={!input.trim() || sending || freeTextCount >= MAX_FREE_TEXT_PER_SESSION}
                     className="p-2 rounded-full bg-primary text-primary-foreground disabled:opacity-50 hover:shadow-lg hover:shadow-primary/20 transition-all"
                     aria-label={isHebrew ? "שלח" : "Send"}
                   >
