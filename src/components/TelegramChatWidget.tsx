@@ -566,7 +566,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
                 {!hasOptions && (
                   <div className={`flex justify-between text-[10px] text-muted-foreground mb-1 px-3`}>
                     <span>{isHebrew ? `שאלות חופשיות: ${MAX_FREE_TEXT_PER_SESSION - freeTextCount}/${MAX_FREE_TEXT_PER_SESSION}` : `Free questions: ${MAX_FREE_TEXT_PER_SESSION - freeTextCount}/${MAX_FREE_TEXT_PER_SESSION}`}</span>
-                    {input.length > 0 && <span>{100 - input.length} / 100</span>}
+                    {input.length > 0 && <span>{50 - input.length} / 50</span>}
                   </div>
                 )}
                 <div className="flex items-center gap-2">
@@ -574,8 +574,8 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
                     ref={inputRef}
                     type="text"
                     value={input}
-                    maxLength={100}
-                    onChange={(e) => setInput(e.target.value.slice(0, 100))}
+                    maxLength={50}
+                    onChange={(e) => setInput(e.target.value.slice(0, 50))}
                     onKeyDown={handleKeyDown}
                     placeholder={
                       hasOptions
