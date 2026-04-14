@@ -563,6 +563,11 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
               )}
 
               <div className={`p-2.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm transition-opacity ${hasOptions ? "opacity-50 pointer-events-none" : ""}`}>
+                {!hasOptions && input.length > 0 && (
+                  <div className={`text-[10px] text-muted-foreground mb-1 px-3 ${isHebrew ? "text-left" : "text-right"}`}>
+                    {100 - input.length} / 100
+                  </div>
+                )}
                 <div className="flex items-center gap-2">
                   <input
                     ref={inputRef}
