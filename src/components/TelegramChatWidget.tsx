@@ -526,14 +526,6 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
                         {isHebrew ? "← חזרה" : "← Back"}
                       </button>
                     )}
-                    {freeTextCount < MAX_FREE_TEXT_PER_SESSION && (
-                      <button
-                        onClick={() => handleOptionClick(isHebrew ? "שאלה אחרת" : "Other question")}
-                        className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center whitespace-nowrap"
-                      >
-                        {isHebrew ? `✏️ שאלה אחרת (${MAX_FREE_TEXT_PER_SESSION - freeTextCount}/${MAX_FREE_TEXT_PER_SESSION})` : `✏️ Other question (${MAX_FREE_TEXT_PER_SESSION - freeTextCount}/${MAX_FREE_TEXT_PER_SESSION})`}
-                      </button>
-                    )}
                     <button
                       onClick={() => handleOptionClick(isHebrew ? "תפריט ראשי" : "Main menu")}
                       className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center whitespace-nowrap"
@@ -562,8 +554,8 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
                 </div>
               )}
 
-              <div className={`p-2.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm transition-opacity ${hasOptions ? "opacity-50 pointer-events-none" : ""}`}>
-                {!hasOptions && (
+              <div className="p-2.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm">
+                {freeTextCount < MAX_FREE_TEXT_PER_SESSION && (
                   <div className={`flex justify-between text-[10px] text-muted-foreground mb-1 px-3`}>
                     <span>{isHebrew ? `שאלות חופשיות: ${MAX_FREE_TEXT_PER_SESSION - freeTextCount}/${MAX_FREE_TEXT_PER_SESSION}` : `Free questions: ${MAX_FREE_TEXT_PER_SESSION - freeTextCount}/${MAX_FREE_TEXT_PER_SESSION}`}</span>
                     {input.length > 0 && <span>{50 - input.length} / 50</span>}
@@ -578,21 +570,21 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
                     onChange={(e) => setInput(e.target.value.slice(0, 50))}
                     onKeyDown={handleKeyDown}
                     placeholder={
-                      hasOptions
+                      freeTextCount >= MAX_FREE_TEXT_PER_SESSION
                         ? isHebrew
-                          ? "בחר אפשרות מלמעלה..."
-                          : "Select an option above..."
+                          ? "הגעת למגבלת השאלות החופשיות"
+                          : "Free question limit reached"
                         : isHebrew
                           ? "כתוב הודעה..."
                           : "Type a message..."
                     }
                     className={`flex-1 px-3 py-2 rounded-full bg-muted text-foreground text-xs sm:text-sm outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/30 transition-shadow ${isHebrew ? "text-right" : "text-left"}`}
-                    disabled={sending || hasOptions}
+                    disabled={sending || freeTextCount >= MAX_FREE_TEXT_PER_SESSION}
                     dir={isHebrew ? "rtl" : "ltr"}
                   />
                   <button
-                    onClick={sendMessage}
-                    disabled={!input.trim() || sending || hasOptions}
+                    onClick={() => { setFreeTextMode(true); sendMessage(); }}
+                    disabled={!input.trim() || sending || freeTextCount >= MAX_FREE_TEXT_PER_SESSION}
                     className="p-2 rounded-full bg-primary text-primary-foreground disabled:opacity-50 hover:shadow-lg hover:shadow-primary/20 transition-all"
                     aria-label={isHebrew ? "שלח" : "Send"}
                   >
