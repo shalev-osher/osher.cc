@@ -186,7 +186,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
     }
   }, [getMenuOptions, getWelcomeText, isMinimized, messages.length]);
 
-  const handleSend = async (messageText: string) => {
+  const handleSend = async (messageText: string, isFreeTextSend = false) => {
     const trimmed = messageText.trim();
     if (!trimmed || sending) return;
 
@@ -204,7 +204,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
     }
 
     setMessageCount((c) => c + 1);
-    if (freeTextMode) {
+    if (isFreeTextSend || freeTextMode) {
       setFreeTextCount((c) => c + 1);
       setFreeTextMode(false);
     }
@@ -264,7 +264,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
     }
   };
 
-  const sendMessage = () => handleSend(input);
+  const sendMessage = () => handleSend(input, true);
 
   const handleOptionClick = (option: string) => {
     const isMainMenu = option === "Main menu" || option === "תפריט ראשי";
@@ -354,7 +354,6 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      setFreeTextMode(true);
       sendMessage();
     }
   };
@@ -583,7 +582,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
                     dir={isHebrew ? "rtl" : "ltr"}
                   />
                   <button
-                    onClick={() => { setFreeTextMode(true); sendMessage(); }}
+                    onClick={sendMessage}
                     disabled={!input.trim() || sending || freeTextCount >= MAX_FREE_TEXT_PER_SESSION}
                     className="p-2 rounded-full bg-primary text-primary-foreground disabled:opacity-50 hover:shadow-lg hover:shadow-primary/20 transition-all"
                     aria-label={isHebrew ? "שלח" : "Send"}
