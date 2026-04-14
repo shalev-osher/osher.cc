@@ -556,10 +556,9 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
               )}
 
               <div className="p-2.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm">
-                {freeTextCount < MAX_FREE_TEXT_PER_SESSION && (
-                  <div className={`flex justify-between text-[10px] text-muted-foreground mb-1 px-3`}>
-                    <span>{isHebrew ? `שאלות חופשיות: ${MAX_FREE_TEXT_PER_SESSION - freeTextCount}/${MAX_FREE_TEXT_PER_SESSION}` : `Free questions: ${MAX_FREE_TEXT_PER_SESSION - freeTextCount}/${MAX_FREE_TEXT_PER_SESSION}`}</span>
-                    {input.length > 0 && <span>{50 - input.length} / 50</span>}
+                {freeTextCount < MAX_FREE_TEXT_PER_SESSION && input.length > 0 && (
+                  <div className={`flex justify-end text-[10px] text-muted-foreground mb-1 px-3`}>
+                    <span>{50 - input.length} / 50</span>
                   </div>
                 )}
                 <div className="flex items-center gap-2">
