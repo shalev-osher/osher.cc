@@ -16,7 +16,7 @@ interface Message {
 
 const SESSION_ID = `web-${Math.random().toString(36).slice(2, 10)}`;
 const MAX_MESSAGES_PER_SESSION = 30;
-const MAX_FREE_TEXT_PER_SESSION = 5;
+const MAX_FREE_TEXT_PER_SESSION = 2;
 
 const TelegramChatWidget = () => {
   const { lang } = useLanguage();
@@ -531,7 +531,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
                         onClick={() => handleOptionClick(isHebrew ? "שאלה אחרת" : "Other question")}
                         className="flex-1 px-2 py-1.5 text-[11px] sm:text-xs leading-snug font-medium rounded-md border border-muted-foreground/20 text-muted-foreground bg-muted/30 hover:bg-muted hover:border-muted-foreground/40 transition-all text-center whitespace-nowrap"
                       >
-                        {isHebrew ? "✏️ שאלה אחרת" : "✏️ Other question"}
+                        {isHebrew ? `✏️ שאלה אחרת (${MAX_FREE_TEXT_PER_SESSION - freeTextCount}/${MAX_FREE_TEXT_PER_SESSION})` : `✏️ Other question (${MAX_FREE_TEXT_PER_SESSION - freeTextCount}/${MAX_FREE_TEXT_PER_SESSION})`}
                       </button>
                     )}
                     <button
@@ -563,9 +563,10 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
               )}
 
               <div className={`p-2.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm transition-opacity ${hasOptions ? "opacity-50 pointer-events-none" : ""}`}>
-                {!hasOptions && input.length > 0 && (
-                  <div className={`text-[10px] text-muted-foreground mb-1 px-3 ${isHebrew ? "text-left" : "text-right"}`}>
-                    {100 - input.length} / 100
+                {!hasOptions && (
+                  <div className={`flex justify-between text-[10px] text-muted-foreground mb-1 px-3`}>
+                    <span>{isHebrew ? `שאלות חופשיות: ${MAX_FREE_TEXT_PER_SESSION - freeTextCount}/${MAX_FREE_TEXT_PER_SESSION}` : `Free questions: ${MAX_FREE_TEXT_PER_SESSION - freeTextCount}/${MAX_FREE_TEXT_PER_SESSION}`}</span>
+                    {input.length > 0 && <span>{100 - input.length} / 100</span>}
                   </div>
                 )}
                 <div className="flex items-center gap-2">
