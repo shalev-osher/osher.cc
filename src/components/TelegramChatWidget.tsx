@@ -602,7 +602,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
                       {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
                     </button>
                   </div>
-                </div>
+                </motion.div>
               )}
               {!hasOptions && lastBotMsg && lastBotMsg.id !== "bot-welcome" && !lastBotMsg.id.startsWith("bot-menu-") && !sending && (
                 <div className="px-2.5 py-1.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm flex gap-1">
