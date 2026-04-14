@@ -317,6 +317,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
           options,
         },
       ]);
+      playNotificationSound();
     } catch (err) {
       console.error("Failed to send:", err);
       setInput(trimmed);
