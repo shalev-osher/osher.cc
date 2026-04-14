@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, Bot, Sparkles, Trash2, Download } from "lucide-react";
 import ReactMarkdown from "react-markdown";
@@ -22,16 +22,72 @@ const TelegramChatWidget = () => {
   const { lang } = useLanguage();
   const isHebrew = lang === "he";
   const [isMinimized, setIsMinimized] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(() => {
+    try {
+      const saved = localStorage.getItem("chat-history");
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return [];
+  });
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
   const [optionsHistory, setOptionsHistory] = useState<{ text: string; options: string[] }[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [messageCount, setMessageCount] = useState(0);
-  const [freeTextCount, setFreeTextCount] = useState(0);
+  const [messageCount, setMessageCount] = useState(() => {
+    try {
+      return Number(localStorage.getItem("chat-msgCount")) || 0;
+    } catch { return 0; }
+  });
+  const [freeTextCount, setFreeTextCount] = useState(() => {
+    try {
+      return Number(localStorage.getItem("chat-freeCount")) || 0;
+    } catch { return 0; }
+  });
   const [freeTextMode, setFreeTextMode] = useState(false);
+
+  // Persist to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem("chat-history", JSON.stringify(messages));
+    } catch {}
+  }, [messages]);
+  useEffect(() => {
+    try {
+      localStorage.setItem("chat-msgCount", String(messageCount));
+    } catch {}
+  }, [messageCount]);
+  useEffect(() => {
+    try {
+      localStorage.setItem("chat-freeCount", String(freeTextCount));
+    } catch {}
+  }, [freeTextCount]);
+
+  // Notification sound
+  const notificationSound = useMemo(() => {
+    if (typeof window === "undefined") return null;
+    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    return ctx;
+  }, []);
+
+  const playNotificationSound = useCallback(() => {
+    try {
+      if (!notificationSound) return;
+      const ctx = notificationSound;
+      if (ctx.state === "suspended") ctx.resume();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.setValueAtTime(800, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.2);
+    } catch {}
+  }, [notificationSound]);
 
   const getMenuOptions = useCallback(
     () => {
