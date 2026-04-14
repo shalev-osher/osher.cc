@@ -569,7 +569,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
                     type="text"
                     value={input}
                     maxLength={100}
-                    onChange={(e) => setInput(e.target.value)}
+                    onChange={(e) => setInput(e.target.value.slice(0, 100))}
                     onKeyDown={handleKeyDown}
                     placeholder={
                       hasOptions
