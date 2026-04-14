@@ -568,6 +568,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
                     ref={inputRef}
                     type="text"
                     value={input}
+                    maxLength={100}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder={
