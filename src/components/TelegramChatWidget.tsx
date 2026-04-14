@@ -154,6 +154,11 @@ const TelegramChatWidget = () => {
     setMessageCount(0);
     setFreeTextCount(0);
     setFreeTextMode(false);
+    try {
+      localStorage.removeItem("chat-history");
+      localStorage.removeItem("chat-msgCount");
+      localStorage.removeItem("chat-freeCount");
+    } catch {}
     // Re-show welcome on next render
     setTimeout(() => {
       setMessages([
