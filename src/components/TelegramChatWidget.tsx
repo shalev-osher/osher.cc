@@ -186,7 +186,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
     }
   }, [getMenuOptions, getWelcomeText, isMinimized, messages.length]);
 
-  const handleSend = async (messageText: string) => {
+  const handleSend = async (messageText: string, isFreeTextSend = false) => {
     const trimmed = messageText.trim();
     if (!trimmed || sending) return;
 
@@ -204,7 +204,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
     }
 
     setMessageCount((c) => c + 1);
-    if (freeTextMode) {
+    if (isFreeTextSend || freeTextMode) {
       setFreeTextCount((c) => c + 1);
       setFreeTextMode(false);
     }
