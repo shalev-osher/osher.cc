@@ -264,7 +264,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
     }
   };
 
-  const sendMessage = () => handleSend(input);
+  const sendMessage = () => handleSend(input, true);
 
   const handleOptionClick = (option: string) => {
     const isMainMenu = option === "Main menu" || option === "תפריט ראשי";
