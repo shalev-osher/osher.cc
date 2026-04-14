@@ -568,16 +568,23 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
 
               {/* Pinned option buttons above input */}
               {hasOptions && lastBotMsg?.options && (
-                <div className="px-2.5 py-1.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm flex flex-col items-center gap-0.5">
+                <motion.div
+                  className="px-2.5 py-1.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm flex flex-col items-center gap-0.5"
+                  initial="hidden"
+                  animate="visible"
+                  variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
+                >
                   {lastBotMsg.options.map((opt) => (
-                    <button
+                    <motion.button
                       key={opt}
                       onClick={() => handleOptionClick(opt)}
                       disabled={sending}
                       className="w-auto min-w-[60%] max-w-[85%] px-3 py-1.5 text-[11px] sm:text-xs leading-snug font-bold font-display rounded-md border border-primary/30 text-primary-foreground bg-primary/80 hover:bg-primary hover:border-primary/50 transition-all text-center disabled:opacity-50"
+                      variants={{ hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0 } }}
+                      transition={{ duration: 0.2 }}
                     >
                       {opt}
-                    </button>
+                    </motion.button>
                   ))}
                   <div className="flex gap-1 mt-0.5">
                     {lastBotMsg.id !== "bot-welcome" && !lastBotMsg.id.startsWith("bot-menu-") && optionsHistory.length > 0 && (
