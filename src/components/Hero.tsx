@@ -1,43 +1,12 @@
 import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTypewriter } from "@/hooks/useTypewriter";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import Particles from "./Particles";
 import CursorGlow from "./CursorGlow";
+import ConstellationBackground from "./ConstellationBackground";
+import MagneticButton from "./MagneticButton";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useRef, ReactNode, MouseEvent } from "react";
-
-const MagneticButton = ({ children }: { children: ReactNode }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const springX = useSpring(x, { stiffness: 200, damping: 15 });
-  const springY = useSpring(y, { stiffness: 200, damping: 15 });
-
-  const handleMouse = (e: MouseEvent) => {
-    const el = ref.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    x.set((e.clientX - cx) * 0.3);
-    y.set((e.clientY - cy) * 0.3);
-  };
-
-  const handleLeave = () => { x.set(0); y.set(0); };
-
-  return (
-    <motion.div
-      ref={ref}
-      style={{ x: springX, y: springY }}
-      onMouseMove={handleMouse}
-      onMouseLeave={handleLeave}
-      className="inline-block"
-    >
-      {children}
-    </motion.div>
-  );
-};
 
 const Hero = () => {
   const { t, lang } = useLanguage();
@@ -95,6 +64,7 @@ const Hero = () => {
         />
       </div>
 
+      <ConstellationBackground starCount={70} linkDistance={130} mouseInfluence={180} />
       <Particles count={40} />
       <CursorGlow />
 
