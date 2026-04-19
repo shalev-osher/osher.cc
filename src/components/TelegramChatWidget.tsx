@@ -458,21 +458,14 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
             </motion.button>
           </MagneticButton>
         ) : (
-          <>
-            <motion.div
-              key="overlay"
-              className="fixed inset-0 z-[-1]"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsMinimized(true)}
-            />
-            <motion.div
-              key="chat"
-              className="fixed bottom-20 inset-x-3 h-[min(520px,calc(100vh-112px))] rounded-2xl overflow-hidden shadow-2xl flex flex-col border border-primary/20 bg-background/80 backdrop-blur-xl sm:inset-x-auto sm:h-[600px] sm:w-[420px] sm:max-w-[420px] sm:start-8"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
+          <motion.div
+            key="chat"
+            className="fixed bottom-20 inset-x-3 h-[min(520px,calc(100vh-112px))] rounded-2xl overflow-hidden shadow-2xl flex flex-col border border-primary/20 bg-background/80 backdrop-blur-xl sm:inset-x-auto sm:h-[600px] sm:w-[420px] sm:max-w-[420px] sm:start-8"
+            initial={{ scale: 0.8, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.8, opacity: 0, y: 20 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          >
               transition={{ type: "spring", stiffness: 300, damping: 25 }}
             >
               <div className="relative flex items-center justify-between px-4 py-3 text-foreground overflow-hidden">
