@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
+import MagneticButton from "./MagneticButton";
 
 interface Message {
   id: string;
