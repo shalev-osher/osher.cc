@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Menu, X, Download } from "lucide-react";
 import { motion } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
+import MagneticButton from "./MagneticButton";
 import useActiveSection from "@/hooks/useActiveSection";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -48,40 +49,45 @@ const Navbar = () => {
             </a>
             <div className="hidden md:flex items-center gap-2">
               {navLinks.map((link) => (
+                <MagneticButton key={link.href} strength={0.25} radius={40}>
+                  <motion.a
+                    href={link.href}
+                    whileHover={navButtonHover}
+                    whileTap={navButtonTap}
+                    className={`text-sm font-bold font-display px-3 py-1.5 rounded-lg border transition-colors duration-300 ${
+                      activeSection === link.id
+                        ? "bg-primary/25 text-primary border-primary/40 shadow-sm shadow-primary/10"
+                        : "bg-primary/10 text-foreground/80 border-border/60 hover:bg-primary/20 hover:text-primary hover:border-primary/30"
+                    }`}
+                    aria-current={activeSection === link.id ? "true" : undefined}
+                  >
+                    {link.label}
+                  </motion.a>
+                </MagneticButton>
+              ))}
+              <MagneticButton strength={0.25} radius={40}>
                 <motion.a
-                  key={link.href}
-                  href={link.href}
+                  href="/cv/shalev-osher-cv.pdf"
+                  download
                   whileHover={navButtonHover}
                   whileTap={navButtonTap}
-                  className={`text-sm font-bold font-display px-3 py-1.5 rounded-lg border transition-colors duration-300 ${
-                    activeSection === link.id
-                      ? "bg-primary/25 text-primary border-primary/40 shadow-sm shadow-primary/10"
-                      : "bg-primary/10 text-foreground/80 border-border/60 hover:bg-primary/20 hover:text-primary hover:border-primary/30"
-                  }`}
-                  aria-current={activeSection === link.id ? "true" : undefined}
+                  className="text-sm font-bold font-display px-3 py-1.5 rounded-lg border border-border/60 bg-primary/10 text-foreground/80 hover:bg-primary/20 hover:text-primary hover:border-primary/30 transition-colors duration-300"
+                  aria-label="Download CV"
                 >
-                  {link.label}
+                  CV
                 </motion.a>
-              ))}
-              <motion.a
-                href="/cv/shalev-osher-cv.pdf"
-                download
-                whileHover={navButtonHover}
-                whileTap={navButtonTap}
-                className="text-sm font-bold font-display px-3 py-1.5 rounded-lg border border-border/60 bg-primary/10 text-foreground/80 hover:bg-primary/20 hover:text-primary hover:border-primary/30 transition-colors duration-300"
-                aria-label="Download CV"
-              >
-                CV
-              </motion.a>
-              <motion.button
-                onClick={toggleLang}
-                whileHover={navButtonHover}
-                whileTap={navButtonTap}
-                className="text-sm font-bold font-display px-3 py-1.5 rounded-lg border border-border/60 bg-primary/10 text-foreground/80 hover:bg-primary/20 hover:text-primary hover:border-primary/30 transition-colors duration-300"
-                aria-label={`Switch to ${lang === "en" ? "Hebrew" : "English"}`}
-              >
-                {lang === "en" ? "HE" : "EN"}
-              </motion.button>
+              </MagneticButton>
+              <MagneticButton strength={0.25} radius={40}>
+                <motion.button
+                  onClick={toggleLang}
+                  whileHover={navButtonHover}
+                  whileTap={navButtonTap}
+                  className="text-sm font-bold font-display px-3 py-1.5 rounded-lg border border-border/60 bg-primary/10 text-foreground/80 hover:bg-primary/20 hover:text-primary hover:border-primary/30 transition-colors duration-300"
+                  aria-label={`Switch to ${lang === "en" ? "Hebrew" : "English"}`}
+                >
+                  {lang === "en" ? "HE" : "EN"}
+                </motion.button>
+              </MagneticButton>
               <ThemeToggle />
             </div>
             <div className="flex items-center gap-2 md:hidden">
