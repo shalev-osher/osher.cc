@@ -441,19 +441,22 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
     >
       <AnimatePresence mode="wait">
         {isMinimized ? (
-          <motion.button
-            key="minimized"
-            onClick={() => setIsMinimized(false)}
-            className="w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-2xl hover:shadow-primary/30 transition-all flex items-center justify-center relative overflow-hidden group"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity" />
-            <Bot className="w-6 h-6 relative z-10" />
-          </motion.button>
+          <MagneticButton key="minimized-magnet" strength={0.4} radius={80}>
+            <motion.button
+              key="minimized"
+              onClick={() => setIsMinimized(false)}
+              className="w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-2xl hover:shadow-primary/30 transition-all flex items-center justify-center relative overflow-hidden group"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              aria-label={isHebrew ? "פתח צ'אט" : "Open chat"}
+            >
+              <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Bot className="w-6 h-6 relative z-10" />
+            </motion.button>
+          </MagneticButton>
         ) : (
           <>
             <motion.div
