@@ -4,6 +4,9 @@ import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motio
 const TRAIL_LENGTH = 14;
 const SPARKLE_LIFETIME = 700;
 
+// Safari-safe HSL color helper
+const hslColor = (opacity: number) => `hsla(var(--primary-h, 45), var(--primary-s, 93%), var(--primary-l, 58%), ${opacity})`;
+
 const CursorGlow = () => {
   const ref = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
@@ -13,6 +16,7 @@ const CursorGlow = () => {
   const [sparkles, setSparkles] = useState<{ x: number; y: number; id: number; dx: number; dy: number; size: number }[]>([]);
   const trailIdRef = useRef(0);
   const sparkleIdRef = useRef(0);
+  const [primaryColor, setPrimaryColor] = useState({ h: 45, s: 93, l: 58 });
 
   const springConfig = { stiffness: 150, damping: 20 };
   const trailConfig = { stiffness: 80, damping: 30 };
@@ -21,6 +25,41 @@ const CursorGlow = () => {
   const springY = useSpring(mouseY, springConfig);
   const trailX = useSpring(mouseX, trailConfig);
   const trailY = useSpring(mouseY, trailConfig);
+
+  // Read actual primary HSL values from CSS
+  useEffect(() => {
+    const root = document.documentElement;
+    const style = getComputedStyle(root);
+    const raw = style.getPropertyValue("--primary").trim();
+    const parts = raw.split(/\s+/);
+    if (parts.length >= 3) {
+      setPrimaryColor({
+        h: parseFloat(parts[0]) || 45,
+        s: parseFloat(parts[1]) || 93,
+        l: parseFloat(parts[2]) || 58,
+      });
+    }
+
+    // Watch for theme changes
+    const observer = new MutationObserver(() => {
+      const s = getComputedStyle(document.documentElement);
+      const r = s.getPropertyValue("--primary").trim();
+      const p = r.split(/\s+/);
+      if (p.length >= 3) {
+        setPrimaryColor({
+          h: parseFloat(p[0]) || 45,
+          s: parseFloat(p[1]) || 93,
+          l: parseFloat(p[2]) || 58,
+        });
+      }
+    });
+    observer.observe(root, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  const hsla = useCallback((opacity: number) => {
+    return `hsla(${primaryColor.h}, ${primaryColor.s}%, ${primaryColor.l}%, ${opacity})`;
+  }, [primaryColor]);
 
   const updateTrail = useCallback((x: number, y: number, angle: number) => {
     trailIdRef.current += 1;
@@ -66,7 +105,6 @@ const CursorGlow = () => {
       const angle = Math.atan2(dy, dx);
       if (dist > 12 && frameCount % 2 === 0) {
         updateTrail(x, y, angle);
-        // Occasional sparkle on faster movement
         if (dist > 25 && Math.random() > 0.7) spawnSparkle(x, y);
         lastX = x;
         lastY = y;
@@ -96,10 +134,11 @@ const CursorGlow = () => {
         const progress = (i + 1) / trail.length;
         const opacity = progress * 0.45;
         const size = 4 + progress * 8;
+        const angleDeg = (point.angle * 180) / Math.PI;
         return (
           <motion.div
             key={point.id}
-            className="absolute rounded-full -translate-x-1/2 -translate-y-1/2"
+            className="absolute rounded-full"
             initial={{ opacity: 0, scale: 0.3 }}
             animate={{ opacity, scale: 1 }}
             exit={{ opacity: 0, scale: 0 }}
@@ -109,9 +148,9 @@ const CursorGlow = () => {
               top: point.y,
               width: size * 1.6,
               height: size,
-              background: `linear-gradient(90deg, hsl(var(--primary) / ${opacity * 0.3}), hsl(var(--primary) / ${opacity}))`,
-              boxShadow: `0 0 ${size * 2.5}px hsl(var(--primary) / ${opacity * 0.6})`,
-              transform: `translate(-50%, -50%) rotate(${point.angle}rad)`,
+              transform: `translate(-50%, -50%) rotate(${angleDeg}deg)`,
+              background: `linear-gradient(90deg, ${hsla(opacity * 0.3)}, ${hsla(opacity)})`,
+              boxShadow: `0 0 ${size * 2.5}px ${hsla(opacity * 0.6)}`,
             }}
           />
         );
@@ -122,7 +161,7 @@ const CursorGlow = () => {
         {sparkles.map((s) => (
           <motion.div
             key={s.id}
-            className="absolute rounded-full -translate-x-1/2 -translate-y-1/2"
+            className="absolute rounded-full"
             initial={{ opacity: 1, scale: 0, x: 0, y: 0 }}
             animate={{ opacity: 0, scale: 1.5, x: s.dx, y: s.dy }}
             exit={{ opacity: 0 }}
@@ -132,8 +171,9 @@ const CursorGlow = () => {
               top: s.y,
               width: s.size,
               height: s.size,
-              background: "hsl(var(--primary))",
-              boxShadow: `0 0 ${s.size * 4}px hsl(var(--primary) / 0.8)`,
+              transform: "translate(-50%, -50%)",
+              background: hsla(1),
+              boxShadow: `0 0 ${s.size * 4}px ${hsla(0.8)}`,
             }}
           />
         ))}
@@ -141,20 +181,28 @@ const CursorGlow = () => {
 
       {/* Outer trail glow - slow follow */}
       <motion.div
-        className="absolute w-[600px] h-[600px] rounded-full blur-[160px] -translate-x-1/2 -translate-y-1/2"
+        className="absolute rounded-full"
         style={{
           left: trailX,
           top: trailY,
-          background: "hsl(var(--primary) / 0.04)",
+          width: 600,
+          height: 600,
+          transform: "translate(-50%, -50%)",
+          filter: "blur(160px)",
+          background: hsla(0.04),
         }}
       />
       {/* Main glow */}
       <motion.div
-        className="absolute w-[400px] h-[400px] rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2"
+        className="absolute rounded-full"
         style={{
           left: springX,
           top: springY,
-          background: "hsl(var(--primary) / 0.07)",
+          width: 400,
+          height: 400,
+          transform: "translate(-50%, -50%)",
+          filter: "blur(120px)",
+          background: hsla(0.07),
         }}
         animate={{
           scale: isHovering ? 1.15 : 1,
@@ -163,11 +211,15 @@ const CursorGlow = () => {
       />
       {/* Inner bright core */}
       <motion.div
-        className="absolute w-[150px] h-[150px] rounded-full blur-[60px] -translate-x-1/2 -translate-y-1/2"
+        className="absolute rounded-full"
         style={{
           left: springX,
           top: springY,
-          background: "hsl(var(--primary) / 0.12)",
+          width: 150,
+          height: 150,
+          transform: "translate(-50%, -50%)",
+          filter: "blur(60px)",
+          background: hsla(0.12),
         }}
         animate={{
           scale: isHovering ? 1.3 : 1,
@@ -177,10 +229,14 @@ const CursorGlow = () => {
       />
       {/* Ring effect */}
       <motion.div
-        className="absolute w-[80px] h-[80px] rounded-full -translate-x-1/2 -translate-y-1/2 border border-primary/10"
+        className="absolute rounded-full"
         style={{
           left: springX,
           top: springY,
+          width: 80,
+          height: 80,
+          transform: "translate(-50%, -50%)",
+          border: `1px solid ${hsla(0.1)}`,
         }}
         animate={{
           scale: isHovering ? [1, 2.5] : 1,
