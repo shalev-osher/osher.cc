@@ -466,8 +466,6 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
             exit={{ scale: 0.8, opacity: 0, y: 20 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            >
               <div className="relative flex items-center justify-between px-4 py-3 text-foreground overflow-hidden">
                 <div className="absolute inset-0 bg-background/60 backdrop-blur-sm" />
                 <div className="absolute inset-0 border-b-2 border-primary/30" />
