@@ -1,15 +1,18 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
 
-const TRAIL_LENGTH = 8;
+const TRAIL_LENGTH = 14;
+const SPARKLE_LIFETIME = 700;
 
 const CursorGlow = () => {
   const ref = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const [isHovering, setIsHovering] = useState(false);
-  const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
+  const [trail, setTrail] = useState<{ x: number; y: number; id: number; angle: number }[]>([]);
+  const [sparkles, setSparkles] = useState<{ x: number; y: number; id: number; dx: number; dy: number; size: number }[]>([]);
   const trailIdRef = useRef(0);
+  const sparkleIdRef = useRef(0);
 
   const springConfig = { stiffness: 150, damping: 20 };
   const trailConfig = { stiffness: 80, damping: 30 };
@@ -19,12 +22,26 @@ const CursorGlow = () => {
   const trailX = useSpring(mouseX, trailConfig);
   const trailY = useSpring(mouseY, trailConfig);
 
-  const updateTrail = useCallback((x: number, y: number) => {
+  const updateTrail = useCallback((x: number, y: number, angle: number) => {
     trailIdRef.current += 1;
     setTrail((prev) => {
-      const next = [...prev, { x, y, id: trailIdRef.current }];
+      const next = [...prev, { x, y, id: trailIdRef.current, angle }];
       return next.slice(-TRAIL_LENGTH);
     });
+  }, []);
+
+  const spawnSparkle = useCallback((x: number, y: number) => {
+    sparkleIdRef.current += 1;
+    const id = sparkleIdRef.current;
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 20 + Math.random() * 30;
+    const dx = Math.cos(angle) * dist;
+    const dy = Math.sin(angle) * dist;
+    const size = 2 + Math.random() * 3;
+    setSparkles((prev) => [...prev, { x, y, id, dx, dy, size }]);
+    setTimeout(() => {
+      setSparkles((prev) => prev.filter((s) => s.id !== id));
+    }, SPARKLE_LIFETIME);
   }, []);
 
   useEffect(() => {
@@ -42,11 +59,15 @@ const CursorGlow = () => {
       mouseX.set(x);
       mouseY.set(y);
 
-      // Only add trail point every 3 frames for performance
       frameCount++;
-      const dist = Math.hypot(x - lastX, y - lastY);
-      if (dist > 15 && frameCount % 2 === 0) {
-        updateTrail(x, y);
+      const dx = x - lastX;
+      const dy = y - lastY;
+      const dist = Math.hypot(dx, dy);
+      const angle = Math.atan2(dy, dx);
+      if (dist > 12 && frameCount % 2 === 0) {
+        updateTrail(x, y, angle);
+        // Occasional sparkle on faster movement
+        if (dist > 25 && Math.random() > 0.7) spawnSparkle(x, y);
         lastX = x;
         lastY = y;
       }
@@ -66,33 +87,57 @@ const CursorGlow = () => {
       parent.removeEventListener("mouseenter", handleEnter);
       parent.removeEventListener("mouseleave", handleLeave);
     };
-  }, [mouseX, mouseY, updateTrail]);
+  }, [mouseX, mouseY, updateTrail, spawnSparkle]);
 
   return (
     <div ref={ref} className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Trail particles */}
+      {/* Trail particles - elongated golden droplets */}
       {trail.map((point, i) => {
-        const opacity = ((i + 1) / trail.length) * 0.35;
-        const size = 6 + ((i + 1) / trail.length) * 10;
+        const progress = (i + 1) / trail.length;
+        const opacity = progress * 0.45;
+        const size = 4 + progress * 8;
         return (
           <motion.div
             key={point.id}
             className="absolute rounded-full -translate-x-1/2 -translate-y-1/2"
-            initial={{ opacity: 0, scale: 0.5 }}
+            initial={{ opacity: 0, scale: 0.3 }}
             animate={{ opacity, scale: 1 }}
             exit={{ opacity: 0, scale: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
             style={{
               left: point.x,
               top: point.y,
-              width: size,
+              width: size * 1.6,
               height: size,
-              background: `hsl(var(--primary) / ${opacity})`,
-              boxShadow: `0 0 ${size * 2}px hsl(var(--primary) / ${opacity * 0.5})`,
+              background: `linear-gradient(90deg, hsl(var(--primary) / ${opacity * 0.3}), hsl(var(--primary) / ${opacity}))`,
+              boxShadow: `0 0 ${size * 2.5}px hsl(var(--primary) / ${opacity * 0.6})`,
+              transform: `translate(-50%, -50%) rotate(${point.angle}rad)`,
             }}
           />
         );
       })}
+
+      {/* Sparkles - tiny bursts on fast movement */}
+      <AnimatePresence>
+        {sparkles.map((s) => (
+          <motion.div
+            key={s.id}
+            className="absolute rounded-full -translate-x-1/2 -translate-y-1/2"
+            initial={{ opacity: 1, scale: 0, x: 0, y: 0 }}
+            animate={{ opacity: 0, scale: 1.5, x: s.dx, y: s.dy }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: SPARKLE_LIFETIME / 1000, ease: "easeOut" }}
+            style={{
+              left: s.x,
+              top: s.y,
+              width: s.size,
+              height: s.size,
+              background: "hsl(var(--primary))",
+              boxShadow: `0 0 ${s.size * 4}px hsl(var(--primary) / 0.8)`,
+            }}
+          />
+        ))}
+      </AnimatePresence>
 
       {/* Outer trail glow - slow follow */}
       <motion.div
