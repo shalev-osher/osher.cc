@@ -11,6 +11,7 @@ import LoadingScreen from "@/components/LoadingScreen";
 import ParallaxBackground from "@/components/ParallaxBackground";
 import GitHubProjects from "@/components/GitHubProjects";
 import KonamiEasterEgg from "@/components/KonamiEasterEgg";
+import SnakeEasterEgg from "@/components/SnakeEasterEgg";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 import SkipToContent from "@/components/SkipToContent";
 import TelegramChatWidget from "@/components/TelegramChatWidget";
@@ -25,6 +26,7 @@ const Index = () => {
       <LoadingScreen onComplete={handleLoadComplete} />
       <ParallaxBackground />
       <KonamiEasterEgg />
+      <SnakeEasterEgg />
       <ScrollProgressBar />
       <TelegramChatWidget />
       <Navbar />
