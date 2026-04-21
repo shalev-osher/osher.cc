@@ -5,6 +5,7 @@ import ThemeToggle from "./ThemeToggle";
 import MagneticButton from "./MagneticButton";
 import useActiveSection from "@/hooks/useActiveSection";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { trackCvDownload } from "@/lib/trackCvDownload";
 
 const navButtonHover = {
   scale: 1.07,
@@ -69,6 +70,7 @@ const Navbar = () => {
                 <motion.a
                   href="/cv/shalev-osher-cv.pdf"
                   download
+                  onClick={() => trackCvDownload(lang)}
                   whileHover={navButtonHover}
                   whileTap={navButtonTap}
                   className="text-sm font-bold font-display px-3 py-1.5 rounded-lg border border-border/60 bg-primary/10 text-foreground/80 hover:bg-primary/20 hover:text-primary hover:border-primary/30 transition-colors duration-300"
@@ -101,6 +103,7 @@ const Navbar = () => {
               <a
                 href="/cv/shalev-osher-cv.pdf"
                 download
+                onClick={() => trackCvDownload(lang)}
                 className="w-9 h-9 rounded-lg border border-border/50 bg-primary/5 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
                 aria-label="Download CV"
               >
