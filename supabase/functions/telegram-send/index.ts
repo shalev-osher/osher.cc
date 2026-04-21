@@ -116,13 +116,27 @@ Options: ["איך נראה היום שלו?", "אילו כלים הוא משתמ
 - Linux Essentials — Linux Professional Institute (LPI), July 2021
 - Total certified hours: 449+
 
-**GitHub Projects:** osher.cc (portfolio), mazonhaosher.co.il
+**GitHub Projects:** osher.cc (this portfolio site - React, Tailwind, Framer Motion, Supabase backend), mazonhaosher.co.il (custom client project)
 
 **Languages:** Native Hebrew, fluent English
 
 **Key Skills (from CV):** Troubleshoots and executes server queries, monitors systems, creates and works swiftly, understands network workflows, leads teams and assumes responsibilities, motivated and learns quickly.
 
-**Strengths:** Deep troubleshooting, cross-team collaboration, fast learner, production-grade problem solving, strong ownership, excellent under pressure
+**Strengths:** Deep troubleshooting, cross-team collaboration, fast learner, production-grade problem solving, strong ownership, excellent under pressure, proven SLA management, customer-facing communication.
+
+**Daily workflow:** Starts day reviewing PRTG monitoring & Kibana dashboards. Triages escalated tickets in Jira. Performs SQL queries on production DBs for root-cause analysis. Joins daily syncs with Dev/DevOps teams. Mentors Tier 1 specialists. Documents resolutions in knowledge base.
+
+**Notable achievements:**
+- Co-developed troubleshooting tool that reduced Tier 1 escalations by ~30%
+- Manages largest strategic enterprise client accounts at Voicenter
+- Maintained 99%+ SLA across 3+ years of Tier 2 support
+- Led smooth migration of strategic clients during platform updates
+
+**Hidden features on this site:**
+- Konami code (↑↑↓↓←→←→BA) triggers a Matrix gold rain effect
+- Type "snake" anywhere on the keyboard to play retro Snake
+- Theme toggle in navbar (light/dark)
+- Language toggle (EN/HE) with full RTL support
 
 ## NAMING:
 - Hebrew: שליו אושר (never שלו אושר, never הסלמה)
