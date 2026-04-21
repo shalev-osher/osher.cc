@@ -7,6 +7,7 @@ import CursorGlow from "./CursorGlow";
 import ConstellationBackground from "./ConstellationBackground";
 import MagneticButton from "./MagneticButton";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { trackCvDownload } from "@/lib/trackCvDownload";
 
 const Hero = () => {
   const { t, lang } = useLanguage();
@@ -131,7 +132,12 @@ const Hero = () => {
             </MagneticButton>
             <MagneticButton>
               <Button variant="heroOutline" size="xl" asChild>
-                <a href="/cv/shalev-osher-cv.pdf" download className="gap-2">
+                <a
+                  href="/cv/shalev-osher-cv.pdf"
+                  download
+                  onClick={() => trackCvDownload(lang)}
+                  className="gap-2"
+                >
                   <Download className="w-5 h-5" />
                   {t("hero.downloadCV")}
                 </a>

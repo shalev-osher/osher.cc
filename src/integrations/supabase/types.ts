@@ -38,6 +38,36 @@ export type Database = {
         }
         Relationships: []
       }
+      cv_downloads: {
+        Row: {
+          country: string | null
+          created_at: string
+          id: string
+          ip_hash: string | null
+          language: string | null
+          referrer: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string
+          id?: string
+          ip_hash?: string | null
+          language?: string | null
+          referrer?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          country?: string | null
+          created_at?: string
+          id?: string
+          ip_hash?: string | null
+          language?: string | null
+          referrer?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       telegram_bot_state: {
         Row: {
           id: number

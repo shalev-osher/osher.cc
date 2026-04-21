@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ExternalLink, GitBranch, Star, Code2 } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTypewriter } from "@/hooks/useTypewriter";
 
@@ -76,56 +76,107 @@ const GitHubProjects = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {repos.map((repo, index) => (
               <AnimatedSection key={repo.id} delay={index * 0.1} animation="scaleUp">
-                <motion.a
-                  href={repo.html_url} target="_blank" rel="noopener noreferrer"
-                  className="group card-premium h-full flex flex-col cursor-pointer block overflow-hidden"
-                  whileHover={{ scale: 1.02, rotateY: 3, rotateX: -2 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  style={{ transformPerspective: 1000 }}
-                >
-                  {/* GitHub OG preview image */}
-                  <div className="relative w-full h-32 overflow-hidden bg-secondary/50">
-                    <img
-                      src={`https://opengraph.githubassets.com/1/${repo.owner.login}/${repo.name}`}
-                      alt={`${repo.name} preview`}
-                      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
-                      loading="lazy"
-                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
-                  </div>
-
-                  <div className="p-6 flex flex-col flex-grow">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                        <Code2 className="w-4 h-4 text-primary" />
-                      </div>
-                      <div className="flex items-center gap-3 text-muted-foreground text-sm">
-                        {repo.stargazers_count > 0 && (
-                          <span className="flex items-center gap-1"><Star className="w-3.5 h-3.5" />{repo.stargazers_count}</span>
-                        )}
-                        <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-primary" />
-                      </div>
-                    </div>
-                    <h3 className="font-display text-lg font-semibold mb-2 group-hover:text-primary transition-colors">{repo.name}</h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed flex-grow mb-4">{repo.description || t("github.noDesc")}</p>
-                    <div className="flex items-center justify-between mt-auto">
-                      {repo.language && (
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <span className="w-3 h-3 rounded-full" style={{ backgroundColor: languageColors[repo.language] || "hsl(var(--muted-foreground))" }} />
-                          {repo.language}
-                        </div>
-                      )}
-                      <GitBranch className="w-3.5 h-3.5 text-muted-foreground" />
-                    </div>
-                  </div>
-                </motion.a>
+                <RepoCard repo={repo} t={t} />
               </AnimatedSection>
             ))}
           </div>
         )}
       </div>
     </section>
+  );
+};
+
+const RepoCard = ({ repo, t }: { repo: GitHubRepo; t: (k: string) => string }) => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useSpring(useTransform(y, [-100, 100], [10, -10]), { stiffness: 250, damping: 25 });
+  const rotateY = useSpring(useTransform(x, [-100, 100], [-10, 10]), { stiffness: 250, damping: 25 });
+  const glowX = useTransform(x, [-100, 100], [0, 100]);
+  const glowY = useTransform(y, [-100, 100], [0, 100]);
+
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      x.set(e.clientX - rect.left - rect.width / 2);
+      y.set(e.clientY - rect.top - rect.height / 2);
+    },
+    [x, y]
+  );
+  const handleLeave = useCallback(() => {
+    x.set(0);
+    y.set(0);
+  }, [x, y]);
+
+  return (
+    <motion.a
+      href={repo.html_url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group card-premium h-full flex flex-col cursor-pointer block overflow-hidden relative"
+      style={{ rotateX, rotateY, transformPerspective: 1000, transformStyle: "preserve-3d" }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleLeave}
+    >
+      {/* Cursor-following glow overlay */}
+      <motion.div
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl z-[1]"
+        style={{
+          background: useTransform(
+            [glowX, glowY],
+            ([gx, gy]) => `radial-gradient(circle at ${gx}% ${gy}%, hsl(var(--primary) / 0.18) 0%, transparent 55%)`
+          ),
+        }}
+      />
+
+      {/* GitHub OG preview image */}
+      <div className="relative w-full h-32 overflow-hidden bg-secondary/50">
+        <img
+          src={`https://opengraph.githubassets.com/1/${repo.owner.login}/${repo.name}`}
+          alt={`${repo.name} preview`}
+          className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+          loading="lazy"
+          onError={(e) => {
+            (e.target as HTMLImageElement).style.display = "none";
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
+      </div>
+
+      <div className="p-6 flex flex-col flex-grow relative z-10">
+        <div className="flex items-start justify-between mb-3">
+          <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+            <Code2 className="w-4 h-4 text-primary" />
+          </div>
+          <div className="flex items-center gap-3 text-muted-foreground text-sm">
+            {repo.stargazers_count > 0 && (
+              <span className="flex items-center gap-1">
+                <Star className="w-3.5 h-3.5" />
+                {repo.stargazers_count}
+              </span>
+            )}
+            <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-primary" />
+          </div>
+        </div>
+        <h3 className="font-display text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
+          {repo.name}
+        </h3>
+        <p className="text-muted-foreground text-sm leading-relaxed flex-grow mb-4">
+          {repo.description || t("github.noDesc")}
+        </p>
+        <div className="flex items-center justify-between mt-auto">
+          {repo.language && (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <span
+                className="w-3 h-3 rounded-full"
+                style={{ backgroundColor: languageColors[repo.language] || "hsl(var(--muted-foreground))" }}
+              />
+              {repo.language}
+            </div>
+          )}
+          <GitBranch className="w-3.5 h-3.5 text-muted-foreground" />
+        </div>
+      </div>
+    </motion.a>
   );
 };
 
