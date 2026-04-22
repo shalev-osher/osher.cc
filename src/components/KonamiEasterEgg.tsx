@@ -38,8 +38,16 @@ const KonamiEasterEgg = () => {
   );
 
   useEffect(() => {
+    const externalTrigger = () => {
+      setActivated(true);
+      setTimeout(() => setActivated(false), 6000);
+    };
+    window.addEventListener("trigger-matrix", externalTrigger);
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("trigger-matrix", externalTrigger);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [handleKeyDown]);
 
   const drops: MatrixDrop[] = activated
