@@ -114,7 +114,7 @@ const RepoCard = ({
   const glowY = useTransform(y, [-100, 100], [0, 100]);
 
   const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>) => {
+    (e: React.MouseEvent<HTMLElement>) => {
       const rect = e.currentTarget.getBoundingClientRect();
       x.set(e.clientX - rect.left - rect.width / 2);
       y.set(e.clientY - rect.top - rect.height / 2);
