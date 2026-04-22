@@ -15,6 +15,7 @@ import SnakeEasterEgg from "@/components/SnakeEasterEgg";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 import SkipToContent from "@/components/SkipToContent";
 import TelegramChatWidget from "@/components/TelegramChatWidget";
+import CommandPalette from "@/components/CommandPalette";
 
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -29,6 +30,7 @@ const Index = () => {
       <SnakeEasterEgg />
       <ScrollProgressBar />
       <TelegramChatWidget />
+      <CommandPalette />
       <Navbar />
       <main id="main-content" role="main">
         <Hero />
