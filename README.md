@@ -1,148 +1,96 @@
-```markdown
-# osher.cc
+# vite_react_shadcn_ts
 
-A modern, interactive personal portfolio and resume web application for Shalev Osher, built with React, TypeScript, Vite, shadcn/ui, and Tailwind CSS. The site features animated sections, rich theming, language switching (English/Hebrew), and playful UI details.
+## Overview
 
----
+Production-ready React application scaffolded with Vite, TypeScript, and Tailwind CSS. Implements a modular, component-driven architecture with modern UI primitives, state management, and integrations for analytics and backend data. Designed for extensible, accessible, and performant web experiences.
 
-## What This Project Does
+## Tech Stack
 
-- **Showcases professional experience, skills, education, and projects** in a visually engaging, single-page application.
-- **Animated and interactive UI**: Parallax backgrounds, typewriter effects, confetti, sound/haptic feedback, and more.
-- **Responsive and accessible**: Works on desktop and mobile, with accessibility features like "skip to content".
-- **Language support**: Toggle between English and Hebrew.
-- **Command palette** and keyboard navigation.
-- **Easter eggs**: Includes Konami code and Snake game for fun.
-- **Contact and social links**: Easy ways to connect.
+- **Frontend:** React 18, TypeScript, Vite
+- **Styling:** Tailwind CSS, custom CSS variables, shadcn/ui, Framer Motion
+- **UI Primitives:** Radix UI, Lucide Icons, Embla Carousel, CMDK, Sonner
+- **State/Data:** React Query, React Context, React Router DOM
+- **Forms/Validation:** React Hook Form, Zod, @hookform/resolvers
+- **Backend/DB:** Supabase (REST, Edge Functions)
+- **Testing:** Vitest, Testing Library
+- **Utilities:** clsx, tailwind-merge, date-fns, canvas-confetti
+- **Other:** Telegram Chat Widget, custom analytics, command palette
 
----
+## Key Features
 
-## Stack and Architecture
+- **Routing:** Client-side routing with React Router, including 404 handling and scroll restoration.
+- **UI/UX:** 
+  - Responsive layout with parallax and animated backgrounds.
+  - Accessible skip-to-content, tooltips, and command palette.
+  - Custom loading screen and scroll progress bar.
+  - Multiple easter eggs (Konami code, Snake game).
+- **Content Sections:** Modular components for Hero, About, Skills, Experience, Education, Contact, Footer, and dynamic GitHub projects.
+- **Theming:** Custom CSS variables for color, gradients, shadows, and typography. Light/dark mode support.
+- **State Management:** React Context for language selection; React Query for async data.
+- **Analytics:** 
+  - Lightweight CV download tracking via Supabase Edge Functions (country, IP hash, UA, referrer).
+  - Silent failover for analytics.
+- **Integrations:** 
+  - Supabase client for backend data (contact submissions, CV downloads, Telegram bot state).
+  - Telegram chat widget.
+- **Utilities:** 
+  - Typewriter and count-up animation hooks.
+  - Gold-themed confetti and UI sound feedback (Web Audio API, respects reduced motion).
+  - Utility for merging Tailwind classes.
+- **Testing:** 
+  - Vitest setup with jsdom and Testing Library.
+  - Example and setup tests included.
 
-- **Frontend**: [React 18](https://react.dev/), [TypeScript](https://www.typescriptlang.org/), [Vite](https://vitejs.dev/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/), [shadcn/ui](https://ui.shadcn.com/), custom CSS variables and gradients
-- **Routing**: [react-router-dom](https://reactrouter.com/)
-- **State/Async**: [@tanstack/react-query](https://tanstack.com/query/latest)
-- **Animation**: [framer-motion](https://www.framer.com/motion/), custom hooks
-- **UI Components**: shadcn/ui, Radix UI primitives, custom components
-- **Testing**: [Vitest](https://vitest.dev/), [Testing Library](https://testing-library.com/)
-- **Other**: [Supabase JS](https://supabase.com/docs/reference/javascript) (potentially for data), [canvas-confetti](https://www.npmjs.com/package/canvas-confetti), [lucide-react](https://lucide.dev/)
+## Architecture
 
-**Project structure** is modular, with all source code in `src/`, and heavy use of alias imports (e.g., `@/components/...`).
+- **Entry:** `src/main.tsx` mounts `App` to DOM.
+- **App Composition:** 
+  - Providers: React Query, Language, Tooltip.
+  - Routers: BrowserRouter, with animated page transitions.
+  - Toasts: shadcn/ui and Sonner.
+- **Pages:** 
+  - `/` (Index): Composes all main sections and widgets.
+  - `*` (NotFound): Custom 404 with error logging.
+- **Component Structure:** 
+  - All UI and logic are split into focused, reusable components under `src/components`.
+- **Integrations:** 
+  - Supabase client is auto-generated and typed.
+  - Edge functions invoked for analytics.
+- **Styling:** 
+  - Tailwind CSS with custom design tokens and Google Fonts.
+  - Responsive and accessible by default.
 
----
+## Development
 
-## Running Locally
+- **Start Dev Server:**  
+  `npm run dev`
+- **Lint:**  
+  `npm run lint`
+- **Test:**  
+  `npm run test` or `npm run test:watch`
+- **Type Checking:**  
+  TypeScript is enforced throughout.
 
-**Prerequisites**:
-- Node.js (18+ recommended)
-- npm
+## Build & Deployment
 
-**Steps**:
-
-```sh
-git clone https://github.com/shalev-osher/osher.cc.git
-cd osher.cc
-npm install
-npm run dev
-```
-
-- The app will be available at [http://localhost:8080](http://localhost:8080) by default.
-
----
-
-## Build and Deploy
-
-- **Production build**:  
-  ```sh
-  npm run build
-  ```
-  Output is generated in the `dist/` folder.
-
-- **Preview production build locally**:  
-  ```sh
-  npm run preview
-  ```
-
-- **Lint code**:  
-  ```sh
-  npm run lint
-  ```
-
-- **Run tests**:  
-  ```sh
-  npm run test
-  ```
-
-- **Test in watch mode**:  
-  ```sh
-  npm run test:watch
-  ```
-
-**Note:**  
-No explicit deployment scripts or Docker configuration are present. Deploy the `dist/` folder to any static hosting provider (e.g., Vercel, Netlify, GitHub Pages, etc.).
-
----
-
-## Key Folders and Files
-
-- `src/` — Main application source code
-  - `components/` — All React UI components (e.g., `Hero`, `Navbar`, `Footer`, etc.)
-  - `pages/` — Page-level components (`Index.tsx` for the main page, `NotFound.tsx` for 404)
-  - `lib/` — Utility functions (e.g., `utils.ts`, `celebrate.ts` for confetti/sound)
-  - `hooks/` — Custom React hooks (e.g., `useCountUp`, `use-toast`)
-  - `contexts/` — React context providers (e.g., `LanguageContext`)
-  - `index.css` — Tailwind CSS and custom design tokens
-  - `main.tsx` — Entry point, renders the app
-- `vite.config.ts` — Vite configuration (with React SWC, path aliases)
-- `tailwind.config.ts` — Tailwind CSS configuration (not shown, but referenced)
-- `eslint.config.js` — ESLint configuration
-- `vitest.config.ts` — Vitest test runner config
-- `components.json` — shadcn/ui generator config
-
----
-
-## Environment Variables
-
-- **No required environment variables** are visible in the code/config.  
-  If you intend to use Supabase or other APIs, you may need to add relevant keys in your own `.env` file.
-
----
-
-## Main Pages and Components
-
-- **`/` (Home)**:  
-  - **Navbar**: Sticky, animated, with section links, language toggle, theme switch, and command palette.
-  - **Hero**: Animated intro with typewriter effect, background particles, and constellation.
-  - **About**: Profile photo with 3D tilt, animated stats, and typewriter text.
-  - **Skills**: Visual skillset display (details in component).
-  - **GitHubProjects**: Showcases GitHub repositories (implementation in component).
-  - **Experience**: Work history and roles.
-  - **Education**: Certifications and education timeline.
-  - **Contact**: Contact form or details.
-  - **Footer**: Social links and copyright.
-  - **Other**: Parallax background, scroll progress bar, Telegram chat widget, command palette, and accessibility helpers.
-
-- **404 Not Found**:  
-  - Friendly error page for unknown routes.
-
-- **Easter Eggs**:  
-  - Konami code and Snake game (hidden features).
-
----
+- **Build:**  
+  `npm run build`
+- **Preview Production Build:**  
+  `npm run preview`
+- **Environment:**  
+  - Requires `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in environment.
+  - All environment variables are loaded via Vite.
 
 ## Notes
 
-- **Aliases**: Use `@/` for imports from `src/` (configured in Vite and TypeScript).
-- **Theming**: Light/dark mode with custom color tokens and gradients.
-- **Accessibility**: Skip links, keyboard navigation, ARIA labels.
-- **No Dockerfile**: No containerization provided.
-- **No backend/server code**: This is a static frontend app.
+- **Component Tagging:** In development, components are auto-tagged for debugging via `lovable-tagger`.
+- **Accessibility:** All interactive elements and animations respect user preferences (e.g., reduced motion).
+- **Silent Analytics:** Analytics failures never block user actions.
+- **Testing:** Custom `window.matchMedia` polyfill for jsdom environment.
+- **Supabase:** All DB types are strictly typed; client is auto-generated.
+- **No server-side rendering.** This is a client-only SPA.
+- **No global state management library; context and React Query are used as needed.**
 
 ---
 
-## License
-
-See `LICENSE` file if present.
-
-```
+For further details, refer to code in `src/` and integration files.
