@@ -56,8 +56,6 @@ const SnakeEasterEgg = () => {
       window.removeEventListener("trigger-snake", externalTrigger);
       window.removeEventListener("keydown", handler);
     };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
   }, [open]);
 
   const placeFood = useCallback((avoidSnake: Point[]) => {
