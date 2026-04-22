@@ -1,71 +1,65 @@
-# Welcome to Your Lovable Project
+# osher.cc
 
-## Project Information
+## Overview
 
-**Project URL**: [https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID)
+A high-end interactive portfolio engineered as a frontend system — not a static resume.
 
-## How to Edit This Code
+This application showcases technical capability through execution, not just content.
 
-There are multiple methods to modify your application:
+---
 
-### 1. Using Lovable
+## Objective
 
-Visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start making changes directly. Any modifications made through Lovable will be automatically committed to this repository.
+- Demonstrate real engineering skills
+- Deliver interactive experience
+- Combine performance with rich UI
 
-### 2. Using Your Preferred IDE
+---
 
-For local development, you can clone this repository and push your changes. These updates will also be reflected in Lovable. 
+## Core Capabilities
 
-**Prerequisites**: Ensure you have Node.js and npm installed. You can install them using [nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+### Architecture
 
-**Follow these steps**:
+- Modular component system
+- Code-splitting and lazy loading
+- Clean separation of concerns
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+---
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### UI/UX
 
-# Step 3: Install the necessary dependencies.
-npm install
+- Interactive hero
+- Animated transitions
+- Scroll storytelling
+- Command palette
 
-# Step 4: Start the development server with auto-reloading and instant preview.
-npm run dev
-```
+---
 
-### 3. Editing Files Directly on GitHub
+### Performance
 
-- Navigate to the file you wish to edit.
-- Click the "Edit" button (pencil icon) located at the top right of the file view.
-- Make your changes and commit them.
+- Lazy loading
+- Reduced-motion support
+- Web Vitals tracking
 
-### 4. Using GitHub Codespaces
+---
 
-- Go to the main page of your repository.
-- Click the "Code" button (green button) at the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes when finished.
+### Features
 
-## Technologies Used in This Project
+- GitHub projects integration
+- Multi-language support
+- Easter eggs (Konami code, Snake)
+- Analytics via Supabase
 
-This project is built with the following technologies:
+---
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Tech Stack
 
-## How to Deploy This Project
+React, TypeScript, Vite, Tailwind, shadcn/ui, Framer Motion, React Query, Supabase
 
-To deploy your project, simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on **Share** -> **Publish**.
+---
 
-## Can I Connect a Custom Domain to My Lovable Project?
+## Summary
 
-Yes, you can connect a custom domain!
+This is not a portfolio.
 
-To do so, navigate to **Project > Settings > Domains** and click on **Connect Domain**.
-
-For more information, please refer to the documentation on [Setting Up a Custom Domain](https://docs.lovable.dev/features/custom-domain#custom-domain).
+It is a live demonstration of engineering capability.
