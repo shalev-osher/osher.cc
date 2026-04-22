@@ -49,6 +49,13 @@ const SnakeEasterEgg = () => {
         sequenceRef.current = [];
       }
     };
+    const externalTrigger = () => setOpen(true);
+    window.addEventListener("trigger-snake", externalTrigger);
+    window.addEventListener("keydown", handler);
+    return () => {
+      window.removeEventListener("trigger-snake", externalTrigger);
+      window.removeEventListener("keydown", handler);
+    };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, [open]);
