@@ -23,6 +23,14 @@ const TelegramChatWidget = () => {
   const { lang } = useLanguage();
   const isHebrew = lang === "he";
   const [isMinimized, setIsMinimized] = useState(false);
+
+  // External trigger from Command Palette
+  useEffect(() => {
+    const open = () => setIsMinimized(false);
+    window.addEventListener("open-telegram-chat", open);
+    return () => window.removeEventListener("open-telegram-chat", open);
+  }, []);
+
   const [messages, setMessages] = useState<Message[]>(() => {
     try {
       const saved = localStorage.getItem("chat-history");
