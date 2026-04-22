@@ -2,7 +2,7 @@
 
 ## Overview
 
-A high-end interactive portfolio engineered as a frontend system — not a static resume.
+A high-end interactive portfolio engineered as a frontend system —> This is not a portfolio. This is a system.
 
 This application showcases technical capability through execution, not just content.
 
