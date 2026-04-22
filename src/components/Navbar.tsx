@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { Menu, X, Download } from "lucide-react";
+import { Menu, X, Download, Command } from "lucide-react";
 import { motion } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 import MagneticButton from "./MagneticButton";
@@ -91,6 +91,18 @@ const Navbar = () => {
                 </motion.button>
               </MagneticButton>
               <ThemeToggle />
+              <MagneticButton strength={0.25} radius={40}>
+                <motion.button
+                  onClick={() => window.dispatchEvent(new CustomEvent("open-command-palette"))}
+                  whileHover={navButtonHover}
+                  whileTap={navButtonTap}
+                  className="hidden lg:flex items-center gap-1.5 text-xs font-bold font-display px-2.5 py-1.5 rounded-lg border border-border/60 bg-primary/5 text-muted-foreground hover:bg-primary/15 hover:text-primary hover:border-primary/30 transition-colors duration-300"
+                  aria-label="Open command palette (Ctrl+K)"
+                >
+                  <Command size={12} />
+                  <kbd className="font-mono text-[10px]">K</kbd>
+                </motion.button>
+              </MagneticButton>
             </div>
             <div className="flex items-center gap-2 md:hidden">
               <button
