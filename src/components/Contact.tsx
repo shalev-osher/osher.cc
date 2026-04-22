@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import ConstellationBackground from "@/components/ConstellationBackground";
+import { celebrate, sounds } from "@/lib/celebrate";
 
 interface FieldErrors {
   name?: string;
@@ -82,6 +83,8 @@ const Contact = () => {
       if (error) throw error;
 
       setSubmitted(true);
+      celebrate();
+      sounds.success();
       toast({ title: t("contact.successTitle") || "Message sent!", description: t("contact.successDesc") || "Your message has been sent successfully." });
       setFormData({ name: "", email: "", message: "" });
       setTouched({});
@@ -89,6 +92,7 @@ const Contact = () => {
       setTimeout(() => setSubmitted(false), 4000);
     } catch (err) {
       console.error("Contact form error:", err);
+      sounds.error();
       toast({ title: t("contact.errorTitle") || "Error", description: t("contact.errorDesc") || "Failed to send message. Please try again.", variant: "destructive" });
     } finally {
       setIsSubmitting(false);
