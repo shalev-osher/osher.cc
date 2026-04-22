@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
-import { ExternalLink, GitBranch, Star, Code2 } from "lucide-react";
+import { ExternalLink, GitBranch, Star, Code2, Eye } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTypewriter } from "@/hooks/useTypewriter";
+import ProjectCaseStudyModal from "@/components/ProjectCaseStudyModal";
 
 interface GitHubRepo {
   id: number;
@@ -32,6 +33,8 @@ const GitHubProjects = () => {
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [activeRepo, setActiveRepo] = useState<GitHubRepo | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
   const { t } = useLanguage();
   const titleTypewriter = useTypewriter({ text: t("github.title"), speed: 80, loop: true, pauseDuration: 5000 });
   const subtitleTypewriter = useTypewriter({ text: t("github.subtitle"), speed: 25, delay: 1000, loop: true, pauseDuration: 5000 });
@@ -76,17 +79,33 @@ const GitHubProjects = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {repos.map((repo, index) => (
               <AnimatedSection key={repo.id} delay={index * 0.1} animation="scaleUp">
-                <RepoCard repo={repo} t={t} />
+                <RepoCard
+                  repo={repo}
+                  t={t}
+                  onOpen={() => {
+                    setActiveRepo(repo);
+                    setModalOpen(true);
+                  }}
+                />
               </AnimatedSection>
             ))}
           </div>
         )}
       </div>
+      <ProjectCaseStudyModal repo={activeRepo} open={modalOpen} onOpenChange={setModalOpen} />
     </section>
   );
 };
 
-const RepoCard = ({ repo, t }: { repo: GitHubRepo; t: (k: string) => string }) => {
+const RepoCard = ({
+  repo,
+  t,
+  onOpen,
+}: {
+  repo: GitHubRepo;
+  t: (k: string) => string;
+  onOpen: () => void;
+}) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const rotateX = useSpring(useTransform(y, [-100, 100], [10, -10]), { stiffness: 250, damping: 25 });
@@ -95,7 +114,7 @@ const RepoCard = ({ repo, t }: { repo: GitHubRepo; t: (k: string) => string }) =
   const glowY = useTransform(y, [-100, 100], [0, 100]);
 
   const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>) => {
+    (e: React.MouseEvent<HTMLElement>) => {
       const rect = e.currentTarget.getBoundingClientRect();
       x.set(e.clientX - rect.left - rect.width / 2);
       y.set(e.clientY - rect.top - rect.height / 2);
@@ -108,14 +127,14 @@ const RepoCard = ({ repo, t }: { repo: GitHubRepo; t: (k: string) => string }) =
   }, [x, y]);
 
   return (
-    <motion.a
-      href={repo.html_url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group card-premium h-full flex flex-col cursor-pointer block overflow-hidden relative"
+    <motion.button
+      type="button"
+      onClick={onOpen}
+      className="group card-premium h-full flex flex-col cursor-pointer overflow-hidden relative text-start w-full"
       style={{ rotateX, rotateY, transformPerspective: 1000, transformStyle: "preserve-3d" }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleLeave}
+      aria-label={`View case study for ${repo.name}`}
     >
       {/* Cursor-following glow overlay */}
       <motion.div
@@ -154,7 +173,7 @@ const RepoCard = ({ repo, t }: { repo: GitHubRepo; t: (k: string) => string }) =
                 {repo.stargazers_count}
               </span>
             )}
-            <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-primary" />
+            <Eye className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-primary" />
           </div>
         </div>
         <h3 className="font-display text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
@@ -176,7 +195,7 @@ const RepoCard = ({ repo, t }: { repo: GitHubRepo; t: (k: string) => string }) =
           <GitBranch className="w-3.5 h-3.5 text-muted-foreground" />
         </div>
       </div>
-    </motion.a>
+    </motion.button>
   );
 };
 
