@@ -89,16 +89,32 @@ ${colorConfig
 
 const ChartTooltip = RechartsPrimitive.Tooltip;
 
+type ChartTooltipPayloadItem = {
+  color?: string;
+  dataKey?: string | number;
+  name?: string | number;
+  payload?: Record<string, unknown>;
+  value?: number | string;
+};
+
+type ChartTooltipContentProps = React.HTMLAttributes<HTMLDivElement> & {
+  active?: boolean;
+  color?: string;
+  formatter?: (...args: unknown[]) => React.ReactNode;
+  hideIndicator?: boolean;
+  hideLabel?: boolean;
+  indicator?: "line" | "dot" | "dashed";
+  label?: string | number;
+  labelClassName?: string;
+  labelFormatter?: (label: React.ReactNode, payload: ChartTooltipPayloadItem[]) => React.ReactNode;
+  labelKey?: string;
+  nameKey?: string;
+  payload?: ChartTooltipPayloadItem[];
+};
+
 const ChartTooltipContent = React.forwardRef<
   HTMLDivElement,
-  React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
-    React.ComponentProps<"div"> & {
-      hideLabel?: boolean;
-      hideIndicator?: boolean;
-      indicator?: "line" | "dot" | "dashed";
-      nameKey?: string;
-      labelKey?: string;
-    }
+  ChartTooltipContentProps
 >(
   (
     {
@@ -163,7 +179,7 @@ const ChartTooltipContent = React.forwardRef<
           {payload.map((item, index) => {
             const key = `${nameKey || item.name || item.dataKey || "value"}`;
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
-            const indicatorColor = color || item.payload.fill || item.color;
+            const indicatorColor = color || `${item.payload?.fill || item.color || "hsl(var(--primary))"}`;
 
             return (
               <div
@@ -230,7 +246,8 @@ const ChartLegend = RechartsPrimitive.Legend;
 const ChartLegendContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> &
-    Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> & {
+    Pick<React.ComponentProps<typeof RechartsPrimitive.Legend>, "verticalAlign"> & {
+      payload?: Array<Record<string, unknown>>;
       hideIcon?: boolean;
       nameKey?: string;
     }
@@ -252,7 +269,7 @@ const ChartLegendContent = React.forwardRef<
 
         return (
           <div
-            key={item.value}
+            key={`${item.value || item.dataKey || item.color}`}
             className={cn("flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground")}
           >
             {itemConfig?.icon && !hideIcon ? (
@@ -261,7 +278,7 @@ const ChartLegendContent = React.forwardRef<
               <div
                 className="h-2 w-2 shrink-0 rounded-[2px]"
                 style={{
-                  backgroundColor: item.color,
+                  backgroundColor: `${item.color || "hsl(var(--primary))"}`,
                 }}
               />
             )}

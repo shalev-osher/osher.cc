@@ -1,5 +1,8 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { ArrowLeft, Compass, Home } from "lucide-react";
+import { motion } from "framer-motion";
+import GradientText from "@/components/GradientText";
 
 const NotFound = () => {
   const location = useLocation();
@@ -9,15 +12,45 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">404</h1>
-        <p className="mb-4 text-xl text-muted-foreground">Oops! Page not found</p>
-        <a href="/" className="text-primary underline hover:text-primary/90">
-          Return to Home
-        </a>
-      </div>
-    </div>
+    <main className="min-h-screen overflow-hidden bg-background text-foreground noise-texture">
+      <section className="relative flex min-h-screen items-center justify-center px-6 py-20">
+        <div className="absolute inset-0" style={{ background: "var(--gradient-radial)" }} />
+        <motion.div
+          className="card-premium relative z-10 w-full max-w-3xl p-8 text-center sm:p-12"
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.45, ease: "easeOut" }}
+        >
+          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary glow-effect">
+            <Compass className="h-8 w-8" />
+          </div>
+          <p className="mb-3 font-mono text-sm font-semibold uppercase tracking-[0.25em] text-primary">404 / Route lost</p>
+          <h1 className="mb-5 font-display text-5xl font-bold sm:text-7xl">
+            <GradientText>Page Not Found</GradientText>
+          </h1>
+          <p className="mx-auto mb-8 max-w-xl text-lg text-muted-foreground">
+            The path <span className="font-mono text-foreground">{location.pathname}</span> does not exist in this system.
+          </p>
+          <div className="flex flex-col justify-center gap-3 sm:flex-row">
+            <a
+              href="/"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-primary px-6 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90"
+            >
+              <Home className="h-4 w-4" />
+              Return Home
+            </a>
+            <button
+              type="button"
+              onClick={() => history.back()}
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-md border border-border bg-background px-6 text-sm font-semibold transition-all hover:bg-accent hover:text-accent-foreground"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Go Back
+            </button>
+          </div>
+        </motion.div>
+      </section>
+    </main>
   );
 };
 
