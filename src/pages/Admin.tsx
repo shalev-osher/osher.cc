@@ -1,12 +1,16 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { Activity, Download, Eye, Lock, Mail, RefreshCw } from "lucide-react";
+import { Activity, Download, Eye, Lock, LogOut, Mail, RefreshCw, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
+import type { Session } from "@supabase/supabase-js";
+import { lovable } from "@/integrations/lovable/index";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import GradientText from "@/components/GradientText";
+
+const ADMIN_EMAIL = "shalev@osher.cc";
 
 type AdminStats = {
   summary: {
@@ -23,18 +27,36 @@ type AdminStats = {
 };
 
 const Admin = () => {
+  const [session, setSession] = useState<Session | null>(null);
+  const [authReady, setAuthReady] = useState(false);
+  const [email, setEmail] = useState(ADMIN_EMAIL);
   const [password, setPassword] = useState("");
+  const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
+  const [authMessage, setAuthMessage] = useState("");
+  const [authLoading, setAuthLoading] = useState(false);
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      setSession(nextSession);
+      setAuthReady(true);
+    });
+
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session);
+      setAuthReady(true);
+    });
+
+    return () => listener.subscription.unsubscribe();
+  }, []);
 
   const loadStats = async () => {
     setLoading(true);
     setError("");
 
-    const { data, error } = await supabase.functions.invoke("admin-stats", {
-      headers: { "x-admin-password": password },
-    });
+    const { data, error } = await supabase.functions.invoke("admin-stats");
 
     if (error || data?.error) {
       setError(data?.error || error?.message || "Unable to load analytics");
@@ -44,6 +66,51 @@ const Admin = () => {
     }
 
     setLoading(false);
+  };
+
+  useEffect(() => {
+    if (session) loadStats();
+  }, [session]);
+
+  const handleEmailAuth = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setAuthLoading(true);
+    setAuthMessage("");
+
+    const result = authMode === "signin"
+      ? await supabase.auth.signInWithPassword({ email, password })
+      : await supabase.auth.signUp({
+          email,
+          password,
+          options: { emailRedirectTo: window.location.origin },
+        });
+
+    if (result.error) {
+      setAuthMessage(result.error.message);
+    } else if (authMode === "signup") {
+      setAuthMessage("Check your email to confirm the account, then sign in.");
+    }
+
+    setAuthLoading(false);
+  };
+
+  const handleGoogleSignIn = async () => {
+    setAuthLoading(true);
+    setAuthMessage("");
+
+    const result = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: window.location.origin + "/admin",
+      extraParams: { prompt: "select_account" },
+    });
+
+    if (result.error) setAuthMessage(result.error.message);
+    setAuthLoading(false);
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setStats(null);
+    setError("");
   };
 
   const cards = useMemo(
@@ -70,60 +137,95 @@ const Admin = () => {
                 <GradientText>Private Analytics</GradientText>
               </h1>
               <p className="mt-3 max-w-2xl text-muted-foreground">
-                CV download signals, contact leads, device split, and referrer quality in one protected cockpit.
+                Protected admin cockpit with Google sign-in, email/password access, and live analytics.
               </p>
             </div>
 
-            <form
-              className="card-premium flex w-full flex-col gap-3 p-4 md:max-w-md"
-              onSubmit={(event) => {
-                event.preventDefault();
-                loadStats();
-              }}
-            >
-              <label className="text-sm font-semibold text-muted-foreground" htmlFor="admin-password">
-                Admin password
-              </label>
-              <div className="flex gap-2">
-                <div className="relative flex-1">
-                  <Lock className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input
-                    id="admin-password"
-                    type="password"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    className="ps-9"
-                    placeholder="Enter password"
-                    autoComplete="current-password"
-                  />
+            {session && (
+              <div className="card-premium flex flex-col gap-3 p-4 md:min-w-80">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <ShieldCheck className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold">{session.user.email}</p>
+                    <p className="text-xs text-muted-foreground">Authenticated admin session</p>
+                  </div>
                 </div>
-                <Button type="submit" disabled={loading || !password} aria-label="Load analytics">
-                  {loading ? <RefreshCw className="animate-spin" /> : <Eye />}
-                </Button>
+                <div className="flex gap-2">
+                  <Button type="button" variant="secondary" className="flex-1" onClick={loadStats} disabled={loading}>
+                    {loading ? <RefreshCw className="animate-spin" /> : <RefreshCw />}
+                    Refresh
+                  </Button>
+                  <Button type="button" variant="outline" onClick={handleLogout} aria-label="Sign out">
+                    <LogOut />
+                  </Button>
+                </div>
               </div>
-              {error && <p className="text-sm text-destructive">{error}</p>}
-            </form>
+            )}
           </div>
 
-          {!stats ? (
+          {!authReady ? (
+            <div className="card-premium flex min-h-[420px] items-center justify-center p-8 text-center">
+              <RefreshCw className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          ) : !session ? (
+            <div className="card-premium mx-auto flex min-h-[520px] max-w-xl items-center justify-center p-6 sm:p-8">
+              <div className="w-full">
+                <div className="mb-7 text-center">
+                  <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary glow-effect">
+                    <Lock className="h-7 w-7" />
+                  </div>
+                  <h2 className="font-display text-3xl font-bold">Admin Sign In</h2>
+                  <p className="mt-2 text-muted-foreground">Use Google or email/password to access the private dashboard.</p>
+                </div>
+
+                <Button type="button" className="mb-4 w-full" onClick={handleGoogleSignIn} disabled={authLoading}>
+                  <ShieldCheck />
+                  Continue with Google
+                </Button>
+
+                <div className="my-5 flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                  <span className="h-px flex-1 bg-border" />
+                  Basic auth
+                  <span className="h-px flex-1 bg-border" />
+                </div>
+
+                <form className="space-y-3" onSubmit={handleEmailAuth}>
+                  <Input value={email} onChange={(event) => setEmail(event.target.value)} type="email" placeholder="Email" autoComplete="email" required />
+                  <Input value={password} onChange={(event) => setPassword(event.target.value)} type="password" placeholder="Password" autoComplete="current-password" required />
+                  <Button type="submit" className="w-full" disabled={authLoading || !email || !password}>
+                    {authLoading ? <RefreshCw className="animate-spin" /> : <Lock />}
+                    {authMode === "signin" ? "Sign in" : "Create account"}
+                  </Button>
+                </form>
+
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm">
+                  <button type="button" className="text-primary hover:text-primary/80" onClick={() => setAuthMode(authMode === "signin" ? "signup" : "signin")}>
+                    {authMode === "signin" ? "Create account" : "Back to sign in"}
+                  </button>
+                  <a className="text-muted-foreground hover:text-primary" href="/reset-password">Forgot password?</a>
+                </div>
+                {authMessage && <p className="mt-4 rounded-lg border border-border bg-secondary/30 p-3 text-sm text-muted-foreground">{authMessage}</p>}
+              </div>
+            </div>
+          ) : error ? (
             <div className="card-premium flex min-h-[420px] items-center justify-center p-8 text-center">
               <div className="max-w-md">
-                <Lock className="mx-auto mb-5 h-10 w-10 text-primary" />
-                <h2 className="font-display text-2xl font-bold">Protected dashboard</h2>
-                <p className="mt-3 text-muted-foreground">Authenticate to reveal live portfolio analytics.</p>
+                <Lock className="mx-auto mb-5 h-10 w-10 text-destructive" />
+                <h2 className="font-display text-2xl font-bold">Access blocked</h2>
+                <p className="mt-3 text-muted-foreground">{error}</p>
               </div>
+            </div>
+          ) : !stats ? (
+            <div className="card-premium flex min-h-[420px] items-center justify-center p-8 text-center">
+              <RefreshCw className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : (
             <div className="space-y-6">
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {cards.map((card, index) => (
-                  <motion.div
-                    key={card.label}
-                    className="card-premium p-5"
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.06 }}
-                  >
+                  <motion.div key={card.label} className="card-premium p-5" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.06 }}>
                     <div className="mb-4 flex items-center justify-between">
                       <card.icon className="h-5 w-5 text-primary" />
                       <Badge variant="secondary">Live</Badge>
@@ -169,9 +271,7 @@ const Admin = () => {
               <div className="grid gap-6 lg:grid-cols-2">
                 <Panel title="Top referrers">
                   <div className="space-y-3">
-                    {stats.topReferrers.map((item) => (
-                      <MetricRow key={item.name} name={item.name} value={item.value} max={stats.summary.totalDownloads || 1} />
-                    ))}
+                    {stats.topReferrers.map((item) => <MetricRow key={item.name} name={item.name} value={item.value} max={stats.summary.totalDownloads || 1} />)}
                   </div>
                 </Panel>
 
