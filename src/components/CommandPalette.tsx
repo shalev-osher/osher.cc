@@ -18,6 +18,7 @@ import {
   Github,
   Linkedin,
   Download,
+  ShieldCheck,
   Sun,
   Moon,
   Languages,
@@ -61,6 +62,11 @@ const CommandPalette = () => {
   const external = useCallback((url: string) => {
     setOpen(false);
     window.open(url, "_blank", "noopener,noreferrer");
+  }, []);
+
+  const navigate = useCallback((url: string) => {
+    setOpen(false);
+    window.location.href = url;
   }, []);
 
   const downloadCV = useCallback(() => {
@@ -123,6 +129,10 @@ const CommandPalette = () => {
           <CommandItem onSelect={() => go("contact")}>
             <Mail className="me-2 h-4 w-4" />
             <span>{t("nav.contact")}</span>
+          </CommandItem>
+          <CommandItem onSelect={() => navigate("/admin")}>
+            <ShieldCheck className="me-2 h-4 w-4" />
+            <span>{lang === "he" ? "אדמין" : "Admin"}</span>
           </CommandItem>
         </CommandGroup>
 
