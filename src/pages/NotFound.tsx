@@ -1,15 +1,10 @@
 import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
 import { ArrowLeft, Compass, Home } from "lucide-react";
 import { motion } from "framer-motion";
 import GradientText from "@/components/GradientText";
 
 const NotFound = () => {
   const location = useLocation();
-
-  useEffect(() => {
-    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
-  }, [location.pathname]);
 
   return (
     <main className="min-h-screen overflow-hidden bg-background text-foreground noise-texture">
