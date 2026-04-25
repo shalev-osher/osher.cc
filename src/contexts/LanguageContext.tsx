@@ -108,6 +108,16 @@ const translations: Record<string, Record<Lang, string>> = {
 
   "footer.rights": { en: "© 2026 All rights reserved", he: "© 2026 כל הזכויות שמורות" },
 
+  // 404 / Not Found
+  "notFound.badge": { en: "404 / Route lost", he: "404 / נתיב אבד" },
+  "notFound.title": { en: "Page Not Found", he: "הדף לא נמצא" },
+  "notFound.description": {
+    en: "The path {path} does not exist in this system.",
+    he: "הנתיב {path} לא קיים במערכת.",
+  },
+  "notFound.home": { en: "Return Home", he: "חזרה לדף הבית" },
+  "notFound.back": { en: "Go Back", he: "חזרה אחורה" },
+
   // Accessibility
   "a11y.title": { en: "Accessibility", he: "נגישות" },
   "a11y.contentAdj": { en: "Content Adjustments", he: "התאמות תוכן" },
