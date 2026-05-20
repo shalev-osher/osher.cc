@@ -22,7 +22,7 @@ const MAX_FREE_TEXT_PER_SESSION = 2;
 const TelegramChatWidget = () => {
   const { lang } = useLanguage();
   const isHebrew = lang === "he";
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(true);
 
   // External trigger from Command Palette
   useEffect(() => {
