@@ -176,7 +176,47 @@ const Contact = () => {
               title={`New Message — shalev@osher.cc`}
               bodyClassName="p-0"
             >
-              <form onSubmit={handleSubmit} className="space-y-5 p-8 relative bg-background/40" aria-label="Contact form">
+              {/* macOS Mail toolbar */}
+              <div className="flex items-center gap-2 px-4 py-2 border-b border-border/40 bg-gradient-to-b from-white/[0.04] to-transparent text-xs text-muted-foreground">
+                {["📥", "✏️", "🗑️", "📁", "↩︎", "↪︎"].map((g, i) => (
+                  <button key={i} type="button" className="w-7 h-7 rounded-md hover:bg-white/10 flex items-center justify-center" tabIndex={-1} aria-hidden="true">
+                    <span className="text-sm">{g}</span>
+                  </button>
+                ))}
+                <div className="ms-auto flex items-center gap-2">
+                  <span className="hidden sm:inline">🔍</span>
+                  <span className="hidden sm:inline">Search Mail</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-[140px_1fr] min-h-[480px]">
+                {/* Sidebar mailboxes */}
+                <aside className="hidden sm:flex flex-col gap-1 p-3 border-e border-border/40 bg-white/[0.02] text-xs">
+                  <p className="px-2 pb-1 text-[10px] uppercase tracking-widest text-muted-foreground">Mailboxes</p>
+                  {[
+                    { icon: "📥", label: "Inbox", badge: "1" },
+                    { icon: "✉️", label: "Drafts" },
+                    { icon: "📤", label: "Sent" },
+                    { icon: "⭐", label: "Starred" },
+                    { icon: "🗑️", label: "Trash" },
+                  ].map((m, i) => (
+                    <div key={i} className={`flex items-center gap-2 px-2 py-1.5 rounded-md ${i === 1 ? "bg-primary/20 text-foreground" : "text-muted-foreground hover:bg-white/5"}`}>
+                      <span>{m.icon}</span>
+                      <span className="flex-1 truncate">{m.label}</span>
+                      {m.badge && <span className="text-[10px] bg-primary/30 px-1.5 rounded">{m.badge}</span>}
+                    </div>
+                  ))}
+                </aside>
+
+                <form onSubmit={handleSubmit} className="relative bg-background/40" aria-label="Contact form">
+                  {/* From / To / Subject header like real Mail */}
+                  <div className="px-5 pt-4 pb-2 border-b border-border/30 text-xs space-y-1.5 font-mono">
+                    <div className="flex gap-3"><span className="text-muted-foreground w-14">From:</span><span className="text-foreground/80">{formData.email || "you@example.com"}</span></div>
+                    <div className="flex gap-3"><span className="text-muted-foreground w-14">To:</span><span className="text-primary">shalev@osher.cc</span></div>
+                    <div className="flex gap-3"><span className="text-muted-foreground w-14">Subject:</span><span className="text-foreground/80 truncate">{formData.name ? `Message from ${formData.name}` : "New message"}</span></div>
+                  </div>
+
+                  <div className="space-y-5 p-6 relative">
               {/* Success overlay */}
               <AnimatePresence>
                 {submitted && (
@@ -263,7 +303,9 @@ const Contact = () => {
                 )}
                 {isSubmitting ? t("contact.sending") : t("contact.send")}
               </Button>
-            </form>
+                  </div>
+                </form>
+              </div>
             </MacWindow>
           </AnimatedSection>
         </div>
