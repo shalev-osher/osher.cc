@@ -282,6 +282,14 @@
     -webkit-backdrop-filter: blur(20px) saturate(160%);
   }
 
+  /* Global 80% transparency — applies to common surface utilities */
+  .bg-card { background-color: hsl(var(--card) / 0.2) !important; backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); }
+  .bg-popover { background-color: hsl(var(--popover) / 0.2) !important; backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); }
+  .bg-secondary { background-color: hsl(var(--secondary) / 0.2) !important; backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); }
+  .bg-muted { background-color: hsl(var(--muted) / 0.2) !important; backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); }
+  /* Opt-out for elements that must stay opaque */
+  .no-glass { background-color: revert !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+
   .timeline-line {
     background: linear-gradient(
       180deg,
