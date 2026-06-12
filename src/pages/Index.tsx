@@ -1,7 +1,7 @@
 import { lazy, Suspense, useState, useCallback, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import LockScreen from "@/components/LockScreen";
+import BootScreen from "@/components/BootScreen";
 import ParallaxBackground from "@/components/ParallaxBackground";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 import SkipToContent from "@/components/SkipToContent";
@@ -49,7 +49,7 @@ const Index = () => {
     <div className="min-h-screen bg-background relative">
       <SkipToContent />
       <MacMenuBar />
-      <LockScreen onComplete={handleLoadComplete} />
+      <BootScreen onComplete={handleLoadComplete} />
       <ParallaxBackground />
       <ScrollProgressBar />
       <Navbar />
