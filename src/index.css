@@ -146,7 +146,7 @@
 
   .card-premium {
     @apply rounded-xl;
-    background: hsl(var(--card) / 0.35);
+    background: hsl(var(--card) / 0.2);
     backdrop-filter: blur(28px) saturate(180%) brightness(1.05);
     -webkit-backdrop-filter: blur(28px) saturate(180%) brightness(1.05);
     border: 1px solid hsl(var(--border) / 0.4);
@@ -223,7 +223,7 @@
 
   .glass-effect {
     @apply border border-border/30;
-    background: hsl(var(--card) / 0.35);
+    background: hsl(var(--card) / 0.2);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
   }
@@ -233,8 +233,8 @@
     position: relative;
     background: linear-gradient(
       135deg,
-      hsl(var(--card) / 0.45) 0%,
-      hsl(var(--card) / 0.25) 100%
+      hsl(var(--card) / 0.25) 0%,
+      hsl(var(--card) / 0.15) 100%
     );
     backdrop-filter: blur(30px) saturate(200%) brightness(1.08);
     -webkit-backdrop-filter: blur(30px) saturate(200%) brightness(1.08);
@@ -271,13 +271,13 @@
   }
 
   .liquid-glass-strong {
-    background: hsl(var(--card) / 0.55);
+    background: hsl(var(--card) / 0.2);
     backdrop-filter: blur(40px) saturate(220%) brightness(1.1);
     -webkit-backdrop-filter: blur(40px) saturate(220%) brightness(1.1);
   }
 
   .liquid-glass-subtle {
-    background: hsl(var(--card) / 0.2);
+    background: hsl(var(--card) / 0.12);
     backdrop-filter: blur(20px) saturate(160%);
     -webkit-backdrop-filter: blur(20px) saturate(160%);
   }
