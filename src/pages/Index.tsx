@@ -1,6 +1,5 @@
 import { lazy, Suspense, useState, useCallback, useEffect } from "react";
 import Hero from "@/components/Hero";
-import BootScreen from "@/components/BootScreen";
 import ParallaxBackground from "@/components/ParallaxBackground";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 import SkipToContent from "@/components/SkipToContent";
@@ -28,9 +27,7 @@ const TelegramChatWidget = lazy(() => import("@/components/TelegramChatWidget"))
 const SectionFallback = () => <div className="min-h-[40vh]" aria-hidden="true" />;
 
 const Index = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
   const [deferReady, setDeferReady] = useState(false);
-  const handleLoadComplete = useCallback(() => setIsLoaded(true), []);
 
   // Mount non-critical widgets after first paint to keep LCP/INP fast
   useEffect(() => {
@@ -48,7 +45,6 @@ const Index = () => {
     <div className="min-h-screen bg-background relative">
       <SkipToContent />
       <MacMenuBar />
-      <BootScreen onComplete={handleLoadComplete} />
       <ParallaxBackground />
       <ScrollProgressBar />
       <main id="main-content" role="main">
