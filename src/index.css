@@ -287,19 +287,26 @@
   .bg-popover,
   .bg-secondary,
   .bg-muted,
-  .bg-accent,
-  .bg-background,
   .bg-input,
   [class*="bg-card/"],
   [class*="bg-popover/"],
   [class*="bg-secondary/"],
-  [class*="bg-muted/"],
-  [class*="bg-accent/"],
-  [class*="bg-background/"] {
+  [class*="bg-muted/"] {
     background-color: transparent !important;
     background-image: linear-gradient(135deg, hsl(var(--card) / 0.22) 0%, hsl(var(--card) / 0.10) 100%) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+  }
+  /* Selected/active states must keep solid accent so their foreground stays readable */
+  [data-selected="true"].bg-accent,
+  [data-selected="true"] .bg-accent,
+  [aria-selected="true"].bg-accent,
+  [aria-selected="true"] .bg-accent,
+  [data-state="open"].bg-accent,
+  .bg-accent[data-selected="true"] {
+    background-image: none !important;
+    background-color: hsl(var(--accent)) !important;
+    color: hsl(var(--accent-foreground)) !important;
   }
   /* Opt-out for elements that must stay opaque */
   .no-glass,
