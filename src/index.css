@@ -182,7 +182,6 @@
     -webkit-backdrop-filter: none !important;
   }
 }
-}
 
 @layer components {
   .text-gradient {
