@@ -8,6 +8,7 @@ import SkipToContent from "@/components/SkipToContent";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import MissionControl from "@/components/MissionControl";
+import MacDock from "@/components/MacDock";
 
 // Below-the-fold sections — split into separate chunks
 const About = lazy(() => import("@/components/About"));
@@ -62,6 +63,7 @@ const Index = () => {
       <Footer />
       <CommandPalette />
       <MissionControl />
+      <MacDock />
       {deferReady && (
         <Suspense fallback={null}>
           <KonamiEasterEgg />
