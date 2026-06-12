@@ -48,7 +48,7 @@ const DialogContent = React.forwardRef<
       )}
       {...props}
     >
-      {!hideChrome && !spotlight && (
+      {!hideChrome && (
         <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-border/40 bg-gradient-to-b from-background/80 to-background/40">
           <MacTrafficLights onClose={() => closeRef.current?.click()} />
           <DialogPrimitive.Close ref={closeRef} className="sr-only" aria-hidden tabIndex={-1} />
