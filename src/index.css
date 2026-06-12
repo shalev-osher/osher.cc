@@ -170,6 +170,18 @@
   main > section {
     contain: layout style;
   }
+
+  /* iOS 27 spec — full transparency, ZERO blur, anywhere.
+     This neutralises any leftover Tailwind .backdrop-blur-* utility
+     so we never pay the per-frame backdrop re-sample cost that was
+     causing the chat-open and section-enter rendering jank. */
+  *,
+  *::before,
+  *::after {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
 }
 
 @layer components {
