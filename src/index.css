@@ -287,6 +287,8 @@
   .card-premium,
   .glass-effect,
   .liquid-glass,
+  .liquid-glass-strong,
+  .liquid-glass-subtle,
   .bg-card,
   .bg-popover,
   .bg-secondary,
@@ -299,6 +301,16 @@
   [class*="bg-muted/"],
   [class*="bg-input/"],
   [class*="bg-background/"],
+  [class*="bg-muted-foreground/"],
+  [class*="bg-foreground/"],
+  [class*="border-border"],
+  [class*="rounded-lg"],
+  [class*="rounded-xl"],
+  [class*="rounded-2xl"],
+  button:not(.no-glass),
+  a[class*="rounded"],
+  article,
+  form,
   input,
   textarea,
   select,
@@ -346,13 +358,18 @@
   [data-state="open"].bg-accent,
   .focus\:bg-accent:focus,
   .hover\:bg-accent:hover {
-    color: hsl(var(--accent-foreground)) !important;
+    color: hsl(var(--foreground)) !important;
     background-color: hsl(var(--accent) / 0.38) !important;
     background-image:
       linear-gradient(135deg, hsl(0 0% 100% / 0.22) 0%, transparent 42%, hsl(var(--accent) / 0.28) 100%),
       linear-gradient(135deg, hsl(var(--accent) / 0.52) 0%, hsl(var(--accent) / 0.24) 100%) !important;
     backdrop-filter: blur(20px) saturate(200%) !important;
     -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+  }
+
+  [cmdk-item][data-selected="true"] *,
+  [cmdk-item][aria-selected="true"] * {
+    color: hsl(var(--foreground)) !important;
   }
   /* Opt-out for elements that must stay opaque */
   .no-glass,
