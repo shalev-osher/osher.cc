@@ -8,6 +8,7 @@ import ConstellationBackground from "./ConstellationBackground";
 import MagneticButton from "./MagneticButton";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trackCvDownload } from "@/lib/trackCvDownload";
+import MacWindow from "./MacWindow";
 
 const Hero = () => {
   const { t, lang } = useLanguage();
@@ -143,6 +144,42 @@ const Hero = () => {
                 </a>
               </Button>
             </MagneticButton>
+          </motion.div>
+
+          <motion.div
+            className="mt-12 max-w-xl mx-auto"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.9 }}
+          >
+            <MacWindow
+              variant="terminal"
+              app="zsh"
+              title="shalev — -zsh — 80×8"
+              bodyClassName="px-4 py-3 font-mono text-[12px] sm:text-[13px] leading-relaxed text-start"
+            >
+              <div>
+                <span className="text-[hsl(140_60%_55%)]">shalev@osher.cc</span>
+                <span className="text-[hsl(60_20%_92%)]"> ~ % </span>
+                <span>whoami</span>
+              </div>
+              <div className="text-[hsl(60_20%_92%)]">
+                {lang === "he" ? "מהנדס DevOps ותמיכה טכנית" : "DevOps & Tech Support Engineer"}
+              </div>
+              <div className="mt-1">
+                <span className="text-[hsl(140_60%_55%)]">shalev@osher.cc</span>
+                <span className="text-[hsl(60_20%_92%)]"> ~ % </span>
+                <span>cat skills.txt</span>
+              </div>
+              <div className="text-[hsl(60_20%_92%)]">
+                Linux · AWS · Networking · PRTG · Asterisk · SQL · Bash
+              </div>
+              <div className="mt-1">
+                <span className="text-[hsl(140_60%_55%)]">shalev@osher.cc</span>
+                <span className="text-[hsl(60_20%_92%)]"> ~ % </span>
+                <span className="inline-block w-2 h-[14px] bg-[hsl(60_20%_92%)] align-middle animate-pulse" />
+              </div>
+            </MacWindow>
           </motion.div>
         </motion.div>
       </div>
