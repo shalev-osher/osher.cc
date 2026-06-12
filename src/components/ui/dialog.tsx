@@ -32,7 +32,9 @@ const DialogContent = React.forwardRef<
     hideChrome?: boolean;
     contentClassName?: string;
   }
->(({ className, children, hideChrome, contentClassName, ...props }, ref) => (
+>(({ className, children, hideChrome, contentClassName, ...props }, ref) => {
+  const closeRef = React.useRef<HTMLButtonElement>(null);
+  return (
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
@@ -45,18 +47,16 @@ const DialogContent = React.forwardRef<
     >
       {!hideChrome && (
         <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-border/40 bg-gradient-to-b from-background/80 to-background/40">
-          <DialogPrimitive.Close asChild>
-            <div>
-              <MacTrafficLights onClose={() => {}} />
-            </div>
-          </DialogPrimitive.Close>
+          <MacTrafficLights onClose={() => closeRef.current?.click()} />
+          <DialogPrimitive.Close ref={closeRef} className="sr-only" aria-hidden tabIndex={-1} />
           <span className="w-[42px]" />
         </div>
       )}
       <div className={cn(!hideChrome ? "p-6 pt-4" : "", contentClassName)}>{children}</div>
     </DialogPrimitive.Content>
   </DialogPortal>
-));
+  );
+});
 DialogContent.displayName = DialogPrimitive.Content.displayName;
 
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
