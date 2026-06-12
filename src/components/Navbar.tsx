@@ -39,13 +39,13 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className="fixed top-0 inset-x-0 z-[200] liquid-glass-strong border-b border-border/40 shadow-lg rounded-none"
+        className="fixed top-3 inset-x-3 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:w-[min(1100px,calc(100%-2rem))] z-[200] liquid-glass-strong border border-border/50 shadow-xl rounded-full"
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
+        <div className="px-4 sm:px-6 py-2 sm:py-2.5">
           <div className="flex items-center justify-between">
-            <a href="#" className="font-display text-xl sm:text-2xl font-bold text-gradient" aria-label="Shalev Osher - Home">
+            <a href="#home" className="font-display text-lg sm:text-xl font-bold text-gradient" aria-label="Shalev Osher - Home">
               {lang === "he" ? "שליו אושר" : "Shalev Osher"}
             </a>
             <div className="hidden md:flex items-center gap-2">
