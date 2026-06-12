@@ -143,6 +143,20 @@ const SpotlightGlyph = () => (
   </svg>
 );
 
+const ArrowUpGlyph = () => (
+  <svg viewBox="0 0 24 24" className="w-full h-full" fill="none" stroke="white" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 19V6" />
+    <path d="M6 11l6-6 6 6" />
+  </svg>
+);
+
+const ArrowDownGlyph = () => (
+  <svg viewBox="0 0 24 24" className="w-full h-full" fill="none" stroke="white" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 5v13" />
+    <path d="M6 13l6 6 6-6" />
+  </svg>
+);
+
 // === Exported icon wrappers ===
 export const iosIcons = {
   finder:    (p: IconProps) => <AppIcon size={p.size} gradient="linear-gradient(180deg, #5BB8FF 0%, #2E8BFF 55%, #0A56D6 100%)"><FinderGlyph /></AppIcon>,
@@ -162,6 +176,8 @@ export const iosIcons = {
   facebook:  (p: IconProps) => <AppIcon size={p.size} gradient="linear-gradient(180deg, #5A9BFF 0%, #1877F2 55%, #0B4AB0 100%)"><FacebookGlyph /></AppIcon>,
   github:    (p: IconProps) => <AppIcon size={p.size} gradient="linear-gradient(180deg, #4A4F58 0%, #24292F 60%, #0A0C10 100%)"><GithubGlyph /></AppIcon>,
   spotlight: (p: IconProps) => <AppIcon size={p.size} gradient="linear-gradient(180deg, #BFC4CC 0%, #7C8290 55%, #3A3F48 100%)"><SpotlightGlyph /></AppIcon>,
+  scrollUp:  (p: IconProps) => <AppIcon size={p.size} gradient="linear-gradient(180deg, #f5d678 0%, #d4aa50 55%, #8a6614 100%)"><ArrowUpGlyph /></AppIcon>,
+  scrollDown:(p: IconProps) => <AppIcon size={p.size} gradient="linear-gradient(180deg, #f5d678 0%, #d4aa50 55%, #8a6614 100%)"><ArrowDownGlyph /></AppIcon>,
 };
 
 export type IosIconKey = keyof typeof iosIcons;
