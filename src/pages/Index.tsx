@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useCallback, useEffect } from "react";
+import { lazy, Suspense, useState, useEffect } from "react";
 import Hero from "@/components/Hero";
 import ParallaxBackground from "@/components/ParallaxBackground";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
