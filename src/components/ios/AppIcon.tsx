@@ -6,7 +6,7 @@ const AppIcon = ({
   gradient,
   children,
   className,
-  size = 56,
+  size,
 }: {
   gradient: string; // CSS linear-gradient value
   children: ReactNode; // inner SVG glyph
@@ -19,12 +19,21 @@ const AppIcon = ({
       "shadow-[0_8px_20px_-6px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.45),inset_0_-3px_6px_rgba(0,0,0,0.25)]",
       className,
     )}
-    style={{
-      width: size,
-      height: size,
-      borderRadius: size * 0.225, // iOS squircle radius ratio
-      background: gradient,
-    }}
+    style={
+      size != null
+        ? {
+            width: size,
+            height: size,
+            borderRadius: size * 0.225,
+            background: gradient,
+          }
+        : {
+            width: "100%",
+            height: "100%",
+            borderRadius: "22.5%",
+            background: gradient,
+          }
+    }
   >
     {/* glossy top highlight */}
     <span

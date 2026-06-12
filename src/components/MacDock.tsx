@@ -94,7 +94,7 @@ const DockIcon = ({
         className="group relative flex items-end justify-center"
       >
         <motion.div style={{ width: size, height: size }}>
-          <Icon size={undefined as any} />
+          <Icon />
         </motion.div>
         {/* tooltip */}
         <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100
