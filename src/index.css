@@ -146,9 +146,9 @@
 
   .card-premium {
     @apply rounded-xl;
-    background: hsl(var(--card) / 0.2);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    background: linear-gradient(135deg, hsl(var(--card) / 0.35) 0%, hsl(var(--card) / 0.18) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid hsl(var(--border) / 0.4);
     box-shadow:
       var(--shadow-card),
@@ -223,9 +223,9 @@
 
   .glass-effect {
     @apply border border-border/30;
-    background: hsl(var(--card) / 0.2);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    background: hsl(var(--card) / 0.25);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
   }
 
   /* Liquid Glass — Apple-style refractive surface */
@@ -233,11 +233,11 @@
     position: relative;
     background: linear-gradient(
       135deg,
-      hsl(var(--card) / 0.25) 0%,
-      hsl(var(--card) / 0.15) 100%
+      hsl(var(--card) / 0.35) 0%,
+      hsl(var(--card) / 0.18) 100%
     );
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
     border: 1px solid hsl(var(--border) / 0.35);
     box-shadow:
       0 8px 32px -8px hsl(var(--background) / 0.4),
@@ -271,15 +271,15 @@
   }
 
   .liquid-glass-strong {
-    background: hsl(var(--card) / 0.2);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    background: linear-gradient(135deg, hsl(var(--card) / 0.5) 0%, hsl(var(--card) / 0.28) 100%);
+    backdrop-filter: blur(32px) saturate(200%);
+    -webkit-backdrop-filter: blur(32px) saturate(200%);
   }
 
   .liquid-glass-subtle {
-    background: hsl(var(--card) / 0.12);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    background: hsl(var(--card) / 0.15);
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
   }
 
   /* Global 80% transparency — applies to common surface utilities */
@@ -293,9 +293,9 @@
   [class*="bg-secondary/"],
   [class*="bg-muted/"] {
     background-color: transparent !important;
-    background-image: linear-gradient(135deg, hsl(var(--card) / 0.22) 0%, hsl(var(--card) / 0.10) 100%) !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+    background-image: linear-gradient(135deg, hsl(var(--card) / 0.35) 0%, hsl(var(--card) / 0.15) 100%) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
   }
   /* Selected/active states must keep solid accent so their foreground stays readable */
   [data-selected="true"].bg-accent,
