@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { Menu, X, Download, Command } from "lucide-react";
 import { motion } from "framer-motion";
-import ThemeToggle from "./ThemeToggle";
 import MagneticButton from "./MagneticButton";
 import useActiveSection from "@/hooks/useActiveSection";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -90,7 +89,6 @@ const Navbar = () => {
                   {lang === "en" ? "HE" : "EN"}
                 </motion.button>
               </MagneticButton>
-              <ThemeToggle />
               <MagneticButton strength={0.25} radius={40}>
                 <motion.button
                   onClick={() => window.dispatchEvent(new CustomEvent("open-command-palette"))}
@@ -121,7 +119,6 @@ const Navbar = () => {
               >
                 <Download size={16} />
               </a>
-              <ThemeToggle />
               <button
                 onClick={() => setIsMobileOpen(!isMobileOpen)}
                 className="w-9 h-9 rounded-lg border border-border/50 bg-primary/5 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"

@@ -2,6 +2,12 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 
+// Force dark mode permanently (theme toggle removed per design)
+try {
+  document.documentElement.classList.add("dark");
+  localStorage.removeItem("theme");
+} catch {}
+
 // Hard cache-bust: if the build ID changed since last visit, force a fresh reload once.
 try {
   const KEY = "__app_build_id";
