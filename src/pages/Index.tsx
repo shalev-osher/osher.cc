@@ -7,6 +7,7 @@ import ScrollProgressBar from "@/components/ScrollProgressBar";
 import SkipToContent from "@/components/SkipToContent";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
+import MissionControl from "@/components/MissionControl";
 
 // Below-the-fold sections — split into separate chunks
 const About = lazy(() => import("@/components/About"));
@@ -60,6 +61,7 @@ const Index = () => {
       </main>
       <Footer />
       <CommandPalette />
+      <MissionControl />
       {deferReady && (
         <Suspense fallback={null}>
           <KonamiEasterEgg />
