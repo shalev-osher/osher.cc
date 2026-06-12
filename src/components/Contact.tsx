@@ -12,6 +12,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import ConstellationBackground from "@/components/ConstellationBackground";
 import { celebrate, sounds } from "@/lib/celebrate";
+import MacWindow from "@/components/MacWindow";
 
 interface FieldErrors {
   name?: string;
@@ -170,7 +171,12 @@ const Contact = () => {
           </AnimatedSection>
 
           <AnimatedSection delay={0.2} animation="slideRight">
-            <form onSubmit={handleSubmit} className="space-y-5 card-premium p-8 relative" aria-label="Contact form">
+            <MacWindow
+              app="Mail"
+              title={`New Message — shalev@osher.cc`}
+              bodyClassName="p-0"
+            >
+              <form onSubmit={handleSubmit} className="space-y-5 p-8 relative bg-background/40" aria-label="Contact form">
               {/* Success overlay */}
               <AnimatePresence>
                 {submitted && (
@@ -258,6 +264,7 @@ const Contact = () => {
                 {isSubmitting ? t("contact.sending") : t("contact.send")}
               </Button>
             </form>
+            </MacWindow>
           </AnimatedSection>
         </div>
       </div>

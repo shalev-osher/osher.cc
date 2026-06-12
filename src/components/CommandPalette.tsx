@@ -105,7 +105,7 @@ const CommandPalette = () => {
   }, []);
 
   return (
-    <CommandDialog open={open} onOpenChange={setOpen}>
+    <CommandDialog spotlight open={open} onOpenChange={setOpen}>
       <CommandInput
         placeholder={lang === "he" ? "חפש פעולה או סקשן..." : "Search actions or sections..."}
       />

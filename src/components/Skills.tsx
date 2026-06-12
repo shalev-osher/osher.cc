@@ -6,6 +6,7 @@ import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import SkillsHeatmap from "@/components/SkillsHeatmap";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCallback } from "react";
+import MacSectionBar from "@/components/MacSectionBar";
 
 const SkillCardContent = ({ title, description }: { title: string; description: string }) => {
   const titleTw = useTypewriter({ text: title, speed: 60, loop: true, pauseDuration: 4000 });
@@ -95,6 +96,7 @@ const Skills = () => {
       <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
 
       <div className="container mx-auto px-6 relative z-10">
+        <MacSectionBar app="System Settings" title="Skills & Capabilities" />
         <AnimatedSection animation="blur">
           <div className="text-center mb-16">
             <h2 id="skills-heading" className="font-display text-4xl md:text-5xl font-bold mb-4">
