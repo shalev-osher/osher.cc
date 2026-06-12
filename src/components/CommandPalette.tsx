@@ -53,10 +53,17 @@ const CommandPalette = () => {
 
   const go = useCallback((id: string) => {
     setOpen(false);
-    requestAnimationFrame(() => {
+    window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+
+    window.setTimeout(() => {
+      if (id === "home") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+
       const el = document.getElementById(id);
       el?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+    }, 80);
   }, []);
 
   const external = useCallback((url: string) => {
