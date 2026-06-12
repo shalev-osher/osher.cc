@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send, Bot, Sparkles, Trash2, Download } from "lucide-react";
+import { X, Send, Sparkles, Trash2, Download } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
-import MagneticButton from "./MagneticButton";
 import MacTrafficLights from "./MacTrafficLights";
 
 interface Message {
