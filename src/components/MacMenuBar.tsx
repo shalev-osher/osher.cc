@@ -4,7 +4,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 /** macOS-style top menu bar: brand glyph + menu items on the start, status + clock on the end. */
 const MacMenuBar = () => {
-  const { lang } = useLanguage();
+  const { lang, t } = useLanguage();
   const [now, setNow] = useState<Date>(new Date());
 
   useEffect(() => {
@@ -17,9 +17,23 @@ const MacMenuBar = () => {
   const date = now.toLocaleDateString(locale, { weekday: "short", day: "numeric", month: "short" });
 
   const appName = lang === "he" ? "שליו" : "Shalev";
-  const menus = lang === "he"
-    ? [appName, "קובץ", "עריכה", "תצוגה", "חלון", "עזרה"]
-    : [appName, "File", "Edit", "View", "Window", "Help"];
+  const sections: { id: string; label: string }[] = [
+    { id: "home", label: appName },
+    { id: "about", label: t("nav.about") },
+    { id: "skills", label: t("nav.skills") },
+    { id: "projects", label: lang === "he" ? "פרויקטים" : "Projects" },
+    { id: "experience", label: t("nav.experience") },
+    { id: "education", label: t("nav.certifications") },
+    { id: "contact", label: t("nav.contact") },
+  ];
+
+  const goTo = (id: string) => {
+    if (id === "home") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <div
@@ -27,24 +41,24 @@ const MacMenuBar = () => {
                  bg-black/55 backdrop-blur-2xl border-b border-white/10 text-white/90 select-none"
       role="presentation"
     >
-      {/* Brand glyph (generic, not Apple) */}
+      {/* Brand glyph */}
       <button
-        onClick={() => (window.location.hash = "#home")}
+        onClick={() => goTo("home")}
         className="flex items-center justify-center w-6 h-6 rounded-md hover:bg-white/10"
         aria-label="Home"
       >
         <Sparkles size={13} className="text-primary" />
       </button>
 
-      {/* Menus */}
+      {/* Section menus */}
       <div className="flex items-center gap-0.5 ms-1">
-        {menus.map((m, i) => (
+        {sections.map((s, i) => (
           <button
-            key={m + i}
+            key={s.id}
+            onClick={() => goTo(s.id)}
             className={`px-2 py-0.5 rounded hover:bg-white/10 transition-colors ${i === 0 ? "font-semibold" : "font-normal"}`}
-            tabIndex={-1}
           >
-            {m}
+            {s.label}
           </button>
         ))}
       </div>
