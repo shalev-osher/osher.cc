@@ -16,9 +16,8 @@ const MacMenuBar = () => {
   const time = now.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit", hour12: false });
   const date = now.toLocaleDateString(locale, { weekday: "short", day: "numeric", month: "short" });
 
-  const appName = lang === "he" ? "שליו אושר" : "Shalev Osher";
   const sections: { id: string; label: string }[] = [
-    { id: "home", label: appName },
+    { id: "home", label: lang === "he" ? "בית" : "Home" },
     { id: "about", label: t("nav.about") },
     { id: "skills", label: t("nav.skills") },
     { id: "projects", label: lang === "he" ? "פרויקטים" : "Projects" },
@@ -26,6 +25,31 @@ const MacMenuBar = () => {
     { id: "education", label: t("nav.certifications") },
     { id: "contact", label: t("nav.contact") },
   ];
+
+  // Track which section is currently in view → becomes the bold "app name"
+  const [activeId, setActiveId] = useState<string>("home");
+  useEffect(() => {
+    const ids = sections.map((s) => s.id);
+    const els = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => !!el);
+    if (els.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]?.target?.id) setActiveId(visible[0].target.id);
+      },
+      { rootMargin: "-30% 0px -55% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] },
+    );
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang]);
+
+  const activeLabel = sections.find((s) => s.id === activeId)?.label ?? sections[0].label;
 
   const goTo = (id: string) => {
     if (id === "home") {
@@ -53,15 +77,24 @@ const MacMenuBar = () => {
 
       {/* Section menus */}
       <div className="flex items-center gap-0.5 ms-1">
-        {sections.map((s, i) => (
-          <button
-            key={s.id}
-            onClick={() => goTo(s.id)}
-            className={`px-2 py-0.5 rounded hover:bg-white/10 transition-colors font-display tracking-tight ${i === 0 ? "font-bold" : "font-medium"}`}
-          >
-            {s.label}
-          </button>
-        ))}
+        {/* Active "app name" — dynamic, bold like macOS */}
+        <span
+          key={activeId}
+          className="px-2 py-0.5 font-display font-bold tracking-tight animate-fade-in"
+        >
+          {activeLabel}
+        </span>
+        {sections
+          .filter((s) => s.id !== activeId)
+          .map((s) => (
+            <button
+              key={s.id}
+              onClick={() => goTo(s.id)}
+              className="px-2 py-0.5 rounded hover:bg-white/10 transition-colors font-display font-medium tracking-tight"
+            >
+              {s.label}
+            </button>
+          ))}
       </div>
 
       {/* Status cluster + clock */}
