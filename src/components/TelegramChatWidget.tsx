@@ -6,6 +6,7 @@ import ReactMarkdown from "react-markdown";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import MagneticButton from "./MagneticButton";
+import MacTrafficLights from "./MacTrafficLights";
 
 interface Message {
   id: string;
@@ -23,6 +24,7 @@ const TelegramChatWidget = () => {
   const { lang } = useLanguage();
   const isHebrew = lang === "he";
   const [isMinimized, setIsMinimized] = useState(true);
+  const [isMaximized, setIsMaximized] = useState(false);
 
   // External trigger from Command Palette
   useEffect(() => {
@@ -468,7 +470,11 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
         ) : (
           <motion.div
             key="chat"
-            className="chat-widget fixed bottom-20 inset-x-3 h-[min(520px,calc(100vh-112px))] rounded-2xl overflow-hidden shadow-2xl flex flex-col liquid-glass mac-window sm:inset-x-auto sm:h-[600px] sm:w-[420px] sm:max-w-[420px] sm:start-8"
+            className={
+              isMaximized
+                ? "chat-widget fixed inset-3 sm:inset-8 rounded-2xl overflow-hidden shadow-2xl flex flex-col liquid-glass mac-window z-[60]"
+                : "chat-widget fixed bottom-20 inset-x-3 h-[min(520px,calc(100vh-112px))] rounded-2xl overflow-hidden shadow-2xl flex flex-col liquid-glass mac-window sm:inset-x-auto sm:h-[600px] sm:w-[420px] sm:max-w-[420px] sm:start-8"
+            }
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -478,15 +484,12 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
                 <div className="absolute inset-0 bg-background/60 backdrop-blur-sm" />
                 <div className="absolute inset-0 border-b-2 border-primary/30" />
                 <div className="flex items-center gap-3 relative z-10">
-                  <div className="flex items-center gap-1.5 me-1">
-                    <button
-                      onClick={() => setIsMinimized(true)}
-                      aria-label={isHebrew ? "סגור" : "Close"}
-                      className="w-3 h-3 rounded-full bg-[hsl(6_74%_58%)] shadow-[inset_0_0_0_0.5px_hsl(0_0%_0%/0.25)] hover:brightness-110 transition"
-                    />
-                    <span className="w-3 h-3 rounded-full bg-[hsl(42_85%_55%)] shadow-[inset_0_0_0_0.5px_hsl(0_0%_0%/0.25)]" />
-                    <span className="w-3 h-3 rounded-full bg-[hsl(132_55%_48%)] shadow-[inset_0_0_0_0.5px_hsl(0_0%_0%/0.25)]" />
-                  </div>
+                  <MacTrafficLights
+                    className="me-1"
+                    onClose={() => { setIsMaximized(false); setIsMinimized(true); }}
+                    onMinimize={() => { setIsMaximized(false); setIsMinimized(true); }}
+                    onMaximize={() => setIsMaximized((v) => !v)}
+                  />
                   <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center ring-2 ring-primary/30">
                     <Sparkles className="w-4 h-4 text-primary" />
                   </div>

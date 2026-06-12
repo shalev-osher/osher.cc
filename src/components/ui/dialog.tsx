@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
+import MacTrafficLights from "@/components/MacTrafficLights";
 
 const Dialog = DialogPrimitive.Root;
 
@@ -31,7 +32,9 @@ const DialogContent = React.forwardRef<
     hideChrome?: boolean;
     contentClassName?: string;
   }
->(({ className, children, hideChrome, contentClassName, ...props }, ref) => (
+>(({ className, children, hideChrome, contentClassName, ...props }, ref) => {
+  const closeRef = React.useRef<HTMLButtonElement>(null);
+  return (
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
@@ -44,21 +47,16 @@ const DialogContent = React.forwardRef<
     >
       {!hideChrome && (
         <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-border/40 bg-gradient-to-b from-background/80 to-background/40">
-          <div className="flex items-center gap-1.5">
-            <DialogPrimitive.Close
-              aria-label="Close"
-              className="w-3 h-3 rounded-full bg-[hsl(6_74%_58%)] shadow-[inset_0_0_0_0.5px_hsl(0_0%_0%/0.25)] hover:brightness-110 transition focus:outline-none focus:ring-2 focus:ring-ring/60"
-            />
-            <span className="w-3 h-3 rounded-full bg-[hsl(42_85%_55%)] shadow-[inset_0_0_0_0.5px_hsl(0_0%_0%/0.25)]" />
-            <span className="w-3 h-3 rounded-full bg-[hsl(132_55%_48%)] shadow-[inset_0_0_0_0.5px_hsl(0_0%_0%/0.25)]" />
-          </div>
+          <MacTrafficLights onClose={() => closeRef.current?.click()} />
+          <DialogPrimitive.Close ref={closeRef} className="sr-only" aria-hidden tabIndex={-1} />
           <span className="w-[42px]" />
         </div>
       )}
       <div className={cn(!hideChrome ? "p-6 pt-4" : "", contentClassName)}>{children}</div>
     </DialogPrimitive.Content>
   </DialogPortal>
-));
+  );
+});
 DialogContent.displayName = DialogPrimitive.Content.displayName;
 
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (

@@ -1,29 +1,81 @@
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface Props {
   onClose?: () => void;
+  onMinimize?: () => void;
+  onMaximize?: () => void;
   className?: string;
+  size?: "sm" | "md";
 }
 
 /**
- * macOS-style window traffic lights (close / minimize / maximize).
- * Decorative — only the red dot is interactive when onClose is supplied.
+ * macOS-style window traffic lights.
+ * Glyphs (×, −, +/⤢) appear only when the group is hovered, exactly like Mac.
+ * Dots become inactive (greyed) when no handler is supplied.
  */
-const MacTrafficLights = ({ onClose, className }: Props) => {
+const MacTrafficLights = ({
+  onClose,
+  onMinimize,
+  onMaximize,
+  className,
+  size = "md",
+}: Props) => {
+  const [hover, setHover] = useState(false);
+  const dim = size === "sm" ? "w-2.5 h-2.5" : "w-3 h-3";
+  const text = size === "sm" ? "text-[7px]" : "text-[9px]";
+
+  const baseDot =
+    "rounded-full grid place-items-center font-bold leading-none select-none outline-none focus:outline-none focus-visible:outline-none transition-[filter] duration-150";
+
+  const dot = (
+    color: string,
+    glyph: string,
+    handler: (() => void) | undefined,
+    label: string,
+  ) => {
+    const active = !!handler;
+    return (
+      <button
+        type="button"
+        onClick={handler}
+        disabled={!active}
+        aria-label={active ? label : undefined}
+        tabIndex={-1}
+        className={cn(
+          baseDot,
+          dim,
+          text,
+          active ? "hover:brightness-110" : "opacity-60 cursor-default",
+        )}
+        style={{
+          background: active ? color : "hsl(0 0% 50% / 0.55)",
+          boxShadow: "inset 0 0 0 0.5px hsl(0 0% 0% / 0.3)",
+          color: "hsl(0 0% 0% / 0.65)",
+        }}
+      >
+        <span
+          aria-hidden
+          style={{
+            opacity: hover && active ? 1 : 0,
+            transition: "opacity 120ms ease",
+          }}
+        >
+          {glyph}
+        </span>
+      </button>
+    );
+  };
+
   return (
     <div
       className={cn("flex items-center gap-1.5 select-none", className)}
-      aria-hidden={!onClose}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
     >
-      <button
-        type="button"
-        onClick={onClose}
-        tabIndex={onClose ? 0 : -1}
-        aria-label={onClose ? "Close" : undefined}
-        className="w-3 h-3 rounded-full bg-[hsl(6_74%_58%)] shadow-[inset_0_0_0_0.5px_hsl(0_0%_0%/0.25)] hover:brightness-110 transition"
-      />
-      <span className="w-3 h-3 rounded-full bg-[hsl(42_85%_55%)] shadow-[inset_0_0_0_0.5px_hsl(0_0%_0%/0.25)]" />
-      <span className="w-3 h-3 rounded-full bg-[hsl(132_55%_48%)] shadow-[inset_0_0_0_0.5px_hsl(0_0%_0%/0.25)]" />
+      {dot("hsl(6 74% 58%)", "×", onClose, "Close")}
+      {dot("hsl(42 85% 55%)", "−", onMinimize, "Minimize")}
+      {dot("hsl(132 55% 48%)", "+", onMaximize, "Maximize")}
     </div>
   );
 };
