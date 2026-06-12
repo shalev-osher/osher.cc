@@ -38,7 +38,8 @@ const MacMenuBar = () => {
   return (
     <div
       className="fixed top-0 inset-x-0 z-[210] h-7 flex items-center px-3 text-[12px]
-                 bg-black/55 backdrop-blur-2xl border-b border-white/10 text-white/90 select-none"
+                 bg-transparent text-white/90 select-none
+                 [text-shadow:0_1px_2px_rgba(0,0,0,0.6)]"
       role="presentation"
     >
       {/* Brand glyph */}
