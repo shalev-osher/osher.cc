@@ -145,8 +145,15 @@
   }
 
   .card-premium {
-    @apply bg-card rounded-xl border border-border/50 backdrop-blur-sm;
-    box-shadow: var(--shadow-card);
+    @apply rounded-xl;
+    background: hsl(var(--card) / 0.35);
+    backdrop-filter: blur(28px) saturate(180%) brightness(1.05);
+    -webkit-backdrop-filter: blur(28px) saturate(180%) brightness(1.05);
+    border: 1px solid hsl(var(--border) / 0.4);
+    box-shadow:
+      var(--shadow-card),
+      inset 0 1px 0 hsl(0 0% 100% / 0.08),
+      inset 0 -1px 0 hsl(0 0% 0% / 0.15);
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
@@ -215,8 +222,64 @@
   }
 
   .glass-effect {
-    @apply backdrop-blur-md border border-border/30;
-    background: hsl(var(--card) / 0.6);
+    @apply border border-border/30;
+    background: hsl(var(--card) / 0.35);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+  }
+
+  /* Liquid Glass — Apple-style refractive surface */
+  .liquid-glass {
+    position: relative;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--card) / 0.45) 0%,
+      hsl(var(--card) / 0.25) 100%
+    );
+    backdrop-filter: blur(30px) saturate(200%) brightness(1.08);
+    -webkit-backdrop-filter: blur(30px) saturate(200%) brightness(1.08);
+    border: 1px solid hsl(var(--border) / 0.35);
+    box-shadow:
+      0 8px 32px -8px hsl(var(--background) / 0.4),
+      inset 0 1px 0 hsl(0 0% 100% / 0.12),
+      inset 0 -1px 0 hsl(0 0% 0% / 0.2),
+      inset 1px 0 0 hsl(0 0% 100% / 0.06),
+      inset -1px 0 0 hsl(0 0% 0% / 0.06);
+    border-radius: 1rem;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .liquid-glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      hsl(0 0% 100% / 0.08) 0%,
+      transparent 40%,
+      transparent 60%,
+      hsl(0 0% 100% / 0.04) 100%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .liquid-glass > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .liquid-glass-strong {
+    background: hsl(var(--card) / 0.55);
+    backdrop-filter: blur(40px) saturate(220%) brightness(1.1);
+    -webkit-backdrop-filter: blur(40px) saturate(220%) brightness(1.1);
+  }
+
+  .liquid-glass-subtle {
+    background: hsl(var(--card) / 0.2);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
   }
 
   .timeline-line {
