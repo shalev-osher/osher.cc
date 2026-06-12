@@ -50,17 +50,29 @@ const MacMenuBar = () => {
       </div>
 
       {/* Status cluster + clock */}
-      <div className="ms-auto flex items-center gap-3 text-white/85">
-        <Battery size={16} className="opacity-80" aria-hidden="true" />
-        <Wifi size={13} className="opacity-80" aria-hidden="true" />
+      <div className="ms-auto flex items-center gap-1 text-white/85">
+        <button
+          onClick={() => window.dispatchEvent(new CustomEvent("toggle-control-center"))}
+          className="hover:bg-white/10 rounded p-1 flex items-center gap-1.5"
+          aria-label="Control Center"
+        >
+          <Battery size={16} className="opacity-90" />
+          <Wifi size={13} className="opacity-90" />
+        </button>
         <button
           onClick={() => window.dispatchEvent(new CustomEvent("open-command-palette"))}
-          className="hover:bg-white/10 rounded p-0.5"
+          className="hover:bg-white/10 rounded p-1"
           aria-label="Spotlight"
         >
           <Search size={13} />
         </button>
-        <span className="tabular-nums tracking-tight">{date}  {time}</span>
+        <button
+          onClick={() => window.dispatchEvent(new CustomEvent("toggle-notification-center"))}
+          className="hover:bg-white/10 rounded px-2 py-0.5 tabular-nums tracking-tight"
+          aria-label="Notifications"
+        >
+          {date}  {time}
+        </button>
       </div>
     </div>
   );

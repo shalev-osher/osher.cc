@@ -1,18 +1,12 @@
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { useRef } from "react";
-import {
-  Mail, MessageCircle, Compass, Linkedin, Facebook, Github,
-  Search, FolderOpen, User, Briefcase, GraduationCap, Code2,
-  type LucideIcon,
-} from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { iosIcons, type IosIconKey } from "./ios/iconSet";
 
 interface DockItem {
   label: string;
   href: string;
-  /** Tailwind gradient classes for the colorful icon tile */
-  gradient: string;
-  Icon: LucideIcon;
+  icon: IosIconKey;
   onClick?: () => void;
   external?: boolean;
 }
@@ -21,20 +15,25 @@ const MacDock = () => {
   const { lang } = useLanguage();
 
   const items: DockItem[] = [
-    { label: "Finder",   href: "#home",        gradient: "from-[#5BB8FF] via-[#2E8BFF] to-[#0A56D6]", Icon: FolderOpen },
-    { label: lang === "he" ? "אודות" : "About", href: "#about", gradient: "from-[#FFB36B] via-[#FF7E3F] to-[#D94C1A]", Icon: User },
-    { label: lang === "he" ? "מיומנויות" : "Skills", href: "#skills", gradient: "from-[#7B61FF] via-[#5A3DFF] to-[#2A1FAE]", Icon: Code2 },
-    { label: lang === "he" ? "פרויקטים" : "Projects", href: "#projects", gradient: "from-[#E0E5EE] via-[#9BA6B8] to-[#3C4658]", Icon: Github },
-    { label: lang === "he" ? "ניסיון" : "Experience", href: "#experience", gradient: "from-[#FFD66B] via-[#F5A623] to-[#B26B00]", Icon: Briefcase },
-    { label: lang === "he" ? "השכלה" : "Education", href: "#education", gradient: "from-[#FF7DB1] via-[#E83F8B] to-[#8E1A55]", Icon: GraduationCap },
-    { label: "Mail", href: "#contact", gradient: "from-[#9CD3FF] via-[#3E9CFF] to-[#0E5BD6]", Icon: Mail },
-    { label: lang === "he" ? "הודעות" : "Messages", href: "#", gradient: "from-[#7CE890] via-[#34C759] to-[#0E8A2E]", Icon: MessageCircle,
+    { label: "Finder",   href: "#home",        icon: "finder" },
+    { label: lang === "he" ? "אודות" : "About",       href: "#about",      icon: "about" },
+    { label: lang === "he" ? "מיומנויות" : "Skills",   href: "#skills",     icon: "skills" },
+    { label: lang === "he" ? "פרויקטים" : "Projects",  href: "#projects",   icon: "projects" },
+    { label: lang === "he" ? "ניסיון" : "Experience",  href: "#experience", icon: "experience" },
+    { label: lang === "he" ? "השכלה" : "Education",    href: "#education",  icon: "education" },
+    { label: "Mail",     href: "#contact",     icon: "mail" },
+    { label: lang === "he" ? "הודעות" : "Messages",    href: "#", icon: "messages",
       onClick: () => window.dispatchEvent(new CustomEvent("open-telegram-chat")) },
-    { label: "Safari", href: "https://github.com/Shalev-osher", gradient: "from-[#F0F4FF] via-[#5AA9FF] to-[#1B5EBC]", Icon: Compass, external: true },
-    { label: "LinkedIn", href: "https://linkedin.com/in/shalev-osher/", gradient: "from-[#3B8BD9] via-[#0A66C2] to-[#063E78]", Icon: Linkedin, external: true },
-    { label: "Facebook", href: "https://www.facebook.com/Mr.ShalevOsher/", gradient: "from-[#5A9BFF] via-[#1877F2] to-[#0B4AB0]", Icon: Facebook, external: true },
-    { label: "GitHub", href: "https://github.com/Shalev-osher", gradient: "from-[#5B5F66] via-[#24292F] to-[#0A0C10]", Icon: Github, external: true },
-    { label: lang === "he" ? "חיפוש" : "Spotlight", href: "#", gradient: "from-[#BFC4CC] via-[#7C8290] to-[#3A3F48]", Icon: Search,
+    { label: "Safari",   href: "https://github.com/Shalev-osher",        icon: "safari",   external: true },
+    { label: "Photos",   href: "#education",   icon: "photos" },
+    { label: "Music",    href: "#", icon: "music",
+      onClick: () => window.dispatchEvent(new CustomEvent("toggle-control-center")) },
+    { label: lang === "he" ? "הגדרות" : "Settings",    href: "#", icon: "settings",
+      onClick: () => window.dispatchEvent(new CustomEvent("toggle-control-center")) },
+    { label: "LinkedIn", href: "https://linkedin.com/in/shalev-osher/",   icon: "linkedin", external: true },
+    { label: "Facebook", href: "https://www.facebook.com/Mr.ShalevOsher/", icon: "facebook", external: true },
+    { label: "GitHub",   href: "https://github.com/Shalev-osher",         icon: "github",   external: true },
+    { label: lang === "he" ? "חיפוש" : "Spotlight",    href: "#", icon: "spotlight",
       onClick: () => window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true })) },
   ];
 
@@ -71,8 +70,9 @@ const DockIcon = ({
     const rect = ref.current.getBoundingClientRect();
     return Math.abs(mx - (rect.left + rect.width / 2));
   });
-  const sizeRaw = useTransform(distance, [0, 70, 150], [62, 48, 42]);
+  const sizeRaw = useTransform(distance, [0, 70, 150], [62, 50, 44]);
   const size = useSpring(sizeRaw, { stiffness: 240, damping: 18, mass: 0.4 });
+  const Icon = iosIcons[item.icon];
 
   return (
     <>
@@ -88,15 +88,14 @@ const DockIcon = ({
         aria-label={item.label}
         title={item.label}
         style={{ width: size, height: size }}
-        whileTap={{ scale: 0.85 }}
-        className={`group relative rounded-[22%] flex items-center justify-center
-                    bg-gradient-to-br ${item.gradient}
-                    shadow-[0_8px_18px_-6px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.45),inset_0_-3px_6px_rgba(0,0,0,0.28)]
-                    text-white select-none ring-1 ring-white/10`}
+        whileHover={{ y: -10 }}
+        whileTap={{ scale: 0.88 }}
+        transition={{ type: "spring", stiffness: 320, damping: 18 }}
+        className="group relative flex items-end justify-center"
       >
-        {/* glossy highlight */}
-        <span aria-hidden className="pointer-events-none absolute inset-0 rounded-[22%] bg-gradient-to-b from-white/30 via-white/5 to-transparent" />
-        <item.Icon className="relative w-[55%] h-[55%] drop-shadow-[0_1px_2px_rgba(0,0,0,0.45)]" strokeWidth={2.2} />
+        <motion.div style={{ width: size, height: size }}>
+          <Icon />
+        </motion.div>
         {/* tooltip */}
         <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100
                          transition-opacity bg-black/85 text-white text-[11px] px-2 py-0.5 rounded-md whitespace-nowrap font-medium">
