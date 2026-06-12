@@ -46,15 +46,14 @@ const DialogContent = React.forwardRef<
     >
       {!hideChrome && (
         <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-border/40 bg-gradient-to-b from-background/80 to-background/40">
-          <DialogPrimitive.Close
-            asChild
-            aria-label="Close"
-          >
-            <div className="cursor-pointer">
-              <MacTrafficLights onClose={() => {}} />
-            </div>
-          </DialogPrimitive.Close>
-          <span className="text-[11px] font-medium text-muted-foreground tracking-wide" />
+          <div className="flex items-center gap-1.5">
+            <DialogPrimitive.Close
+              aria-label="Close"
+              className="w-3 h-3 rounded-full bg-[hsl(6_74%_58%)] shadow-[inset_0_0_0_0.5px_hsl(0_0%_0%/0.25)] hover:brightness-110 transition focus:outline-none focus:ring-2 focus:ring-ring/60"
+            />
+            <span className="w-3 h-3 rounded-full bg-[hsl(42_85%_55%)] shadow-[inset_0_0_0_0.5px_hsl(0_0%_0%/0.25)]" />
+            <span className="w-3 h-3 rounded-full bg-[hsl(132_55%_48%)] shadow-[inset_0_0_0_0.5px_hsl(0_0%_0%/0.25)]" />
+          </div>
           <span className="w-[42px]" />
         </div>
       )}
