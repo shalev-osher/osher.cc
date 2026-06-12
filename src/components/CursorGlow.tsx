@@ -17,6 +17,7 @@ const CursorGlow = () => {
   const trailIdRef = useRef(0);
   const sparkleIdRef = useRef(0);
   const [primaryColor, setPrimaryColor] = useState({ h: 45, s: 93, l: 58 });
+  const [hasMoved, setHasMoved] = useState(false);
 
   const springConfig = { stiffness: 150, damping: 20 };
   const trailConfig = { stiffness: 80, damping: 30 };
@@ -97,6 +98,7 @@ const CursorGlow = () => {
       const y = e.clientY - rect.top;
       mouseX.set(x);
       mouseY.set(y);
+      if (!hasMoved) setHasMoved(true);
 
       frameCount++;
       const dx = x - lastX;
@@ -125,10 +127,14 @@ const CursorGlow = () => {
       parent.removeEventListener("mouseenter", handleEnter);
       parent.removeEventListener("mouseleave", handleLeave);
     };
-  }, [mouseX, mouseY, updateTrail, spawnSparkle]);
+  }, [mouseX, mouseY, updateTrail, spawnSparkle, hasMoved]);
 
   return (
-    <div ref={ref} className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div
+      ref={ref}
+      className="absolute inset-0 overflow-hidden pointer-events-none"
+      style={{ opacity: hasMoved ? 1 : 0, transition: "opacity 0.3s ease" }}
+    >
       {/* Trail particles - elongated golden droplets */}
       {trail.map((point, i) => {
         const progress = (i + 1) / trail.length;
