@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import MissionControl from "@/components/MissionControl";
 import MacDock from "@/components/MacDock";
+import MacMenuBar from "@/components/MacMenuBar";
 
 // Below-the-fold sections — split into separate chunks
 const About = lazy(() => import("@/components/About"));
@@ -45,6 +46,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background relative">
       <SkipToContent />
+      <MacMenuBar />
       <LoadingScreen onComplete={handleLoadComplete} />
       <ParallaxBackground />
       <ScrollProgressBar />

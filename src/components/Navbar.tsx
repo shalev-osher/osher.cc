@@ -38,7 +38,7 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className="fixed top-3 inset-x-3 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:w-[min(1100px,calc(100%-2rem))] z-[200] liquid-glass-strong border border-border/50 shadow-xl rounded-full"
+        className="fixed top-10 inset-x-3 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:w-[min(1100px,calc(100%-2rem))] z-[200] liquid-glass-strong border border-border/50 shadow-xl rounded-full"
         role="navigation"
         aria-label="Main navigation"
       >
