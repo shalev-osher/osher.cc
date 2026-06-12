@@ -39,7 +39,7 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className="fixed top-0 inset-x-0 z-[200] bg-background/95 backdrop-blur-xl border-b border-border shadow-lg"
+        className="fixed top-0 inset-x-0 z-[200] liquid-glass-strong border-b border-border/40 shadow-lg rounded-none"
         role="navigation"
         aria-label="Main navigation"
       >
