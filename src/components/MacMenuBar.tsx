@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Battery, Wifi, Search, Sparkles } from "lucide-react";
+import { Battery, Wifi, Search } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 /** macOS-style top menu bar: brand glyph + menu items on the start, status + clock on the end. */
@@ -16,7 +16,7 @@ const MacMenuBar = () => {
   const time = now.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit", hour12: false });
   const date = now.toLocaleDateString(locale, { weekday: "short", day: "numeric", month: "short" });
 
-  const appName = lang === "he" ? "שליו" : "Shalev";
+  const appName = lang === "he" ? "שליו אושר" : "Shalev Osher";
   const sections: { id: string; label: string }[] = [
     { id: "home", label: appName },
     { id: "about", label: t("nav.about") },
@@ -42,13 +42,13 @@ const MacMenuBar = () => {
                  [text-shadow:0_1px_2px_rgba(0,0,0,0.6)]"
       role="presentation"
     >
-      {/* Brand glyph */}
+      {/* Brand wordmark */}
       <button
         onClick={() => goTo("home")}
-        className="flex items-center justify-center w-6 h-6 rounded-md hover:bg-white/10"
+        className="flex items-center justify-center px-1.5 h-6 rounded-md hover:bg-white/10 font-display font-black tracking-[0.04em] text-white text-[14px] leading-none"
         aria-label="Home"
       >
-        <Sparkles size={13} className="text-primary" />
+        SO
       </button>
 
       {/* Section menus */}
@@ -57,7 +57,7 @@ const MacMenuBar = () => {
           <button
             key={s.id}
             onClick={() => goTo(s.id)}
-            className={`px-2 py-0.5 rounded hover:bg-white/10 transition-colors ${i === 0 ? "font-semibold" : "font-normal"}`}
+            className={`px-2 py-0.5 rounded hover:bg-white/10 transition-colors font-display tracking-tight ${i === 0 ? "font-bold" : "font-medium"}`}
           >
             {s.label}
           </button>

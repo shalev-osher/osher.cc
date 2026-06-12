@@ -24,10 +24,16 @@ const MacDock = () => {
     { label: "Mail",     href: "#contact",     icon: "mail" },
     { label: lang === "he" ? "הודעות" : "Messages",    href: "#", icon: "messages",
       onClick: () => window.dispatchEvent(new CustomEvent("open-telegram-chat")) },
-    { label: "Safari",   href: "https://github.com/Shalev-osher",        icon: "safari",   external: true },
-    { label: "Photos",   href: "#education",   icon: "photos" },
-    { label: "Music",    href: "#", icon: "music",
-      onClick: () => window.dispatchEvent(new CustomEvent("toggle-control-center")) },
+    { label: lang === "he" ? "גלול למעלה" : "Scroll to top", href: "#", icon: "scrollUp",
+      onClick: () => window.scrollTo({ top: 0, behavior: "smooth" }) },
+    { label: lang === "he" ? "סקשן הבא" : "Next section", href: "#", icon: "scrollDown",
+      onClick: () => {
+        const sections = Array.from(document.querySelectorAll<HTMLElement>("main section[id]"));
+        const cur = window.scrollY + window.innerHeight * 0.25;
+        const next = sections.find((s) => s.offsetTop > cur + 1);
+        if (next) next.scrollIntoView({ behavior: "smooth", block: "start" });
+        else window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
+      } },
     { label: lang === "he" ? "הגדרות" : "Settings",    href: "#", icon: "settings",
       onClick: () => window.dispatchEvent(new CustomEvent("toggle-control-center")) },
     { label: "LinkedIn", href: "https://linkedin.com/in/shalev-osher/",   icon: "linkedin", external: true },
@@ -40,24 +46,28 @@ const MacDock = () => {
   const mouseX = useMotionValue<number | null>(null);
 
   return (
-    <motion.nav
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      onMouseMove={(e) => mouseX.set(e.clientX)}
-      onMouseLeave={() => mouseX.set(null)}
+    <div
       dir="ltr"
-      style={{ left: "50%", transform: "translateX(-50%)" }}
-      className="fixed bottom-3 z-40 flex items-end gap-1.5 px-2.5 py-1.5
-                 rounded-[22px] border border-white/15 bg-white/10 backdrop-blur-2xl
-                 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.2)]
-                 max-w-[calc(100vw-1.5rem)] overflow-x-auto no-scrollbar"
-      aria-label="Dock"
+      className="fixed bottom-3 inset-x-0 z-40 flex justify-center pointer-events-none px-3"
+      aria-hidden="false"
     >
-      {items.map((item, i) => (
-        <DockIcon key={item.label} item={item} mouseX={mouseX} dividerBefore={i === items.length - 1} />
-      ))}
-    </motion.nav>
+      <motion.nav
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        onMouseMove={(e) => mouseX.set(e.clientX)}
+        onMouseLeave={() => mouseX.set(null)}
+        className="pointer-events-auto flex items-end gap-1.5 px-2.5 py-1.5
+                   rounded-[22px] border border-white/15 bg-white/10 backdrop-blur-2xl
+                   shadow-[0_20px_60px_-12px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.2)]
+                   max-w-full overflow-x-auto no-scrollbar"
+        aria-label="Dock"
+      >
+        {items.map((item, i) => (
+          <DockIcon key={item.label} item={item} mouseX={mouseX} dividerBefore={i === items.length - 1} />
+        ))}
+      </motion.nav>
+    </div>
   );
 };
 
