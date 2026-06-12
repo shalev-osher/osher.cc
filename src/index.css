@@ -34,7 +34,7 @@
     --input: 0 0% 18%;
     --ring: 42 75% 55%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
 
     /* Custom design tokens */
     --gradient-gold: linear-gradient(135deg, hsl(42, 75%, 55%) 0%, hsl(35, 80%, 45%) 100%);
@@ -121,12 +121,65 @@
   }
 
   /* Subtle text legibility boost over fully transparent surfaces */
-  p, span, li, a, label, h1, h2, h3, h4, h5, h6 {
-    text-shadow: 0 1px 2px hsl(var(--background) / 0.5);
+  h1, h2, h3, h4, h5, h6 {
+    text-shadow: 0 1px 2px hsl(var(--background) / 0.45);
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
+  }
+}
+
+/* iOS 27 — pills, continuous corners, GPU-stable surfaces */
+@layer components {
+  /* Continuous (squircle-ish) corner — apply via .ios-corner where needed */
+  .ios-corner {
+    border-radius: 1.25rem;
+  }
+
+  /* Pill — for navbars, toolbars, chips */
+  .pill {
+    border-radius: 9999px;
+    padding-inline: 1.25rem;
+    padding-block: 0.5rem;
+  }
+
+  /* Bump every Tailwind radius up one notch toward iOS-like generosity */
+  .rounded,
+  .rounded-md   { border-radius: 0.75rem !important; }
+  .rounded-lg   { border-radius: 1rem !important; }
+  .rounded-xl   { border-radius: 1.25rem !important; }
+  .rounded-2xl  { border-radius: 1.5rem !important; }
+
+  /* Promote heavy / animated UI to its own GPU layer so it doesn't
+     re-paint glassy siblings when it enters / opens. Fixes:
+     - "buttons don't load smoothly when chat opens"
+     - "Contact section flickers on first entry"
+     Scope is tight on purpose — too many promoted layers hurts more
+     than it helps and creates extra stacking contexts. */
+  [role="dialog"],
+  [cmdk-root],
+  .chat-widget,
+  .chat-widget * {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  /* Limit repaint scope of each main section without hiding it */
+  main > section {
+    contain: layout style;
+  }
+
+  /* iOS 27 spec — full transparency, ZERO blur, anywhere.
+     This neutralises any leftover Tailwind .backdrop-blur-* utility
+     so we never pay the per-frame backdrop re-sample cost that was
+     causing the chat-open and section-enter rendering jank. */
+  *,
+  *::before,
+  *::after {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 }
 
