@@ -6,6 +6,7 @@ import ParallaxBackground from "@/components/ParallaxBackground";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 import SkipToContent from "@/components/SkipToContent";
 import Footer from "@/components/Footer";
+import CommandPalette from "@/components/CommandPalette";
 
 // Below-the-fold sections — split into separate chunks
 const About = lazy(() => import("@/components/About"));
@@ -19,7 +20,6 @@ const Contact = lazy(() => import("@/components/Contact"));
 const KonamiEasterEgg = lazy(() => import("@/components/KonamiEasterEgg"));
 const SnakeEasterEgg = lazy(() => import("@/components/SnakeEasterEgg"));
 const TelegramChatWidget = lazy(() => import("@/components/TelegramChatWidget"));
-const CommandPalette = lazy(() => import("@/components/CommandPalette"));
 
 const SectionFallback = () => <div className="min-h-[40vh]" aria-hidden="true" />;
 
@@ -59,12 +59,12 @@ const Index = () => {
         </Suspense>
       </main>
       <Footer />
+      <CommandPalette />
       {deferReady && (
         <Suspense fallback={null}>
           <KonamiEasterEgg />
           <SnakeEasterEgg />
           <TelegramChatWidget />
-          <CommandPalette />
         </Suspense>
       )}
     </div>
