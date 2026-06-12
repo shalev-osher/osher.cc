@@ -1,8 +1,9 @@
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
-import { useRef, type ComponentType } from "react";
+import { useRef } from "react";
 import {
-  Home, Mail, MessageCircle, Compass, Linkedin, Facebook, Github,
+  Mail, MessageCircle, Compass, Linkedin, Facebook, Github,
   Search, FolderOpen, User, Briefcase, GraduationCap, Code2,
+  type LucideIcon,
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -11,7 +12,7 @@ interface DockItem {
   href: string;
   /** Tailwind gradient classes for the colorful icon tile */
   gradient: string;
-  Icon: ComponentType<{ className?: string; strokeWidth?: number }>;
+  Icon: LucideIcon;
   onClick?: () => void;
   external?: boolean;
 }
