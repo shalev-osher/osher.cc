@@ -282,103 +282,24 @@
     -webkit-backdrop-filter: blur(12px) saturate(150%);
   }
 
-  /* Site-wide Liquid Glass surfaces — real transparent, blurred, saturated glass */
-  .card-elevated,
-  .card-premium,
-  .glass-effect,
-  .liquid-glass,
-  .liquid-glass-strong,
-  .liquid-glass-subtle,
+  /* Scoped liquid glass — only on surface containers, never on text, buttons, or selected rows */
   .bg-card,
   .bg-popover,
   .bg-secondary,
   .bg-muted,
-  .bg-input,
-  .bg-background,
-  [class*="bg-card/"],
-  [class*="bg-popover/"],
-  [class*="bg-secondary/"],
-  [class*="bg-muted/"],
-  [class*="bg-input/"],
-  [class*="bg-background/"],
-  [class*="bg-muted-foreground/"],
-  [class*="bg-foreground/"],
-  [class*="border-border"],
-  [class*="rounded-lg"],
-  [class*="rounded-xl"],
-  [class*="rounded-2xl"],
-  button:not(.no-glass),
-  a[class*="rounded"],
-  article,
-  form,
-  input,
-  textarea,
-  select,
-  [role="dialog"],
-  [role="menu"],
-  [role="listbox"],
-  [data-radix-popper-content-wrapper] > *,
-  [cmdk-root] {
-    background-color: hsl(var(--card) / 0.22) !important;
-    background-image:
-      linear-gradient(135deg, hsl(0 0% 100% / 0.12) 0%, transparent 36%, hsl(var(--primary) / 0.08) 100%),
-      linear-gradient(135deg, hsl(var(--card) / 0.42) 0%, hsl(var(--card) / 0.16) 100%) !important;
-    backdrop-filter: blur(24px) saturate(185%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(185%) !important;
-    border-color: hsl(var(--border) / 0.42) !important;
-    box-shadow:
-      0 18px 55px hsl(0 0% 0% / 0.22),
-      inset 0 1px 0 hsl(0 0% 100% / 0.14),
-      inset 0 -1px 0 hsl(0 0% 0% / 0.16) !important;
+  .bg-input {
+    background-image: linear-gradient(135deg, hsl(var(--card) / 0.40) 0%, hsl(var(--card) / 0.18) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
   }
 
-  .bg-primary,
-  .bg-accent,
-  .bg-destructive,
-  [class*="bg-primary/"],
-  [class*="bg-accent/"],
-  [class*="bg-destructive/"] {
-    background-color: hsl(var(--primary) / 0.30) !important;
-    background-image:
-      linear-gradient(135deg, hsl(0 0% 100% / 0.18) 0%, transparent 38%, hsl(var(--primary) / 0.22) 100%),
-      linear-gradient(135deg, hsl(var(--primary) / 0.48) 0%, hsl(var(--primary) / 0.18) 100%) !important;
-    backdrop-filter: blur(18px) saturate(190%) !important;
-    -webkit-backdrop-filter: blur(18px) saturate(190%) !important;
-    border-color: hsl(var(--primary) / 0.45) !important;
-    box-shadow:
-      0 10px 35px hsl(var(--primary) / 0.18),
-      inset 0 1px 0 hsl(0 0% 100% / 0.18) !important;
-  }
-
-  /* Command K and active rows stay liquid while keeping text readable */
-  [cmdk-item][data-selected="true"],
-  [cmdk-item][aria-selected="true"],
-  [data-selected="true"].bg-accent,
-  [aria-selected="true"].bg-accent,
-  [data-state="open"].bg-accent,
-  .focus\:bg-accent:focus,
-  .hover\:bg-accent:hover {
-    color: hsl(var(--foreground)) !important;
-    background-color: hsl(var(--accent) / 0.38) !important;
-    background-image:
-      linear-gradient(135deg, hsl(0 0% 100% / 0.22) 0%, transparent 42%, hsl(var(--accent) / 0.28) 100%),
-      linear-gradient(135deg, hsl(var(--accent) / 0.52) 0%, hsl(var(--accent) / 0.24) 100%) !important;
-    backdrop-filter: blur(20px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
-  }
-
-  [cmdk-item][data-selected="true"] *,
-  [cmdk-item][aria-selected="true"] * {
-    color: hsl(var(--foreground)) !important;
-  }
-  /* Opt-out for elements that must stay opaque */
+  /* Opt-out helper */
   .no-glass,
   .no-glass * {
     background-image: none !important;
-    background-color: revert !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
-  /* Keep page body solid so liquid layers have something to refract */
-  body { background-image: none !important; }
 
   .timeline-line {
     background: linear-gradient(
