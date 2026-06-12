@@ -24,9 +24,9 @@ interface ConstellationBackgroundProps {
  * each other and react to the cursor (gentle attraction + brighter links).
  */
 const ConstellationBackground = ({
-  starCount = 70,
-  linkDistance = 130,
-  mouseInfluence = 180,
+  starCount = 40,
+  linkDistance = 110,
+  mouseInfluence = 160,
   className = "",
 }: ConstellationBackgroundProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -45,7 +45,11 @@ const ConstellationBackground = ({
     let width = 0;
     let height = 0;
     const isMobile = window.innerWidth < 768;
-    const count = isMobile ? Math.floor(starCount * 0.5) : starCount;
+    // Density-based cap so big screens don't get covered in lines
+    const area = window.innerWidth * window.innerHeight;
+    const densityCap = Math.floor(area / 28000); // ~1 star per 28k px²
+    const requested = isMobile ? Math.floor(starCount * 0.5) : starCount;
+    const count = Math.min(requested, densityCap);
     const stars: Star[] = [];
     const mouse = { x: -9999, y: -9999, active: false };
 
@@ -142,7 +146,7 @@ const ConstellationBackground = ({
           const dy = a.y - b.y;
           const dist = Math.hypot(dx, dy);
           if (dist < linkDistance) {
-            let lineAlpha = (1 - dist / linkDistance) * 0.25;
+            let lineAlpha = (1 - dist / linkDistance) * 0.12;
 
             // Boost lines near cursor
             if (mouse.active) {
@@ -157,8 +161,8 @@ const ConstellationBackground = ({
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `hsl(${primary} / ${Math.min(lineAlpha, 0.7)})`;
-            ctx.lineWidth = 0.6;
+            ctx.strokeStyle = `hsl(${primary} / ${Math.min(lineAlpha, 0.35)})`;
+            ctx.lineWidth = 0.4;
             ctx.stroke();
           }
         }
