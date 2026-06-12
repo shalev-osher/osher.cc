@@ -1,5 +1,4 @@
 import { lazy, Suspense, useState, useCallback, useEffect } from "react";
-import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import BootScreen from "@/components/BootScreen";
 import ParallaxBackground from "@/components/ParallaxBackground";
@@ -52,7 +51,6 @@ const Index = () => {
       <BootScreen onComplete={handleLoadComplete} />
       <ParallaxBackground />
       <ScrollProgressBar />
-      <Navbar />
       <main id="main-content" role="main">
         <Hero />
         <Suspense fallback={<SectionFallback />}>
