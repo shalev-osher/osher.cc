@@ -41,7 +41,7 @@ const Hero = () => {
   });
 
   return (
-    <section className="min-h-screen flex items-center justify-center relative overflow-hidden noise-texture" aria-label="Hero section">
+    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden noise-texture" aria-label="Hero section">
       <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
       
       <div className="absolute inset-0 overflow-hidden">
