@@ -29,8 +29,9 @@ const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
     hideChrome?: boolean;
+    contentClassName?: string;
   }
->(({ className, children, hideChrome, ...props }, ref) => (
+>(({ className, children, hideChrome, contentClassName, ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
@@ -54,7 +55,7 @@ const DialogContent = React.forwardRef<
           <span className="w-[42px]" />
         </div>
       )}
-      <div className="p-6 pt-4">{children}</div>
+      <div className={cn(!hideChrome ? "p-6 pt-4" : "", contentClassName)}>{children}</div>
     </DialogPrimitive.Content>
   </DialogPortal>
 ));
