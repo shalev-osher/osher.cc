@@ -152,26 +152,23 @@
   .rounded-2xl  { border-radius: 1.5rem !important; }
 
   /* Promote heavy / animated UI to its own GPU layer so it doesn't
-     re-paint glassy siblings when it enters / opens.
-     Fixes the "buttons don't load smoothly when chat opens" jank
-     and the "Contact section flickers on first entry" issue. */
-  [data-radix-popper-content-wrapper],
+     re-paint glassy siblings when it enters / opens. Fixes:
+     - "buttons don't load smoothly when chat opens"
+     - "Contact section flickers on first entry"
+     Scope is tight on purpose — too many promoted layers hurts more
+     than it helps and creates extra stacking contexts. */
   [role="dialog"],
   [cmdk-root],
   .chat-widget,
-  section,
-  button,
-  a[role="button"] {
+  .chat-widget * {
+    will-change: transform, opacity;
     transform: translateZ(0);
     backface-visibility: hidden;
   }
 
-  /* Section-level paint containment — limits repaint scope on scroll-in */
-  main > section,
-  main section[id] {
-    contain: layout paint style;
-    content-visibility: auto;
-    contain-intrinsic-size: 1px 800px;
+  /* Limit repaint scope of each main section without hiding it */
+  main > section {
+    contain: layout style;
   }
 }
 
