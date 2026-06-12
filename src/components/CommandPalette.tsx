@@ -106,7 +106,7 @@ const CommandPalette = () => {
         <CommandEmpty>{lang === "he" ? "לא נמצאו תוצאות." : "No results found."}</CommandEmpty>
 
         <CommandGroup heading={lang === "he" ? "ניווט" : "Navigation"}>
-          <CommandItem onSelect={() => go("hero")}>
+          <CommandItem onSelect={() => go("home")}>
             <Home className="me-2 h-4 w-4" />
             <span>{lang === "he" ? "דף הבית" : "Home"}</span>
           </CommandItem>
