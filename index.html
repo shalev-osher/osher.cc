@@ -3,6 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="canonical" href="https://osher.cc/" />
     <link rel="alternate" hreflang="en" href="https://osher.cc/" />
@@ -206,5 +209,26 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Auto cache-busting: unregister any stale service workers and clear caches once per deploy
+      (function(){
+        try {
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(regs){
+              regs.forEach(function(r){ r.unregister(); });
+            }).catch(function(){});
+          }
+          if (typeof caches !== 'undefined' && caches.keys) {
+            caches.keys().then(function(keys){
+              keys.forEach(function(k){ caches.delete(k); });
+            }).catch(function(){});
+          }
+          // Reload once if bfcache restored an old page
+          window.addEventListener('pageshow', function(e){
+            if (e.persisted) { window.location.reload(); }
+          });
+        } catch(_) {}
+      })();
+    </script>
   </body>
 </html>
