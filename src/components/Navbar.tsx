@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { Menu, X, Download, Command } from "lucide-react";
 import { motion } from "framer-motion";
-import ThemeToggle from "./ThemeToggle";
 import MagneticButton from "./MagneticButton";
 import useActiveSection from "@/hooks/useActiveSection";
 import { useLanguage } from "@/contexts/LanguageContext";
