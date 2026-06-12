@@ -1,7 +1,7 @@
 import { lazy, Suspense, useState, useCallback, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import LoadingScreen from "@/components/LoadingScreen";
+import LockScreen from "@/components/LockScreen";
 import ParallaxBackground from "@/components/ParallaxBackground";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 import SkipToContent from "@/components/SkipToContent";
@@ -10,6 +10,8 @@ import CommandPalette from "@/components/CommandPalette";
 import MissionControl from "@/components/MissionControl";
 import MacDock from "@/components/MacDock";
 import MacMenuBar from "@/components/MacMenuBar";
+import ControlCenter from "@/components/ControlCenter";
+import NotificationCenter from "@/components/NotificationCenter";
 
 // Below-the-fold sections — split into separate chunks
 const About = lazy(() => import("@/components/About"));
@@ -47,7 +49,7 @@ const Index = () => {
     <div className="min-h-screen bg-background relative">
       <SkipToContent />
       <MacMenuBar />
-      <LoadingScreen onComplete={handleLoadComplete} />
+      <LockScreen onComplete={handleLoadComplete} />
       <ParallaxBackground />
       <ScrollProgressBar />
       <Navbar />
@@ -66,6 +68,8 @@ const Index = () => {
       <CommandPalette />
       <MissionControl />
       <MacDock />
+      <ControlCenter />
+      <NotificationCenter />
       {deferReady && (
         <Suspense fallback={null}>
           <KonamiEasterEgg />
