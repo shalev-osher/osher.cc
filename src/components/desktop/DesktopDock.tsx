@@ -8,7 +8,7 @@ import { LayoutGrid } from "lucide-react";
 interface DockApp { id: AppId; label: string; icon: IosIconKey; }
 
 const DesktopDock = () => {
-  const { open, state } = useWindows();
+  const { open, state, minimize, focus } = useWindows();
   const { lang } = useLanguage();
 
   const apps: DockApp[] = [
@@ -46,7 +46,13 @@ const DesktopDock = () => {
             app={a}
             mouseX={mouseX}
             running={!!state.windows[a.id]}
-            onActivate={() => open(a.id)}
+            onActivate={() => {
+              const w = state.windows[a.id];
+              if (!w) return open(a.id);
+              if (w.minimized) return open(a.id); // restore
+              if (state.focus === a.id) return minimize(a.id);
+              focus(a.id);
+            }}
           />
         ))}
       </motion.nav>
