@@ -30,7 +30,7 @@ const Education = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { t, lang } = useLanguage();
   const isRtl = lang === "he";
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "center", skipSnaps: false, direction: isRtl ? "rtl" : "ltr" });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start", containScroll: false, skipSnaps: false, direction: isRtl ? "rtl" : "ltr" });
 
   const titleTypewriter = useTypewriter({ text: t("edu.title"), speed: 80, loop: true, pauseDuration: 5000 });
   const subtitleTypewriter = useTypewriter({ text: t("edu.subtitle"), speed: 25, delay: 1000, loop: true, pauseDuration: 5000 });
