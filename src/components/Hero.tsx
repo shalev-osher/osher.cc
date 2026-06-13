@@ -65,8 +65,8 @@ const Hero = () => {
         />
       </div>
 
-      <ConstellationBackground starCount={35} linkDistance={100} mouseInfluence={160} />
-      <Particles count={18} />
+      <ConstellationBackground starCount={20} linkDistance={80} mouseInfluence={140} />
+      <Particles count={8} />
       <CursorGlow />
 
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
