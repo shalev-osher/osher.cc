@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Battery, Wifi, Search } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -63,10 +63,31 @@ const MacMenuBar = () => {
     projects: lang === "he" ? "פרויקטים" : "Projects",
     experience: t("nav.experience"), education: t("nav.certifications"),
     contact: t("nav.contact"),
+    calculator: lang === "he" ? "מחשבון" : "Calculator",
+    notes: lang === "he" ? "פתקים" : "Notes",
+    settings: lang === "he" ? "הגדרות" : "Settings",
   };
   const activeLabel = focusedApp
     ? APP_LABELS[focusedApp] ?? sections[0].label
     : sections.find((s) => s.id === activeId)?.label ?? sections[0].label;
+
+  // Are we inside the desktop OS shell? (affects menu behavior)
+  const isDesktopOS = typeof document !== "undefined" && !!document.getElementById("desktop-root");
+
+  // --- Tiny dropdown system ---
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const menuRootRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const close = (e: MouseEvent) => {
+      if (!menuRootRef.current?.contains(e.target as Node)) setOpenMenu(null);
+    };
+    const esc = (e: KeyboardEvent) => { if (e.key === "Escape") setOpenMenu(null); };
+    window.addEventListener("mousedown", close);
+    window.addEventListener("keydown", esc);
+    return () => { window.removeEventListener("mousedown", close); window.removeEventListener("keydown", esc); };
+  }, []);
+  const fire = (event: string) => { window.dispatchEvent(new CustomEvent(event)); setOpenMenu(null); };
+  const openApp = (id: string) => { window.dispatchEvent(new CustomEvent("open-app", { detail: id })); setOpenMenu(null); };
 
   const goTo = (id: string) => {
     if (id === "home") {
@@ -84,35 +105,69 @@ const MacMenuBar = () => {
                  [text-shadow:0_1px_2px_rgba(0,0,0,0.6)]"
       role="presentation"
     >
-      {/* Brand wordmark */}
-      <button
-        onClick={() => goTo("home")}
-        className="flex items-center justify-center px-1.5 h-6 rounded-md hover:bg-white/10 font-display font-black tracking-[0.04em] text-white text-[14px] leading-none"
-        aria-label="Home"
-      >
-        SO
-      </button>
+      <div ref={menuRootRef} className="flex items-center">
+        {/* Brand wordmark — Apple-style menu */}
+        <div className="relative">
+          <button
+            onClick={() => isDesktopOS ? setOpenMenu(openMenu === "brand" ? null : "brand") : goTo("home")}
+            className="flex items-center justify-center px-2 h-6 rounded-md hover:bg-white/10 font-display font-black tracking-[0.04em] text-white text-[14px] leading-none"
+            aria-label="Apple menu"
+          >
+            SO
+          </button>
+          {openMenu === "brand" && isDesktopOS && (
+            <BrandMenu onClose={() => setOpenMenu(null)} openApp={openApp} fire={fire} />
+          )}
+        </div>
 
-      {/* Section menus */}
-      <div className="flex items-center gap-0.5 ms-1">
-        {/* Active "app name" — dynamic, bold like macOS */}
-        <span
-          key={activeId}
-          className="px-2 py-0.5 font-display font-bold tracking-tight animate-fade-in"
-        >
-          {activeLabel}
-        </span>
-        {sections
-          .filter((s) => s.id !== activeId)
-          .map((s) => (
+        {/* Section / App menus */}
+        <div className="flex items-center gap-0.5 ms-1">
+          {/* Active "app name" — dropdown on desktop, scroll trigger on mobile */}
+          <div className="relative">
             <button
-              key={s.id}
-              onClick={() => goTo(s.id)}
-              className="px-2 py-0.5 rounded hover:bg-white/10 transition-colors font-display font-medium tracking-tight"
+              key={focusedApp ?? activeId}
+              onClick={() => isDesktopOS ? setOpenMenu(openMenu === "app" ? null : "app") : undefined}
+              className="px-2 py-0.5 font-display font-bold tracking-tight animate-fade-in rounded hover:bg-white/10"
             >
-              {s.label}
+              {activeLabel}
             </button>
-          ))}
+            {openMenu === "app" && isDesktopOS && (
+              <AppMenu focusedApp={focusedApp} fire={fire} lang={lang} />
+            )}
+          </div>
+          {/* On mobile show scroll-to-section nav */}
+          {!isDesktopOS && sections
+            .filter((s) => s.id !== activeId)
+            .map((s) => (
+              <button
+                key={s.id}
+                onClick={() => goTo(s.id)}
+                className="px-2 py-0.5 rounded hover:bg-white/10 transition-colors font-display font-medium tracking-tight"
+              >
+                {s.label}
+              </button>
+            ))}
+          {/* On desktop add Window + Help menus */}
+          {isDesktopOS && (
+            <>
+              <DropdownTrigger label={lang === "he" ? "חלון" : "Window"} id="window" openMenu={openMenu} setOpenMenu={setOpenMenu}>
+                <MenuLine onClick={() => fire("toggle-launchpad")} shortcut="F4">{lang === "he" ? "Launchpad" : "Launchpad"}</MenuLine>
+                <MenuLine onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "F3" }))} shortcut="F3">Mission Control</MenuLine>
+                <Sep />
+                <MenuLine onClick={() => openApp("finder")}>New Finder Window</MenuLine>
+                <MenuLine onClick={() => openApp("terminal")}>Open Terminal</MenuLine>
+                <MenuLine onClick={() => openApp("notes")}>Open Notes</MenuLine>
+                <MenuLine onClick={() => openApp("calculator")}>Open Calculator</MenuLine>
+              </DropdownTrigger>
+              <DropdownTrigger label={lang === "he" ? "עזרה" : "Help"} id="help" openMenu={openMenu} setOpenMenu={setOpenMenu}>
+                <MenuLine onClick={() => fire("open-command-palette")} shortcut="⌘K">Spotlight Search…</MenuLine>
+                <Sep />
+                <MenuLine onClick={() => window.open("https://github.com/Shalev-osher", "_blank")}>GitHub Profile ↗</MenuLine>
+                <MenuLine onClick={() => window.open("mailto:shalev@osher.cc")}>Contact Support ↗</MenuLine>
+              </DropdownTrigger>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Status cluster + clock */}
