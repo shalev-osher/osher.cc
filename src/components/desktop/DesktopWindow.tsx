@@ -56,10 +56,12 @@ const DesktopWindow = ({ id, title, app, children, dark }: Props) => {
     const nx = Math.max(-w.w + 140, Math.min(window.innerWidth - 140, dragRef.current.ox + dx));
     const ny = Math.max(28, Math.min(window.innerHeight - 60, dragRef.current.oy + dy));
     move(id, nx, ny);
+    window.dispatchEvent(new CustomEvent("desktop-drag", { detail: { x: e.clientX, y: e.clientY } }));
   };
   const onHandleUp = (e: RPointerEvent) => {
     dragRef.current = null;
     try { (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId); } catch {}
+    window.dispatchEvent(new CustomEvent("desktop-drag-end"));
     // Edge-snap (macOS-style)
     const W = window.innerWidth, H = window.innerHeight;
     const topBar = 32, bottomPad = 110;
