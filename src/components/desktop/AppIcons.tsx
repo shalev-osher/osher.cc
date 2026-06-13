@@ -231,19 +231,18 @@ const TerminalIcon = () => (
 );
 
 const CalculatorIcon = () => (
-  <Squircle gradient="linear-gradient(180deg,#3c3c40 0%,#1c1c1f 55%,#0a0a0c 100%)" ringTint="rgba(255,255,255,0.12)">
+  <Squircle gradient="linear-gradient(180deg,#2c2c2e 0%,#161618 55%,#0a0a0c 100%)" ringTint="rgba(255,255,255,0.14)">
     <Glyph>
-      {/* Display */}
-      <rect x="16" y="14" width="68" height="20" rx="3" fill="#0d0d10" />
-      <text x="78" y="29" textAnchor="end" fontFamily="ui-monospace, monospace" fontSize="14" fill="#f5f5f7" fontWeight="300">0</text>
-      {/* Buttons grid */}
-      {Array.from({ length: 4 }).map((_, r) =>
+      <rect x="14" y="12" width="72" height="22" rx="3" fill="#000" />
+      <text x="82" y="29" textAnchor="end" fontFamily="ui-sans-serif, -apple-system, system-ui" fontSize="16" fill="#fff" fontWeight="200">0</text>
+      {Array.from({ length: 5 }).map((_, r) =>
         Array.from({ length: 4 }).map((_, c) => {
-          const x = 16 + c * 18, y = 40 + r * 12;
+          const x = 14 + c * 18, y = 38 + r * 10.4;
           const isOp = c === 3;
+          const isFn = r === 0 && c < 3;
           return (
-            <rect key={`${r}-${c}`} x={x} y={y} width="14" height="9" rx="2"
-              fill={isOp ? "#f5a623" : "#5e5e63"} />
+            <rect key={`${r}-${c}`} x={x} y={y} width="14" height="8.4" rx="2.5"
+              fill={isOp ? "#ff9f0a" : isFn ? "#a5a5a5" : "#505050"} />
           );
         })
       )}
@@ -252,35 +251,49 @@ const CalculatorIcon = () => (
 );
 
 const NotesIcon = () => (
-  <Squircle gradient="linear-gradient(180deg,#fff094 0%,#f3c41a 55%,#a37b07 100%)">
+  <Squircle gradient="linear-gradient(180deg,#fdfdfd 0%,#e6e6e6 100%)" ringTint="rgba(255,255,255,0.6)">
     <Glyph>
-      <rect x="18" y="16" width="64" height="68" rx="4" fill="#fffef5" />
-      <rect x="18" y="16" width="64" height="10" fill="#f0d243" />
-      <line x1="26" y1="38" x2="74" y2="38" stroke="#d8c170" strokeWidth="1.5" />
-      <line x1="26" y1="48" x2="74" y2="48" stroke="#d8c170" strokeWidth="1.5" />
-      <line x1="26" y1="58" x2="74" y2="58" stroke="#d8c170" strokeWidth="1.5" />
-      <line x1="26" y1="68" x2="62" y2="68" stroke="#d8c170" strokeWidth="1.5" />
+      <rect x="16" y="14" width="68" height="72" rx="5" fill="#fff7b3" />
+      <rect x="16" y="14" width="68" height="14" fill="#ffd23a" />
+      <rect x="16" y="28" width="68" height="2" fill="#d4a017" opacity="0.5" />
+      <line x1="24" y1="40" x2="76" y2="40" stroke="#d6b85a" strokeWidth="1.2" />
+      <line x1="24" y1="50" x2="76" y2="50" stroke="#d6b85a" strokeWidth="1.2" />
+      <line x1="24" y1="60" x2="76" y2="60" stroke="#d6b85a" strokeWidth="1.2" />
+      <line x1="24" y1="70" x2="76" y2="70" stroke="#d6b85a" strokeWidth="1.2" />
+      <line x1="24" y1="80" x2="60" y2="80" stroke="#d6b85a" strokeWidth="1.2" />
     </Glyph>
   </Squircle>
 );
 
 const SettingsIcon = () => (
-  <Squircle gradient="linear-gradient(180deg,#9aa1ab 0%,#525a66 55%,#262a31 100%)" ringTint="rgba(255,255,255,0.2)">
+  <Squircle gradient="linear-gradient(180deg,#9aa1ab 0%,#5a626e 55%,#2a2e36 100%)" ringTint="rgba(255,255,255,0.22)">
     <Glyph>
       <defs>
-        <radialGradient id="gearGrad" cx="50%" cy="40%" r="60%">
-          <stop offset="0" stopColor="#f5f6fa" />
-          <stop offset="1" stopColor="#9ea4af" />
+        <radialGradient id="gearMain" cx="50%" cy="30%" r="80%">
+          <stop offset="0" stopColor="#fafbfd" />
+          <stop offset="0.7" stopColor="#b9bfca" />
+          <stop offset="1" stopColor="#6e7682" />
+        </radialGradient>
+        <radialGradient id="gearSmall" cx="50%" cy="30%" r="80%">
+          <stop offset="0" stopColor="#f4f5f9" />
+          <stop offset="1" stopColor="#8a92a0" />
         </radialGradient>
       </defs>
-      {/* Gear */}
       <g transform="translate(50 50)">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <rect key={i} x="-4" y="-34" width="8" height="14" rx="2"
-            fill="url(#gearGrad)" transform={`rotate(${i * 45})`} />
+        {Array.from({ length: 10 }).map((_, i) => (
+          <rect key={i} x="-4.5" y="-38" width="9" height="12" rx="2.5"
+            fill="url(#gearMain)" transform={`rotate(${i * 36})`} />
         ))}
-        <circle r="22" fill="url(#gearGrad)" stroke="#3a3f47" strokeWidth="1.5" />
-        <circle r="8" fill="#262a31" />
+        <circle r="26" fill="url(#gearMain)" stroke="#3a3f47" strokeWidth="1" />
+        <circle r="9" fill="#2a2e36" />
+      </g>
+      <g transform="translate(74 74)">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <rect key={i} x="-2" y="-13" width="4" height="5" rx="1"
+            fill="url(#gearSmall)" transform={`rotate(${i * 45})`} />
+        ))}
+        <circle r="9" fill="url(#gearSmall)" stroke="#3a3f47" strokeWidth="0.8" />
+        <circle r="3" fill="#2a2e36" />
       </g>
     </Glyph>
   </Squircle>
