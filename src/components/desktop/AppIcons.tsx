@@ -345,6 +345,50 @@ const GithubIcon = () => (
   </Squircle>
 );
 
+const SafariIcon = () => (
+  <Squircle gradient="linear-gradient(180deg,#e9eef5 0%,#cfd6e2 60%,#a9b3c2 100%)" ringTint="rgba(255,255,255,0.55)">
+    <Glyph>
+      <defs>
+        <radialGradient id="safariFace" cx="50%" cy="40%" r="60%">
+          <stop offset="0" stopColor="#5fb6ff" />
+          <stop offset="0.6" stopColor="#1f7ed1" />
+          <stop offset="1" stopColor="#0c4f8a" />
+        </radialGradient>
+      </defs>
+      {/* Outer ring with tick marks */}
+      <circle cx="50" cy="50" r="36" fill="#e8edf3" stroke="#8a93a3" strokeWidth="1.2" />
+      <g stroke="#3a4150" strokeWidth="1.2">
+        {Array.from({ length: 60 }).map((_, i) => {
+          const a = (i * 6) * Math.PI / 180;
+          const r1 = i % 5 === 0 ? 30 : 32;
+          const r2 = 35;
+          return (
+            <line key={i}
+              x1={50 + Math.cos(a) * r1} y1={50 + Math.sin(a) * r1}
+              x2={50 + Math.cos(a) * r2} y2={50 + Math.sin(a) * r2}
+              opacity={i % 5 === 0 ? 0.9 : 0.4}
+            />
+          );
+        })}
+      </g>
+      <g fontFamily="ui-sans-serif, system-ui" fontSize="6" fill="#3a4150" fontWeight="700" textAnchor="middle">
+        <text x="50" y="23">N</text>
+        <text x="78" y="52">E</text>
+        <text x="50" y="83">S</text>
+        <text x="22" y="52">W</text>
+      </g>
+      {/* Dial face */}
+      <circle cx="50" cy="50" r="26" fill="url(#safariFace)" />
+      {/* Compass needle */}
+      <g transform="translate(50 50) rotate(35)">
+        <polygon points="0,-22 5,0 0,4 -5,0" fill="#e74c3c" />
+        <polygon points="0,22 5,0 0,-4 -5,0" fill="#ffffff" />
+        <circle r="2.4" fill="#1a1a1f" />
+      </g>
+    </Glyph>
+  </Squircle>
+);
+
 export const APP_ICONS: Record<AppId, React.FC> = {
   finder: FinderIcon,
   home: HomeIcon,
@@ -359,6 +403,7 @@ export const APP_ICONS: Record<AppId, React.FC> = {
   notes: NotesIcon,
   settings: SettingsIcon,
   homelab: HomelabIcon,
+  safari: SafariIcon,
 };
 
 /** Extra icons that aren't backed by a window (e.g. external shortcuts). */
