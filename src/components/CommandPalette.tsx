@@ -21,7 +21,6 @@ import {
   ShieldCheck,
   Languages,
   Home,
-  MessageCircle,
   Sparkles,
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -81,11 +80,6 @@ const CommandPalette = () => {
     setOpen(false);
   }, [lang, setLang]);
 
-  const openChat = useCallback(() => {
-    setOpen(false);
-    window.dispatchEvent(new CustomEvent("open-shalev-assistant"));
-  }, []);
-
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
       <CommandInput
@@ -132,10 +126,6 @@ const CommandPalette = () => {
             <Download className="me-2 h-4 w-4" />
             <span>{t("hero.downloadCV")}</span>
             <CommandShortcut>PDF</CommandShortcut>
-          </CommandItem>
-          <CommandItem onSelect={openChat}>
-            <MessageCircle className="me-2 h-4 w-4" />
-            <span>{lang === "he" ? "פתח צ'אט AI" : "Open AI Chat"}</span>
           </CommandItem>
           <CommandItem onSelect={switchLang}>
             <Languages className="me-2 h-4 w-4" />
