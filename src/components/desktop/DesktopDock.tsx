@@ -14,7 +14,6 @@ const DesktopDock = () => {
   const apps: DockApp[] = [
     { id: "finder",     label: "Finder" },
     { id: "safari",     label: "Safari" },
-    { id: "home",       label: lang === "he" ? "בית" : "Home" },
     { id: "about",      label: lang === "he" ? "אודות" : "About" },
     { id: "skills",     label: lang === "he" ? "מיומנויות" : "Skills" },
     { id: "projects",   label: lang === "he" ? "פרויקטים" : "Projects" },
@@ -27,6 +26,10 @@ const DesktopDock = () => {
     { id: "terminal",   label: "Terminal" },
     { id: "settings",   label: lang === "he" ? "הגדרות" : "Settings" },
   ];
+  // Split: portfolio apps vs. system utilities (gives the dock a real separator)
+  const utilityIds = new Set<AppId>(["notes", "calculator", "terminal", "settings"]);
+  const portfolio = apps.filter((a) => !utilityIds.has(a.id));
+  const utilities = apps.filter((a) => utilityIds.has(a.id));
 
   const mouseX = useMotionValue<number | null>(null);
 
@@ -45,7 +48,7 @@ const DesktopDock = () => {
       >
         <LaunchpadButton mouseX={mouseX} />
         <div className="w-px self-stretch bg-white/15 mx-1" />
-        {apps.map((a) => (
+        {portfolio.map((a) => (
           <DockIcon
             key={a.id}
             app={a}
@@ -54,7 +57,23 @@ const DesktopDock = () => {
             onActivate={() => {
               const w = state.windows[a.id];
               if (!w) return open(a.id);
-              if (w.minimized) return open(a.id); // restore
+              if (w.minimized) return open(a.id);
+              if (state.focus === a.id) return minimize(a.id);
+              focus(a.id);
+            }}
+          />
+        ))}
+        <div className="w-px self-stretch bg-white/15 mx-1" />
+        {utilities.map((a) => (
+          <DockIcon
+            key={a.id}
+            app={a}
+            mouseX={mouseX}
+            running={!!state.windows[a.id]}
+            onActivate={() => {
+              const w = state.windows[a.id];
+              if (!w) return open(a.id);
+              if (w.minimized) return open(a.id);
               if (state.focus === a.id) return minimize(a.id);
               focus(a.id);
             }}
@@ -131,7 +150,7 @@ const DockIcon = ({
         {app.label}
       </span>
       {running && (
-        <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-white/90 shadow" />
+        <span className="absolute -bottom-[3px] left-1/2 -translate-x-1/2 w-[5px] h-[5px] rounded-full bg-white shadow-[0_0_3px_rgba(255,255,255,0.9)]" />
       )}
     </motion.button>
   );

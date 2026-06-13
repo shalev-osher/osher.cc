@@ -171,11 +171,12 @@ const WeatherWidget = () => {
 
 const Widgets = () => (
   <>
-    <Widget id="clock" defaultPos={{ x: 24, y: 56 }}><ClockWidget /></Widget>
-    <Widget id="calendar" defaultPos={{ x: 24, y: 240 }}><CalendarWidget /></Widget>
-    <Widget id="weather" defaultPos={{ x: 24, y: 420 }}><WeatherWidget /></Widget>
-    <Widget id="stats" defaultPos={{ x: 220, y: 56 }}><StatsWidget /></Widget>
-    <Widget id="links" defaultPos={{ x: 220, y: 220 }}><QuickLinksWidget /></Widget>
+    {/* macOS Sonoma-style right-side widget rail */}
+    <Widget id="clock"    defaultPos={{ x: window.innerWidth - 200, y: 56 }}><ClockWidget /></Widget>
+    <Widget id="weather"  defaultPos={{ x: window.innerWidth - 200, y: 240 }}><WeatherWidget /></Widget>
+    <Widget id="calendar" defaultPos={{ x: window.innerWidth - 200, y: 430 }}><CalendarWidget /></Widget>
+    <Widget id="stats"    defaultPos={{ x: window.innerWidth - 400, y: 56 }}><StatsWidget /></Widget>
+    <Widget id="links"    defaultPos={{ x: window.innerWidth - 400, y: 220 }}><QuickLinksWidget /></Widget>
   </>
 );
 
