@@ -100,7 +100,7 @@ const experiencesData = {
 };
 
 const Experience = () => {
-  const [expandedIndex, setExpandedIndex] = useState<number>(0);
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const { t, lang } = useLanguage();
   const experiences = experiencesData[lang];
 
