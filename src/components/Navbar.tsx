@@ -1,11 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
-import { Menu, X, Download, Command } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
-import ThemeToggle from "./ThemeToggle";
 import MagneticButton from "./MagneticButton";
 import useActiveSection from "@/hooks/useActiveSection";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { trackCvDownload } from "@/lib/trackCvDownload";
 
 const navButtonHover = {
   scale: 1.07,
@@ -16,7 +14,7 @@ const navButtonTap = { scale: 0.95 };
 
 const Navbar = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const { lang, setLang, t } = useLanguage();
+  const { lang, t } = useLanguage();
 
   const sectionIds = useMemo(() => ["about", "skills", "experience", "education", "contact"], []);
   const activeSection = useActiveSection(sectionIds);
@@ -34,8 +32,6 @@ const Navbar = () => {
     { href: "#contact", label: t("nav.contact"), id: "contact" },
   ];
 
-  const toggleLang = () => setLang(lang === "en" ? "he" : "en");
-
   return (
     <>
       <nav
@@ -48,101 +44,32 @@ const Navbar = () => {
             <a href="#" className="font-display text-xl sm:text-2xl font-bold text-gradient" aria-label="Shalev Osher - Home">
               {lang === "he" ? "שליו אושר" : "Shalev Osher"}
             </a>
-            <div className="hidden md:flex items-center gap-2">
-              {navLinks.map((link) => (
-                <MagneticButton key={link.href} strength={0.25} radius={40}>
-                  <motion.a
-                    href={link.href}
-                    whileHover={navButtonHover}
-                    whileTap={navButtonTap}
-                    className={`text-sm font-bold font-display px-3 py-1.5 rounded-lg border transition-colors duration-300 ${
-                      activeSection === link.id
-                        ? "bg-primary/25 text-primary border-primary/40 shadow-sm shadow-primary/10"
-                        : "bg-primary/10 text-foreground/80 border-border/60 hover:bg-primary/20 hover:text-primary hover:border-primary/30"
-                    }`}
-                    aria-current={activeSection === link.id ? "true" : undefined}
-                  >
-                    {link.label}
-                  </motion.a>
-                </MagneticButton>
-              ))}
-              <MagneticButton strength={0.25} radius={40}>
-                <motion.a
-                  href="/cv/shalev-osher-cv.pdf"
-                  download
-                  onClick={() => trackCvDownload(lang)}
-                  whileHover={navButtonHover}
-                  whileTap={navButtonTap}
-                  className="text-sm font-bold font-display px-3 py-1.5 rounded-lg border border-border/60 bg-primary/10 text-foreground/80 hover:bg-primary/20 hover:text-primary hover:border-primary/30 transition-colors duration-300"
-                  aria-label="Download CV"
-                >
-                  CV
-                </motion.a>
-              </MagneticButton>
+            <div className="flex items-center gap-2">
               <MagneticButton strength={0.25} radius={40}>
                 <motion.button
-                  onClick={toggleLang}
+                  onClick={() => setIsMobileOpen(!isMobileOpen)}
                   whileHover={navButtonHover}
                   whileTap={navButtonTap}
-                  className="text-sm font-bold font-display px-3 py-1.5 rounded-lg border border-border/60 bg-primary/10 text-foreground/80 hover:bg-primary/20 hover:text-primary hover:border-primary/30 transition-colors duration-300"
-                  aria-label={`Switch to ${lang === "en" ? "Hebrew" : "English"}`}
+                  className="w-10 h-10 rounded-lg border border-border/60 bg-primary/10 flex items-center justify-center text-foreground/80 hover:bg-primary/20 hover:text-primary hover:border-primary/30 transition-colors"
+                  aria-label={isMobileOpen ? "Close menu" : "Open menu"}
+                  aria-expanded={isMobileOpen}
                 >
-                  {lang === "en" ? "HE" : "EN"}
+                  {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
                 </motion.button>
               </MagneticButton>
-              <ThemeToggle />
-              <MagneticButton strength={0.25} radius={40}>
-                <motion.button
-                  onClick={() => window.dispatchEvent(new CustomEvent("open-command-palette"))}
-                  whileHover={navButtonHover}
-                  whileTap={navButtonTap}
-                  className="hidden lg:flex items-center gap-1.5 text-xs font-bold font-display px-2.5 py-1.5 rounded-lg border border-border/60 bg-primary/5 text-muted-foreground hover:bg-primary/15 hover:text-primary hover:border-primary/30 transition-colors duration-300"
-                  aria-label="Open command palette (Ctrl+K)"
-                >
-                  <Command size={12} />
-                  <kbd className="font-mono text-[10px]">K</kbd>
-                </motion.button>
-              </MagneticButton>
-            </div>
-            <div className="flex items-center gap-2 md:hidden">
-              <button
-                onClick={toggleLang}
-                className="w-9 h-9 rounded-lg border border-border/50 bg-primary/5 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors text-xs font-bold"
-                aria-label={`Switch to ${lang === "en" ? "Hebrew" : "English"}`}
-              >
-                {lang === "en" ? "HE" : "EN"}
-              </button>
-              <a
-                href="/cv/shalev-osher-cv.pdf"
-                download
-                onClick={() => trackCvDownload(lang)}
-                className="w-9 h-9 rounded-lg border border-border/50 bg-primary/5 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
-                aria-label="Download CV"
-              >
-                <Download size={16} />
-              </a>
-              <ThemeToggle />
-              <button
-                onClick={() => setIsMobileOpen(!isMobileOpen)}
-                className="w-9 h-9 rounded-lg border border-border/50 bg-primary/5 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
-                aria-label={isMobileOpen ? "Close menu" : "Open menu"}
-                aria-expanded={isMobileOpen}
-              >
-                {isMobileOpen ? <X size={18} /> : <Menu size={18} />}
-              </button>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Mobile menu overlay */}
+      {/* Menu overlay */}
       <div
-        className={`fixed inset-0 z-40 bg-background/98 backdrop-blur-xl flex flex-col items-center justify-center gap-6 transition-all duration-300 md:hidden ${
+        className={`fixed inset-0 z-40 bg-background/98 backdrop-blur-xl flex flex-col items-center justify-center gap-6 transition-all duration-300 ${
           isMobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         role="dialog"
         aria-modal="true"
-        aria-label="Mobile navigation"
+        aria-label="Navigation menu"
       >
         {navLinks.map((link, i) => (
           <a
