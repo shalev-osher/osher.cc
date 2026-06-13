@@ -135,14 +135,10 @@ const Contact = () => {
           <AnimatedSection delay={0.1} animation="slideLeft">
             <div className="space-y-8">
               <div className="space-y-4" role="list" aria-label="Contact information">
-                {contactInfo.map((item, i) => (
-                  <motion.div
+                {contactInfo.map((item) => (
+                  <div
                     key={item.label}
                     className="flex items-center gap-4 p-4 card-premium"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 + i * 0.1 }}
                     role="listitem"
                   >
                     <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0" aria-hidden="true">
@@ -158,7 +154,7 @@ const Contact = () => {
                         <p className="font-medium">{item.value}</p>
                       )}
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
               <div className="p-6 card-premium">
