@@ -1,9 +1,10 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { GraduationCap, Award, Calendar, ExternalLink, Clock, Languages, X, Download, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTypewriter } from "@/hooks/useTypewriter";
@@ -30,7 +31,11 @@ const Education = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { t, lang } = useLanguage();
   const isRtl = lang === "he";
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start", containScroll: false, skipSnaps: false, direction: isRtl ? "rtl" : "ltr" });
+  const autoplay = useRef(Autoplay({ delay: 3500, stopOnInteraction: false, stopOnMouseEnter: true }));
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, align: "start", containScroll: false, skipSnaps: false, direction: isRtl ? "rtl" : "ltr" },
+    [autoplay.current]
+  );
 
   const titleTypewriter = useTypewriter({ text: t("edu.title"), speed: 80, loop: true, pauseDuration: 5000 });
   const subtitleTypewriter = useTypewriter({ text: t("edu.subtitle"), speed: 25, delay: 1000, loop: true, pauseDuration: 5000 });
