@@ -93,13 +93,6 @@ const Education = () => {
           </div>
 
           <div className="relative max-w-6xl mx-auto px-14 md:px-0">
-            <button onClick={isRtl ? scrollNext : scrollPrev} className="absolute start-0 md:-start-16 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center bg-card border border-border hover:border-primary/50 hover:shadow-[var(--shadow-glow)] transition-all duration-300 group shadow-lg" aria-label="Previous certificate">
-              <ChevronLeft className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
-            </button>
-            <button onClick={isRtl ? scrollPrev : scrollNext} className="absolute end-0 md:-end-16 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center bg-card border border-border hover:border-primary/50 hover:shadow-[var(--shadow-glow)] transition-all duration-300 group shadow-lg" aria-label="Next certificate">
-              <ChevronRight className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
-            </button>
-
             <div className="relative">
               <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-secondary/80 to-transparent z-10 pointer-events-none rounded-l-2xl" />
               <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-secondary/80 to-transparent z-10 pointer-events-none rounded-r-2xl" />
