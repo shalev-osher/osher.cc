@@ -117,7 +117,7 @@ const RepoCard = ({
         <img
           src={`https://opengraph.githubassets.com/1/${repo.owner.login}/${repo.name}`}
           alt={`${repo.name} preview`}
-          className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+          className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
           loading="lazy"
           onError={(e) => {
             (e.target as HTMLImageElement).style.display = "none";
