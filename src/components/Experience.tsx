@@ -133,11 +133,12 @@ const Experience = () => {
               {experiences.map((exp, index) => {
                 const isExpanded = expandedIndex === index;
                 const isEven = index % 2 === 0;
+                const showYear = index === 0 || experiences[index - 1].year !== exp.year;
 
                 return (
                   <AnimatedSection key={`${exp.company}-${exp.role}`} delay={index * 0.1} animation={isEven ? "slideLeft" : "slideRight"}>
                     <div className={`relative flex items-start gap-8 md:gap-0 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`} role="listitem">
-                      <div className="md:hidden flex-shrink-0 relative z-10">
+                      <div className="md:hidden flex-shrink-0 relative z-10" style={{ visibility: showYear ? 'visible' : 'hidden' }}>
                         <button
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
                           className={`px-5 h-11 rounded-md inline-flex items-center justify-center text-sm font-semibold font-display border-2 border-primary transition-colors duration-200 ${
@@ -209,7 +210,7 @@ const Experience = () => {
                         </motion.div>
                       </div>
 
-                      <div className="hidden md:flex absolute start-1/2 [transform:translateX(-50%)] rtl:[transform:translateX(50%)] z-10">
+                      <div className="hidden md:flex absolute start-1/2 [transform:translateX(-50%)] rtl:[transform:translateX(50%)] z-10" style={{ visibility: showYear ? 'visible' : 'hidden' }}>
                         <button
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
                           className={`px-5 h-11 rounded-md inline-flex items-center justify-center text-sm font-semibold font-display border-2 border-primary transition-colors duration-200 ${
