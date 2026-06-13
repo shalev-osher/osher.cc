@@ -1,60 +1,21 @@
-import { useRef, useCallback } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
 import ScrollRevealText from "@/components/ScrollRevealText";
 import profilePhoto from "@/assets/profile-photo.jpeg";
 import { useTypewriter } from "@/hooks/useTypewriter";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useCountUp } from "@/hooks/useCountUp";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const ProfileTilt = () => {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useSpring(useTransform(y, [-150, 150], [12, -12]), { stiffness: 200, damping: 25 });
-  const rotateY = useSpring(useTransform(x, [-150, 150], [-12, 12]), { stiffness: 200, damping: 25 });
-  const glowX = useTransform(x, [-150, 150], [0, 100]);
-  const glowY = useTransform(y, [-150, 150], [0, 100]);
-
-  const handleMouse = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    x.set(e.clientX - rect.left - rect.width / 2);
-    y.set(e.clientY - rect.top - rect.height / 2);
-  }, [x, y]);
-
-  const handleLeave = useCallback(() => { x.set(0); y.set(0); }, [x, y]);
-
-  return (
-    <div className="relative">
-      <motion.div
-        className="aspect-square rounded-2xl overflow-hidden relative cursor-pointer"
-        style={{ rotateX, rotateY, transformPerspective: 800, transformStyle: "preserve-3d" }}
-        onMouseMove={handleMouse}
-        onMouseLeave={handleLeave}
-      >
-        <img
-          src={profilePhoto}
-          alt="Shalev Osher - System Administrator and DevOps Engineer"
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent" />
-        <motion.div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: useTransform(
-              [glowX, glowY],
-              ([gx, gy]) => `radial-gradient(circle at ${gx}% ${gy}%, hsl(var(--primary) / 0.15) 0%, transparent 60%)`
-            ),
-          }}
-        />
-      </motion.div>
-      <div className="absolute -bottom-6 -start-6 w-48 h-48 border border-primary/20 rounded-2xl -z-10" aria-hidden="true" />
-      <div className="absolute -top-4 -end-4 w-32 h-32 border border-primary/10 rounded-2xl -z-10" aria-hidden="true" />
-      <div className="absolute -bottom-3 -end-3 w-24 h-24 rounded-full -z-10 animate-pulse-glow" style={{ background: 'hsl(var(--primary) / 0.05)' }} aria-hidden="true" />
-    </div>
-  );
-};
+const ProfileTilt = () => (
+  <div className="aspect-square rounded-2xl overflow-hidden">
+    <img
+      src={profilePhoto}
+      alt="Shalev Osher - System Administrator and DevOps Engineer"
+      className="w-full h-full object-cover"
+      loading="lazy"
+    />
+  </div>
+);
 
 const About = () => {
   const { t } = useLanguage();
@@ -125,36 +86,22 @@ const About = () => {
               
               <div className="grid grid-cols-3 gap-4 pt-8" role="list" aria-label="Key statistics">
                 {stats.map((stat, i) => (
-                  <motion.div
+                  <div
                     key={i}
                     className="text-center p-5 card-premium relative overflow-hidden"
-                    whileHover={{ y: -6, scale: 1.03 }}
-                    initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.4 + i * 0.15, duration: 0.6, type: "spring", stiffness: 100 }}
                     role="listitem"
                   >
-                    <motion.div
-                      className="absolute inset-0 rounded-xl"
-                      initial={{ opacity: 0 }}
-                      animate={stat.isComplete ? { opacity: [0, 0.3, 0] } : {}}
-                      transition={{ duration: 0.8, ease: "easeOut" }}
-                      style={{ background: "hsl(var(--primary) / 0.15)" }}
-                    />
-                    <motion.span
+                    <span
                       ref={stat.ref as any}
-                      className="font-display text-3xl font-bold text-gradient-warm relative z-10 inline-block"
-                      animate={stat.isComplete ? { scale: [1, 1.15, 1] } : {}}
-                      transition={{ duration: 0.4, ease: "easeOut" }}
+                      className="font-display text-3xl font-bold text-primary relative z-10 inline-block"
                     >
                       {stat.display}
-                    </motion.span>
+                    </span>
                     <p className="text-muted-foreground text-sm mt-2 relative z-10 min-h-[1.25rem]">
                       {stat.labelTw.displayedText}
                       <span className={`inline-block w-[1.5px] h-[0.9em] bg-muted-foreground ms-0.5 align-middle transition-opacity duration-100 ${stat.labelTw.showCursor ? 'opacity-100' : 'opacity-0'}`} />
                     </p>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             </div>

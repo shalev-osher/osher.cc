@@ -2,10 +2,8 @@ import { Server, Network, Database, Shield, Cloud, Headphones } from "lucide-rea
 import { useTypewriter } from "@/hooks/useTypewriter";
 import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import SkillsHeatmap from "@/components/SkillsHeatmap";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useCallback } from "react";
 
 const SkillCardContent = ({ title, description }: { title: string; description: string }) => {
   const titleTw = useTypewriter({ text: title, speed: 60, loop: true, pauseDuration: 4000 });
@@ -25,54 +23,22 @@ const SkillCardContent = ({ title, description }: { title: string; description: 
   );
 };
 
-const SkillCard3D = ({ skill, index }: { skill: { icon: any; title: string; description: string }; index: number }) => {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const rotateX = useSpring(useTransform(y, [-100, 100], [8, -8]), { stiffness: 300, damping: 30 });
-  const rotateY = useSpring(useTransform(x, [-100, 100], [-8, 8]), { stiffness: 300, damping: 30 });
-  const glowX = useTransform(x, [-100, 100], [0, 100]);
-  const glowY = useTransform(y, [-100, 100], [0, 100]);
-
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    x.set(e.clientX - rect.left - rect.width / 2);
-    y.set(e.clientY - rect.top - rect.height / 2);
-  }, [x, y]);
-
-  const handleMouseLeave = useCallback(() => {
-    x.set(0);
-    y.set(0);
-  }, [x, y]);
-
-  return (
-    <AnimatedSection key={skill.title} delay={index * 0.1} animation="scaleUp">
-      <motion.div
-        className="group p-8 h-full relative overflow-hidden rounded-xl border border-border/30 backdrop-blur-md"
-        style={{ rotateX, rotateY, transformPerspective: 800, transformStyle: "preserve-3d", background: "hsl(var(--card) / 0.4)" }}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        role="listitem"
-      >
-        <motion.div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl"
-          style={{
-            background: useTransform(
-              [glowX, glowY],
-              ([gx, gy]) => `radial-gradient(circle at ${gx}% ${gy}%, hsl(var(--primary) / 0.12) 0%, transparent 60%)`
-            ),
-          }}
-        />
-        <div className="relative z-10">
-          <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-all duration-500 group-hover:shadow-[0_0_30px_hsl(var(--primary)/0.25)]" aria-hidden="true">
-            <skill.icon className="w-7 h-7 text-primary transition-transform duration-500 group-hover:scale-110" />
-          </div>
-          <SkillCardContent title={skill.title} description={skill.description} />
+const SkillCard3D = ({ skill, index }: { skill: { icon: any; title: string; description: string }; index: number }) => (
+  <AnimatedSection key={skill.title} delay={index * 0.1}>
+    <div
+      className="p-8 h-full relative overflow-hidden rounded-xl border border-border/30"
+      style={{ background: "hsl(var(--card) / 0.4)" }}
+      role="listitem"
+    >
+      <div className="relative z-10">
+        <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6" aria-hidden="true">
+          <skill.icon className="w-7 h-7 text-primary" />
         </div>
-      </motion.div>
-    </AnimatedSection>
-  );
-};
+        <SkillCardContent title={skill.title} description={skill.description} />
+      </div>
+    </div>
+  </AnimatedSection>
+);
 
 const Skills = () => {
   const { t } = useLanguage();

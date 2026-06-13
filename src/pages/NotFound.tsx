@@ -1,11 +1,8 @@
 import { useLocation } from "react-router-dom";
 import { ArrowLeft, Compass, Home } from "lucide-react";
-import { motion } from "framer-motion";
 import GradientText from "@/components/GradientText";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ParallaxBackground from "@/components/ParallaxBackground";
-import ScrollProgressBar from "@/components/ScrollProgressBar";
 import SkipToContent from "@/components/SkipToContent";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -17,18 +14,11 @@ const NotFound = () => {
   return (
     <div className="min-h-screen bg-background relative noise-texture">
       <SkipToContent />
-      <ParallaxBackground />
-      <ScrollProgressBar />
       <Navbar />
       <main id="main-content" role="main">
         <section className="relative flex min-h-screen items-center justify-center px-6 py-20">
           <div className="absolute inset-0" style={{ background: "var(--gradient-radial)" }} />
-          <motion.div
-            className="card-premium relative z-10 w-full max-w-3xl p-8 text-center sm:p-12"
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.45, ease: "easeOut" }}
-          >
+          <div className="card-premium relative z-10 w-full max-w-3xl p-8 text-center sm:p-12">
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary glow-effect">
               <Compass className="h-8 w-8" />
             </div>
@@ -58,7 +48,7 @@ const NotFound = () => {
                 {t("notFound.back")}
               </button>
             </div>
-          </motion.div>
+          </div>
         </section>
       </main>
       <Footer />
