@@ -92,17 +92,14 @@ const Education = () => {
             </h3>
           </div>
 
-          <div className="relative max-w-6xl mx-auto px-14 md:px-0">
+          <div className="relative max-w-6xl mx-auto">
             <div className="relative">
-              <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-secondary/80 to-transparent z-10 pointer-events-none rounded-l-2xl" />
-              <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-secondary/80 to-transparent z-10 pointer-events-none rounded-r-2xl" />
-
               <div ref={emblaRef} className="overflow-hidden">
                 <div className="flex">
                   {certificates.map((cert, index) => (
                     <motion.div
                       key={cert.name}
-                      className="flex-[0_0_60%] md:flex-[0_0_28%] min-w-0 px-2 md:px-3"
+                      className="flex-[0_0_100%] sm:flex-[0_0_50%] md:flex-[0_0_33.333%] min-w-0 px-2 md:px-3"
                       initial={{ opacity: 0, y: 40, scale: 0.92 }}
                       whileInView={{ opacity: 1, y: 0, scale: 1 }}
                       viewport={{ once: true, amount: 0.2 }}
