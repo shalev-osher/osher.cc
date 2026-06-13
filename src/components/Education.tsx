@@ -101,8 +101,7 @@ const Education = () => {
                       key={cert.name}
                       className="flex-[0_0_33.333%] min-w-0 px-2 md:px-3 h-auto"
                       initial={{ opacity: 0, y: 40, scale: 0.92 }}
-                      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                      viewport={{ once: true, amount: 0.2 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
                       transition={{
                         delay: index * 0.12,
                         duration: 0.6,
