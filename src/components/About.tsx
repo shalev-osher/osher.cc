@@ -86,36 +86,22 @@ const About = () => {
               
               <div className="grid grid-cols-3 gap-4 pt-8" role="list" aria-label="Key statistics">
                 {stats.map((stat, i) => (
-                  <motion.div
+                  <div
                     key={i}
                     className="text-center p-5 card-premium relative overflow-hidden"
-                    whileHover={{ y: -6, scale: 1.03 }}
-                    initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.4 + i * 0.15, duration: 0.6, type: "spring", stiffness: 100 }}
                     role="listitem"
                   >
-                    <motion.div
-                      className="absolute inset-0 rounded-xl"
-                      initial={{ opacity: 0 }}
-                      animate={stat.isComplete ? { opacity: [0, 0.3, 0] } : {}}
-                      transition={{ duration: 0.8, ease: "easeOut" }}
-                      style={{ background: "hsl(var(--primary) / 0.15)" }}
-                    />
-                    <motion.span
+                    <span
                       ref={stat.ref as any}
-                      className="font-display text-3xl font-bold text-gradient-warm relative z-10 inline-block"
-                      animate={stat.isComplete ? { scale: [1, 1.15, 1] } : {}}
-                      transition={{ duration: 0.4, ease: "easeOut" }}
+                      className="font-display text-3xl font-bold text-primary relative z-10 inline-block"
                     >
                       {stat.display}
-                    </motion.span>
+                    </span>
                     <p className="text-muted-foreground text-sm mt-2 relative z-10 min-h-[1.25rem]">
                       {stat.labelTw.displayedText}
                       <span className={`inline-block w-[1.5px] h-[0.9em] bg-muted-foreground ms-0.5 align-middle transition-opacity duration-100 ${stat.labelTw.showCursor ? 'opacity-100' : 'opacity-0'}`} />
                     </p>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             </div>
