@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useWindows, type AppId } from "./WindowManager";
 import DesktopWindow from "./DesktopWindow";
@@ -6,6 +6,9 @@ import DesktopIcons from "./DesktopIcons";
 import DesktopDock from "./DesktopDock";
 import TerminalApp from "./apps/TerminalApp";
 import FinderApp from "./apps/FinderApp";
+import Launchpad from "./Launchpad";
+import DesktopContextMenu, { applyStoredWallpaper } from "./DesktopContextMenu";
+import { toast } from "sonner";
 
 const Hero = lazy(() => import("@/components/Hero"));
 const About = lazy(() => import("@/components/About"));
@@ -44,6 +47,20 @@ export const APP_META = APPS;
 const Desktop = () => {
   const { state } = useWindows();
 
+  useEffect(() => {
+    applyStoredWallpaper();
+    const shown = sessionStorage.getItem("osher-os-welcomed");
+    if (!shown) {
+      sessionStorage.setItem("osher-os-welcomed", "1");
+      setTimeout(() => {
+        toast.success("Welcome to osher.cc OS", {
+          description: "Right-click the desktop · F4 Launchpad · ⌘K Spotlight",
+          duration: 5000,
+        });
+      }, 600);
+    }
+  }, []);
+
   return (
     <div className="fixed inset-0 overflow-hidden" id="desktop-root">
       {/* Desktop layer — icons */}
@@ -66,6 +83,10 @@ const Desktop = () => {
 
       {/* Dock */}
       <DesktopDock />
+
+      {/* Overlays */}
+      <Launchpad />
+      <DesktopContextMenu />
     </div>
   );
 };

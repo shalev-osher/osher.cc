@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useReducer, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, type ReactNode } from "react";
 
 export type AppId =
   | "home" | "about" | "skills" | "projects"
@@ -31,7 +31,25 @@ type Action =
   | { type: "move"; id: AppId; x: number; y: number }
   | { type: "resize"; id: AppId; w: number; h: number };
 
-const initial: Store = { windows: {}, order: [], focus: null, zTop: 10 };
+const STORAGE_KEY = "osher-os-windows-v1";
+
+const empty: Store = { windows: {}, order: [], focus: null, zTop: 10 };
+
+const loadInitial = (): Store => {
+  if (typeof window === "undefined") return empty;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return empty;
+    const parsed = JSON.parse(raw) as Store;
+    // Clamp to viewport so a stale position can't park a window off-screen
+    const W = window.innerWidth, H = window.innerHeight;
+    Object.values(parsed.windows || {}).forEach((w) => {
+      w.x = Math.min(Math.max(0, w.x), Math.max(0, W - 200));
+      w.y = Math.min(Math.max(28, w.y), Math.max(28, H - 120));
+    });
+    return { ...empty, ...parsed };
+  } catch { return empty; }
+};
 
 function reducer(state: Store, a: Action): Store {
   switch (a.type) {
@@ -114,7 +132,28 @@ interface Ctx {
 const WindowCtx = createContext<Ctx | null>(null);
 
 export const WindowManagerProvider = ({ children }: { children: ReactNode }) => {
-  const [state, dispatch] = useReducer(reducer, initial);
+  const [state, dispatch] = useReducer(reducer, empty, loadInitial);
+
+  // Persist
+  useEffect(() => {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
+  }, [state]);
+
+  // Notify menu bar / others about focus changes
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("desktop-focus-change", { detail: state.focus }));
+  }, [state.focus]);
+
+  // External callers (CommandPalette, etc.) can open apps via an event
+  useEffect(() => {
+    const onOpen = (e: Event) => {
+      const id = (e as CustomEvent).detail as AppId | undefined;
+      if (!id) return;
+      dispatch({ type: "open", id, defaults: { w: 920, h: 620 } });
+    };
+    window.addEventListener("open-app", onOpen);
+    return () => window.removeEventListener("open-app", onOpen);
+  }, []);
 
   const open = useCallback((id: AppId, d?: { w?: number; h?: number }) => {
     dispatch({ type: "open", id, defaults: { w: d?.w ?? 920, h: d?.h ?? 620 } });

@@ -75,6 +75,7 @@ const DesktopWindow = ({ id, title, app, children, dark }: Props) => {
         left: w.x, top: w.y, width: w.w, height: w.h,
         zIndex: w.z,
       }}
+      data-window
       className={cn(
         "rounded-xl overflow-hidden border shadow-2xl backdrop-blur-2xl flex flex-col",
         dark

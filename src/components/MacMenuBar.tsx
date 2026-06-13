@@ -6,10 +6,18 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const MacMenuBar = () => {
   const { lang, t } = useLanguage();
   const [now, setNow] = useState<Date>(new Date());
+  const [focusedApp, setFocusedApp] = useState<string | null>(null);
 
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000 * 15);
     return () => clearInterval(id);
+  }, []);
+
+  // On desktop OS, the active "app name" comes from the focused window
+  useEffect(() => {
+    const onFocus = (e: Event) => setFocusedApp(((e as CustomEvent).detail as string) ?? null);
+    window.addEventListener("desktop-focus-change", onFocus);
+    return () => window.removeEventListener("desktop-focus-change", onFocus);
   }, []);
 
   const locale = lang === "he" ? "he-IL" : "en-US";
@@ -49,7 +57,16 @@ const MacMenuBar = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
 
-  const activeLabel = sections.find((s) => s.id === activeId)?.label ?? sections[0].label;
+  const APP_LABELS: Record<string, string> = {
+    finder: "Finder", terminal: "Terminal", home: lang === "he" ? "בית" : "Home",
+    about: t("nav.about"), skills: t("nav.skills"),
+    projects: lang === "he" ? "פרויקטים" : "Projects",
+    experience: t("nav.experience"), education: t("nav.certifications"),
+    contact: t("nav.contact"),
+  };
+  const activeLabel = focusedApp
+    ? APP_LABELS[focusedApp] ?? sections[0].label
+    : sections.find((s) => s.id === activeId)?.label ?? sections[0].label;
 
   const goTo = (id: string) => {
     if (id === "home") {
@@ -61,6 +78,7 @@ const MacMenuBar = () => {
 
   return (
     <div
+      data-menu-bar
       className="fixed top-0 inset-x-0 z-[210] h-7 flex items-center px-3 text-[12px]
                  bg-transparent text-white/90 select-none
                  [text-shadow:0_1px_2px_rgba(0,0,0,0.6)]"

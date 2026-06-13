@@ -57,9 +57,9 @@ const Index = () => {
       <WindowManagerProvider>
         <div className="fixed inset-0 overflow-hidden bg-background">
           <SkipToContent />
-          {/* Wallpaper */}
+          {/* Wallpaper — customizable via DesktopContextMenu */}
           <div className="absolute inset-0 -z-10" style={{
-            background: "radial-gradient(120% 100% at 30% 10%, #2a1f0a 0%, #14100a 45%, #050403 80%)",
+            background: "var(--os-wallpaper, radial-gradient(120% 100% at 30% 10%, #2a1f0a 0%, #14100a 45%, #050403 80%))",
           }} />
           <div className="absolute inset-0 -z-10 mix-blend-screen opacity-60" style={{
             background:
