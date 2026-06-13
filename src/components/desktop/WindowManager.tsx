@@ -4,7 +4,7 @@ export type AppId =
   | "home" | "about" | "skills" | "projects"
   | "experience" | "education" | "contact"
   | "finder" | "terminal" | "calculator" | "notes" | "settings"
-  | "homelab";
+  | "homelab" | "safari";
 
 export interface WindowState {
   id: AppId;

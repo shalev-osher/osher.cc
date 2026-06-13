@@ -2,7 +2,6 @@ import { lazy, Suspense, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useWindows, type AppId } from "./WindowManager";
 import DesktopWindow from "./DesktopWindow";
-import DesktopIcons from "./DesktopIcons";
 import DesktopDock from "./DesktopDock";
 import TerminalApp from "./apps/TerminalApp";
 import FinderApp from "./apps/FinderApp";
@@ -10,6 +9,7 @@ import CalculatorApp from "./apps/CalculatorApp";
 import NotesApp from "./apps/NotesApp";
 import SettingsApp from "./apps/SettingsApp";
 import HomelabApp from "./apps/HomelabApp";
+import SafariApp from "./apps/SafariApp";
 import Launchpad from "./Launchpad";
 import DesktopContextMenu, { applyStoredWallpaper } from "./DesktopContextMenu";
 import MissionControlDesktop from "./MissionControlDesktop";
@@ -52,12 +52,13 @@ const APPS: Record<AppId, AppDef> = {
   finder:     { id: "finder",     title: "Finder — Portfolio", app: "Finder",  defaults: { w: 760, h: 480 }, render: () => <FinderApp /> },
   homelab:    { id: "homelab",    title: "Homelab",          app: "Homelab",    defaults: { w: 1040, h: 700 }, dark: true, render: () => <HomelabApp /> },
   terminal:   { id: "terminal",   title: "shalev — zsh",    app: "Terminal",   defaults: { w: 720, h: 440 }, dark: true, render: () => <TerminalApp /> },
-  calculator: { id: "calculator", title: "Calculator",       app: "Calculator", defaults: { w: 320, h: 460 }, dark: true, render: () => <CalculatorApp /> },
+  calculator: { id: "calculator", title: "Calculator",       app: "Calculator", defaults: { w: 252, h: 388 }, dark: true, render: () => <CalculatorApp /> },
   notes:      { id: "notes",      title: "Notes",            app: "Notes",      defaults: { w: 820, h: 540 }, dark: true, render: () => <NotesApp /> },
   settings:   { id: "settings",   title: "System Settings",  app: "Settings",   defaults: { w: 720, h: 600 }, dark: true, render: () => <SettingsApp /> },
+  safari:     { id: "safari",     title: "Safari",           app: "Safari",     defaults: { w: 1080, h: 700 }, render: () => <SafariApp /> },
 };
 
-export const APP_ORDER: AppId[] = ["finder", "home", "about", "skills", "projects", "homelab", "experience", "education", "contact", "notes", "calculator", "terminal", "settings"];
+export const APP_ORDER: AppId[] = ["finder", "safari", "home", "about", "skills", "projects", "homelab", "experience", "education", "contact", "notes", "calculator", "terminal", "settings"];
 export const APP_META = APPS;
 
 const Desktop = () => {
@@ -96,11 +97,8 @@ const Desktop = () => {
 
   return (
     <div className="fixed inset-0 overflow-hidden" id="desktop-root">
-      {/* Widgets layer (behind icons) */}
+      {/* Widgets layer */}
       <Widgets />
-
-      {/* Desktop layer — icons */}
-      <DesktopIcons />
 
       {/* Stage Manager strip */}
       <StageManager />
