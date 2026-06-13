@@ -10,7 +10,6 @@ import GradientText from "@/components/GradientText";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
-import ConstellationBackground from "@/components/ConstellationBackground";
 import { celebrate, sounds } from "@/lib/celebrate";
 
 interface FieldErrors {
@@ -117,7 +116,6 @@ const Contact = () => {
   return (
     <section id="contact" className="py-24 relative section-glow overflow-hidden" aria-labelledby="contact-heading">
       <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
-      <ConstellationBackground starCount={60} linkDistance={120} mouseInfluence={160} />
 
       <div className="container mx-auto px-6 relative z-10">
         <AnimatedSection animation="blur">

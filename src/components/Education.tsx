@@ -201,13 +201,13 @@ const Education = () => {
       </div>
 
       <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
-        <DialogContent className="max-w-5xl w-[95vw] p-0 bg-transparent border-none shadow-none [&>button]:hidden">
+        <DialogContent className="max-w-2xl w-[90vw] sm:w-auto p-0 bg-transparent border-none shadow-none [&>button]:hidden">
           <div className="relative">
             <button onClick={() => setSelectedImage(null)} className="absolute -top-12 right-0 z-10 p-2 rounded-full bg-card/80 backdrop-blur-md border border-border/50 hover:border-primary/50 transition-all">
               <X className="w-5 h-5 text-foreground" />
             </button>
             {selectedImage && (
-              <motion.img initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} src={selectedImage} alt="Certificate" className="w-full h-auto rounded-2xl shadow-2xl" />
+              <motion.img initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} src={selectedImage} alt="Certificate" className="w-full h-auto max-h-[80vh] object-contain rounded-2xl shadow-2xl" />
             )}
           </div>
         </DialogContent>
