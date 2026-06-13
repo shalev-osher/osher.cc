@@ -38,8 +38,10 @@ const Launchpad = () => {
     { id: "experience", label: lang === "he" ? "ניסיון" : "Experience",   icon: "experience" },
     { id: "education",  label: lang === "he" ? "תעודות" : "Certifications", icon: "education" },
     { id: "contact",    label: "Mail",                                     icon: "mail" },
+    { id: "notes",      label: lang === "he" ? "פתקים" : "Notes",           icon: "messages" },
     { id: "calculator", label: lang === "he" ? "מחשבון" : "Calculator",     icon: "settings" },
     { id: "terminal",   label: "Terminal",                                 icon: "settings" },
+    { id: "settings",   label: lang === "he" ? "הגדרות" : "Settings",       icon: "settings" },
   ];
 
   const filtered = useMemo(

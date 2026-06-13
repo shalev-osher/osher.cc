@@ -7,6 +7,8 @@ import DesktopDock from "./DesktopDock";
 import TerminalApp from "./apps/TerminalApp";
 import FinderApp from "./apps/FinderApp";
 import CalculatorApp from "./apps/CalculatorApp";
+import NotesApp from "./apps/NotesApp";
+import SettingsApp from "./apps/SettingsApp";
 import Launchpad from "./Launchpad";
 import DesktopContextMenu, { applyStoredWallpaper } from "./DesktopContextMenu";
 import MissionControlDesktop from "./MissionControlDesktop";
@@ -15,6 +17,8 @@ import Widgets from "./Widgets";
 import SnapPreview from "./SnapPreview";
 import HotCorners from "./HotCorners";
 import ForceQuitDialog from "./ForceQuitDialog";
+import CmdTabSwitcher from "./CmdTabSwitcher";
+import LockScreen from "./LockScreen";
 import { toast } from "sonner";
 
 const Hero = lazy(() => import("@/components/Hero"));
@@ -47,9 +51,11 @@ const APPS: Record<AppId, AppDef> = {
   finder:     { id: "finder",     title: "Finder — Portfolio", app: "Finder",  defaults: { w: 760, h: 480 }, render: () => <FinderApp /> },
   terminal:   { id: "terminal",   title: "shalev — zsh",    app: "Terminal",   defaults: { w: 720, h: 440 }, dark: true, render: () => <TerminalApp /> },
   calculator: { id: "calculator", title: "Calculator",       app: "Calculator", defaults: { w: 320, h: 460 }, dark: true, render: () => <CalculatorApp /> },
+  notes:      { id: "notes",      title: "Notes",            app: "Notes",      defaults: { w: 820, h: 540 }, dark: true, render: () => <NotesApp /> },
+  settings:   { id: "settings",   title: "System Settings",  app: "Settings",   defaults: { w: 720, h: 600 }, dark: true, render: () => <SettingsApp /> },
 };
 
-export const APP_ORDER: AppId[] = ["finder", "home", "about", "skills", "projects", "experience", "education", "contact", "terminal", "calculator"];
+export const APP_ORDER: AppId[] = ["finder", "home", "about", "skills", "projects", "experience", "education", "contact", "notes", "calculator", "terminal", "settings"];
 export const APP_META = APPS;
 
 const Desktop = () => {
@@ -121,6 +127,8 @@ const Desktop = () => {
       <DesktopContextMenu />
       <ForceQuitDialog />
       <HotCorners />
+      <CmdTabSwitcher />
+      <LockScreen />
     </div>
   );
 };
