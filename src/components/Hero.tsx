@@ -2,9 +2,7 @@ import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import { motion } from "framer-motion";
-import Particles from "./Particles";
 import CursorGlow from "./CursorGlow";
-import ConstellationBackground from "./ConstellationBackground";
 import MagneticButton from "./MagneticButton";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trackCvDownload } from "@/lib/trackCvDownload";
@@ -65,8 +63,6 @@ const Hero = () => {
         />
       </div>
 
-      <ConstellationBackground starCount={3} linkDistance={50} mouseInfluence={80} />
-      <Particles count={1} />
       <CursorGlow />
 
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
