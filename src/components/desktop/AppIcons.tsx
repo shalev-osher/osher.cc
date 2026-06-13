@@ -288,6 +288,50 @@ const SettingsIcon = () => (
 
 /* ───────── Registry ───────── */
 
+const HomelabIcon = () => (
+  <Squircle gradient="linear-gradient(180deg,#3d4a5c 0%,#1c2532 55%,#0a1018 100%)" ringTint="rgba(255,255,255,0.18)">
+    <Glyph>
+      <defs>
+        <linearGradient id="rackMetal" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#cfd5de" />
+          <stop offset="1" stopColor="#7d8694" />
+        </linearGradient>
+      </defs>
+      {/* Rack frame */}
+      <rect x="20" y="14" width="60" height="72" rx="5" fill="url(#rackMetal)" />
+      <rect x="24" y="18" width="52" height="64" rx="3" fill="#0e141d" />
+      {/* 4 server units with LEDs */}
+      {[0,1,2,3].map((i) => {
+        const y = 22 + i * 15;
+        return (
+          <g key={i}>
+            <rect x="26" y={y} width="48" height="12" rx="1.5" fill="#1b2532" stroke="#2a3645" />
+            {/* vents */}
+            <rect x="44" y={y+3} width="14" height="2" rx="1" fill="#0a0f17" />
+            <rect x="44" y={y+7} width="14" height="2" rx="1" fill="#0a0f17" />
+            {/* LEDs */}
+            <circle cx="30" cy={y+6} r="1.2" fill="#3ddc84" />
+            <circle cx="34" cy={y+6} r="1.2" fill="#f5a623" />
+            <circle cx="70" cy={y+6} r="1.2" fill="#3ddc84" opacity={i===2?0.3:1} />
+          </g>
+        );
+      })}
+    </Glyph>
+  </Squircle>
+);
+
+const GithubIcon = () => (
+  <Squircle gradient="linear-gradient(180deg,#2b2b32 0%,#0e0e12 55%,#040406 100%)" ringTint="rgba(255,255,255,0.14)">
+    <Glyph>
+      {/* Octocat-inspired silhouette */}
+      <path
+        fill="#ffffff"
+        d="M50 18c-15 0-27 12-27 27 0 12 7.8 22.2 18.6 25.8 1.4.3 1.9-.6 1.9-1.3 0-.6 0-2.3-.04-4.5-7.6 1.6-9.2-3.6-9.2-3.6-1.2-3.2-3-4-3-4-2.4-1.6.2-1.6.2-1.6 2.7.2 4.1 2.8 4.1 2.8 2.4 4.1 6.3 2.9 7.9 2.2.2-1.8.9-2.9 1.6-3.6-6-.7-12.4-3-12.4-13.5 0-3 1.1-5.4 2.8-7.3-.3-.7-1.2-3.5.3-7.2 0 0 2.3-.7 7.5 2.8 2.2-.6 4.5-.9 6.8-.9s4.6.3 6.8.9c5.2-3.5 7.5-2.8 7.5-2.8 1.5 3.7.6 6.5.3 7.2 1.8 1.9 2.8 4.3 2.8 7.3 0 10.5-6.4 12.8-12.5 13.5 1 .8 1.8 2.4 1.8 4.9 0 3.5-.03 6.4-.03 7.2 0 .7.5 1.6 1.9 1.3C69.2 67.2 77 57 77 45c0-15-12-27-27-27z"
+      />
+    </Glyph>
+  </Squircle>
+);
+
 export const APP_ICONS: Record<AppId, React.FC> = {
   finder: FinderIcon,
   home: HomeIcon,
@@ -301,9 +345,15 @@ export const APP_ICONS: Record<AppId, React.FC> = {
   calculator: CalculatorIcon,
   notes: NotesIcon,
   settings: SettingsIcon,
+  homelab: HomelabIcon,
 };
 
-export const AppIcon = ({ id }: { id: AppId }) => {
-  const Cmp = APP_ICONS[id];
+/** Extra icons that aren't backed by a window (e.g. external shortcuts). */
+export const EXTRA_ICONS: Record<string, React.FC> = {
+  github: GithubIcon,
+};
+
+export const AppIcon = ({ id }: { id: AppId | string }) => {
+  const Cmp = (APP_ICONS as Record<string, React.FC>)[id] || EXTRA_ICONS[id];
   return Cmp ? <Cmp /> : null;
 };

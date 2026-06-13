@@ -9,6 +9,7 @@ import FinderApp from "./apps/FinderApp";
 import CalculatorApp from "./apps/CalculatorApp";
 import NotesApp from "./apps/NotesApp";
 import SettingsApp from "./apps/SettingsApp";
+import HomelabApp from "./apps/HomelabApp";
 import Launchpad from "./Launchpad";
 import DesktopContextMenu, { applyStoredWallpaper } from "./DesktopContextMenu";
 import MissionControlDesktop from "./MissionControlDesktop";
@@ -49,13 +50,14 @@ const APPS: Record<AppId, AppDef> = {
   education:  { id: "education",  title: "Certifications",  app: "Education",  defaults: { w: 920, h: 600 }, render: () => <Education /> },
   contact:    { id: "contact",    title: "Contact",         app: "Mail",       defaults: { w: 760, h: 620 }, render: () => <Contact /> },
   finder:     { id: "finder",     title: "Finder — Portfolio", app: "Finder",  defaults: { w: 760, h: 480 }, render: () => <FinderApp /> },
+  homelab:    { id: "homelab",    title: "Homelab",          app: "Homelab",    defaults: { w: 1040, h: 700 }, dark: true, render: () => <HomelabApp /> },
   terminal:   { id: "terminal",   title: "shalev — zsh",    app: "Terminal",   defaults: { w: 720, h: 440 }, dark: true, render: () => <TerminalApp /> },
   calculator: { id: "calculator", title: "Calculator",       app: "Calculator", defaults: { w: 320, h: 460 }, dark: true, render: () => <CalculatorApp /> },
   notes:      { id: "notes",      title: "Notes",            app: "Notes",      defaults: { w: 820, h: 540 }, dark: true, render: () => <NotesApp /> },
   settings:   { id: "settings",   title: "System Settings",  app: "Settings",   defaults: { w: 720, h: 600 }, dark: true, render: () => <SettingsApp /> },
 };
 
-export const APP_ORDER: AppId[] = ["finder", "home", "about", "skills", "projects", "experience", "education", "contact", "notes", "calculator", "terminal", "settings"];
+export const APP_ORDER: AppId[] = ["finder", "home", "about", "skills", "projects", "homelab", "experience", "education", "contact", "notes", "calculator", "terminal", "settings"];
 export const APP_META = APPS;
 
 const Desktop = () => {
@@ -66,12 +68,13 @@ const Desktop = () => {
     const shown = sessionStorage.getItem("osher-os-welcomed");
     if (!shown) {
       sessionStorage.setItem("osher-os-welcomed", "1");
+      // Auto-open Welcome window on first visit, centered
       setTimeout(() => {
-        toast.success("Welcome to osher.cc OS", {
-          description: "F4 Launchpad · F3 Mission Control · ⌘K Spotlight · ⌘W close · ⌘M minimize",
-          duration: 5000,
-        });
-      }, 600);
+        window.dispatchEvent(new CustomEvent("open-app", { detail: "home" }));
+      }, 500);
+      setTimeout(() => {
+        toast("F4 Launchpad · F3 Mission Control · ⌘K Spotlight", { duration: 4000 });
+      }, 1400);
     }
   }, []);
 
