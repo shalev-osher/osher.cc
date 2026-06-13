@@ -348,7 +348,12 @@ export const APP_ICONS: Record<AppId, React.FC> = {
   homelab: HomelabIcon,
 };
 
-export const AppIcon = ({ id }: { id: AppId }) => {
-  const Cmp = APP_ICONS[id];
+/** Extra icons that aren't backed by a window (e.g. external shortcuts). */
+export const EXTRA_ICONS: Record<string, React.FC> = {
+  github: GithubIcon,
+};
+
+export const AppIcon = ({ id }: { id: AppId | string }) => {
+  const Cmp = (APP_ICONS as Record<string, React.FC>)[id] || EXTRA_ICONS[id];
   return Cmp ? <Cmp /> : null;
 };

@@ -17,6 +17,7 @@ const DesktopDock = () => {
     { id: "about",      label: lang === "he" ? "אודות" : "About" },
     { id: "skills",     label: lang === "he" ? "מיומנויות" : "Skills" },
     { id: "projects",   label: lang === "he" ? "פרויקטים" : "Projects" },
+    { id: "homelab",    label: lang === "he" ? "מעבדה" : "Homelab" },
     { id: "experience", label: lang === "he" ? "ניסיון" : "Experience" },
     { id: "education",  label: lang === "he" ? "תעודות" : "Certifications" },
     { id: "contact",    label: "Mail" },
