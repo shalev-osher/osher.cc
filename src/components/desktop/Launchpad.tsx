@@ -2,9 +2,9 @@ import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWindows, type AppId } from "./WindowManager";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { iosIcons, type IosIconKey } from "@/components/ios/iconSet";
+import { AppIcon } from "./AppIcons";
 
-interface LpApp { id: AppId; label: string; icon: IosIconKey; }
+interface LpApp { id: AppId; label: string; }
 
 const Launchpad = () => {
   const [open, setOpen] = useState(false);
@@ -30,18 +30,18 @@ const Launchpad = () => {
   }, []);
 
   const apps: LpApp[] = [
-    { id: "finder",     label: "Finder",                                  icon: "finder" },
-    { id: "home",       label: lang === "he" ? "בית" : "Home",            icon: "about" },
-    { id: "about",      label: lang === "he" ? "אודות" : "About",         icon: "about" },
-    { id: "skills",     label: lang === "he" ? "מיומנויות" : "Skills",    icon: "skills" },
-    { id: "projects",   label: lang === "he" ? "פרויקטים" : "Projects",   icon: "projects" },
-    { id: "experience", label: lang === "he" ? "ניסיון" : "Experience",   icon: "experience" },
-    { id: "education",  label: lang === "he" ? "תעודות" : "Certifications", icon: "education" },
-    { id: "contact",    label: "Mail",                                     icon: "mail" },
-    { id: "notes",      label: lang === "he" ? "פתקים" : "Notes",           icon: "messages" },
-    { id: "calculator", label: lang === "he" ? "מחשבון" : "Calculator",     icon: "settings" },
-    { id: "terminal",   label: "Terminal",                                 icon: "settings" },
-    { id: "settings",   label: lang === "he" ? "הגדרות" : "Settings",       icon: "settings" },
+    { id: "finder",     label: "Finder" },
+    { id: "home",       label: lang === "he" ? "בית" : "Home" },
+    { id: "about",      label: lang === "he" ? "אודות" : "About" },
+    { id: "skills",     label: lang === "he" ? "מיומנויות" : "Skills" },
+    { id: "projects",   label: lang === "he" ? "פרויקטים" : "Projects" },
+    { id: "experience", label: lang === "he" ? "ניסיון" : "Experience" },
+    { id: "education",  label: lang === "he" ? "תעודות" : "Certifications" },
+    { id: "contact",    label: "Mail" },
+    { id: "notes",      label: lang === "he" ? "פתקים" : "Notes" },
+    { id: "calculator", label: lang === "he" ? "מחשבון" : "Calculator" },
+    { id: "terminal",   label: "Terminal" },
+    { id: "settings",   label: lang === "he" ? "הגדרות" : "Settings" },
   ];
 
   const filtered = useMemo(
@@ -77,7 +77,6 @@ const Launchpad = () => {
             />
             <div className="grid grid-cols-3 sm:grid-cols-5 gap-x-10 gap-y-8 w-full">
               {filtered.map((a, i) => {
-                const Icon = iosIcons[a.icon];
                 return (
                   <motion.button
                     key={a.id}
@@ -90,7 +89,7 @@ const Launchpad = () => {
                     className="group flex flex-col items-center gap-2"
                   >
                     <div className="w-20 h-20 drop-shadow-[0_8px_20px_rgba(0,0,0,0.5)]">
-                      <Icon />
+                      <AppIcon id={a.id} />
                     </div>
                     <span className="text-[12px] font-medium text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]">
                       {a.label}

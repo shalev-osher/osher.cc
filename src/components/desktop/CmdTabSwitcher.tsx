@@ -2,14 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWindows } from "./WindowManager";
 import { APP_META } from "./Desktop";
-import { iosIcons, type IosIconKey } from "@/components/ios/iconSet";
-
-const ICON: Record<string, IosIconKey> = {
-  finder: "finder", home: "about", about: "about", skills: "skills",
-  projects: "projects", experience: "experience", education: "education",
-  contact: "mail", terminal: "settings", calculator: "settings",
-  notes: "messages", settings: "settings",
-};
+import { AppIcon } from "./AppIcons";
 
 /** macOS ⌘Tab application switcher. Hold ⌘, tap Tab to cycle, release ⌘ to commit. */
 const CmdTabSwitcher = () => {
@@ -72,12 +65,11 @@ const CmdTabSwitcher = () => {
                           border border-white/15 bg-[hsl(220_15%_12%/0.85)] backdrop-blur-2xl
                           shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)]">
             {items.map(({ id, meta }, i) => {
-              const Icon = iosIcons[ICON[id] ?? "about"];
               return (
                 <div key={id} className="flex flex-col items-center gap-1">
                   <div className={`w-16 h-16 rounded-2xl p-1 transition-all
                                   ${i === index ? "bg-white/15 ring-2 ring-primary" : "bg-transparent"}`}>
-                    <Icon />
+                    <AppIcon id={id as any} />
                   </div>
                   {i === index && (
                     <span className="text-[11px] text-white font-medium">{meta?.title ?? id}</span>

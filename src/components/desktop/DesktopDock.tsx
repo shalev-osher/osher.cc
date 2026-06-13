@@ -2,28 +2,28 @@ import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { useRef } from "react";
 import { useWindows, type AppId } from "./WindowManager";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { iosIcons, type IosIconKey } from "@/components/ios/iconSet";
+import { AppIcon } from "./AppIcons";
 import { LayoutGrid } from "lucide-react";
 
-interface DockApp { id: AppId; label: string; icon: IosIconKey; }
+interface DockApp { id: AppId; label: string; }
 
 const DesktopDock = () => {
   const { open, state, minimize, focus } = useWindows();
   const { lang } = useLanguage();
 
   const apps: DockApp[] = [
-    { id: "finder",     label: "Finder",                                       icon: "finder" },
-    { id: "home",       label: lang === "he" ? "בית" : "Home",                 icon: "about" },
-    { id: "about",      label: lang === "he" ? "אודות" : "About",              icon: "about" },
-    { id: "skills",     label: lang === "he" ? "מיומנויות" : "Skills",         icon: "skills" },
-    { id: "projects",   label: lang === "he" ? "פרויקטים" : "Projects",        icon: "projects" },
-    { id: "experience", label: lang === "he" ? "ניסיון" : "Experience",        icon: "experience" },
-    { id: "education",  label: lang === "he" ? "תעודות" : "Certifications",    icon: "education" },
-    { id: "contact",    label: "Mail",                                          icon: "mail" },
-    { id: "notes",      label: lang === "he" ? "פתקים" : "Notes",                icon: "messages" },
-    { id: "calculator", label: lang === "he" ? "מחשבון" : "Calculator",          icon: "settings" },
-    { id: "terminal",   label: "Terminal",                                      icon: "settings" },
-    { id: "settings",   label: lang === "he" ? "הגדרות" : "Settings",            icon: "settings" },
+    { id: "finder",     label: "Finder" },
+    { id: "home",       label: lang === "he" ? "בית" : "Home" },
+    { id: "about",      label: lang === "he" ? "אודות" : "About" },
+    { id: "skills",     label: lang === "he" ? "מיומנויות" : "Skills" },
+    { id: "projects",   label: lang === "he" ? "פרויקטים" : "Projects" },
+    { id: "experience", label: lang === "he" ? "ניסיון" : "Experience" },
+    { id: "education",  label: lang === "he" ? "תעודות" : "Certifications" },
+    { id: "contact",    label: "Mail" },
+    { id: "notes",      label: lang === "he" ? "פתקים" : "Notes" },
+    { id: "calculator", label: lang === "he" ? "מחשבון" : "Calculator" },
+    { id: "terminal",   label: "Terminal" },
+    { id: "settings",   label: lang === "he" ? "הגדרות" : "Settings" },
   ];
 
   const mouseX = useMotionValue<number | null>(null);
@@ -109,7 +109,6 @@ const DockIcon = ({
   });
   const sizeRaw = useTransform(distance, [0, 70, 150], [62, 50, 44]);
   const size = useSpring(sizeRaw, { stiffness: 240, damping: 18, mass: 0.4 });
-  const Icon = iosIcons[app.icon];
 
   return (
     <motion.button
@@ -124,7 +123,7 @@ const DockIcon = ({
       className="group relative flex items-end justify-center"
     >
       <motion.div style={{ width: size, height: size }}>
-        <Icon />
+        <AppIcon id={app.id} />
       </motion.div>
       <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/85 text-white text-[11px] px-2 py-0.5 rounded-md whitespace-nowrap font-medium">
         {app.label}
