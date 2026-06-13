@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Download } from "lucide-react";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import MagneticButton from "./MagneticButton";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -88,20 +89,22 @@ const Hero = () => {
       </div>
 
       <Dialog open={cvOpen} onOpenChange={setCvOpen}>
-        <DialogContent className="max-w-2xl w-[90vw] h-[75vh] p-0 overflow-hidden flex flex-col bg-card border-border/50">
-          <DialogHeader className="px-6 py-4 border-b border-border/50 flex-row items-center justify-between space-y-0">
-            <DialogTitle className="font-display text-xl">{t("hero.cvPreview")}</DialogTitle>
-            <Button variant="heroOutline" size="sm" onClick={handleDownload} className="gap-2 me-8">
-              <Download className="w-4 h-4" />
-              {t("hero.downloadPdf")}
-            </Button>
-          </DialogHeader>
+        <DialogContent className="max-w-2xl w-[90vw] h-[75vh] p-0 overflow-hidden flex flex-col bg-card border-border/50 [&>button]:hidden">
+          <VisuallyHidden>
+            <DialogTitle>{t("hero.cvPreview")}</DialogTitle>
+          </VisuallyHidden>
           <div className="flex-1 bg-muted/20">
             <iframe
               src="/cv/shalev-osher-cv.pdf#view=FitH"
               title="CV Preview"
               className="w-full h-full"
             />
+          </div>
+          <div className="px-6 py-3 border-t border-border/50 flex justify-center">
+            <Button variant="heroOutline" size="sm" onClick={handleDownload} className="gap-2">
+              <Download className="w-4 h-4" />
+              {t("hero.downloadPdf")}
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
