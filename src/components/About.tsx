@@ -7,7 +7,6 @@ import { useTypewriter } from "@/hooks/useTypewriter";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useCountUp } from "@/hooks/useCountUp";
 import { useLanguage } from "@/contexts/LanguageContext";
-import MacSectionBar from "@/components/MacSectionBar";
 
 const ProfileTilt = () => {
   const x = useMotionValue(0);
@@ -102,7 +101,6 @@ const About = () => {
       <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
       
       <div className="container mx-auto px-6 relative z-10">
-        <MacSectionBar app="Contacts" title="Shalev Osher — vCard" />
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <AnimatedSection animation="slideLeft">
             <ProfileTilt />
