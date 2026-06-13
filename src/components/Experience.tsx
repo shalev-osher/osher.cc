@@ -5,7 +5,6 @@ import GradientText from "@/components/GradientText";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import MacSectionBar from "@/components/MacSectionBar";
 
 const experiencesData = {
   en: [
@@ -113,7 +112,6 @@ const Experience = () => {
       <div className="absolute inset-0 pointer-events-none" style={{ background: 'var(--gradient-radial)' }} />
 
       <div className="container mx-auto px-6 relative z-10">
-        <MacSectionBar app="Calendar" title="Career Timeline" />
         <AnimatedSection animation="fadeDown">
           <div className="text-center mb-20">
             <h2 id="experience-heading" className="font-display text-4xl md:text-5xl font-bold mb-4">
