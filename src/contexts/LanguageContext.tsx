@@ -109,7 +109,7 @@ const translations: Record<string, Record<Lang, string>> = {
   "contact.errorTitle": { en: "Error", he: "שגיאה" },
   "contact.errorDesc": { en: "Failed to send message. Please try again.", he: "שליחת ההודעה נכשלה. אנא נסה שוב." },
 
-  "footer.rights": { en: "© 2026 All rights reserved", he: "© 2026 כל הזכויות שמורות" },
+  "footer.rights": { en: "© 2026 Shalev Osher. All rights reserved", he: "© 2026 שליו אושר. כל הזכויות שמורות" },
 
   // 404 / Not Found
   "notFound.badge": { en: "404 / Route lost", he: "404 / נתיב אבד" },

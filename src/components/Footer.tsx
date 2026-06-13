@@ -23,12 +23,6 @@ const Footer = () => {
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div>
-            <a href="#" className="font-display text-2xl font-bold text-gradient-warm" aria-label="Shalev Osher - Back to top">
-              {lang === "he" ? "שליו אושר" : "Shalev Osher"}
-            </a>
-          </div>
-
           <nav className="flex items-center gap-3" aria-label="Social media links">
             {socialLinks.map((link, i) => (
               <motion.a
