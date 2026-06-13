@@ -11,6 +11,7 @@ import MacMenuBar from "@/components/MacMenuBar";
 import ControlCenter from "@/components/ControlCenter";
 import NotificationCenter from "@/components/NotificationCenter";
 import { WindowManagerProvider } from "@/components/desktop/WindowManager";
+import IPadOS from "@/components/ipados/IPadOS";
 
 const About = lazy(() => import("@/components/About"));
 const Skills = lazy(() => import("@/components/Skills"));
@@ -19,7 +20,6 @@ const Experience = lazy(() => import("@/components/Experience"));
 const Education = lazy(() => import("@/components/Education"));
 const Contact = lazy(() => import("@/components/Contact"));
 
-const Desktop = lazy(() => import("@/components/desktop/Desktop"));
 const KonamiEasterEgg = lazy(() => import("@/components/KonamiEasterEgg"));
 const SnakeEasterEgg = lazy(() => import("@/components/SnakeEasterEgg"));
 const TelegramChatWidget = lazy(() => import("@/components/TelegramChatWidget"));
@@ -51,29 +51,14 @@ const Index = () => {
     };
   }, []);
 
-  // Desktop OS shell (≥1024px) — windowed apps
+  // Desktop / large screens — iPadOS-style shell
   if (isDesktop) {
     return (
       <WindowManagerProvider>
         <div className="fixed inset-0 overflow-hidden bg-background">
           <SkipToContent />
-          {/* Wallpaper — customizable via DesktopContextMenu */}
-          <div className="absolute inset-0 -z-10" style={{
-            background: "var(--os-wallpaper, radial-gradient(120% 100% at 30% 10%, #2a1f0a 0%, #14100a 45%, #050403 80%))",
-          }} />
-          <div className="absolute inset-0 -z-10 mix-blend-screen opacity-60" style={{
-            background:
-              "radial-gradient(40% 35% at 75% 25%, rgba(212,170,80,0.35) 0%, transparent 60%)," +
-              "radial-gradient(50% 40% at 25% 85%, rgba(184,148,46,0.28) 0%, transparent 65%)",
-          }} />
-          <ParallaxBackground />
-
-          <MacMenuBar />
-          <Suspense fallback={null}><Desktop /></Suspense>
-
+          <IPadOS />
           <CommandPalette />
-          <ControlCenter />
-          <NotificationCenter />
           {deferReady && (
             <Suspense fallback={null}>
               <KonamiEasterEgg />
