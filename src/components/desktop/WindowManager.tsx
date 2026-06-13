@@ -3,7 +3,8 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useReducer,
 export type AppId =
   | "home" | "about" | "skills" | "projects"
   | "experience" | "education" | "contact"
-  | "finder" | "terminal" | "calculator" | "notes" | "settings";
+  | "finder" | "terminal" | "calculator" | "notes" | "settings"
+  | "homelab";
 
 export interface WindowState {
   id: AppId;
