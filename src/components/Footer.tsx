@@ -27,7 +27,6 @@ const Footer = () => {
             <a href="#" className="font-display text-2xl font-bold text-gradient-warm" aria-label="Shalev Osher - Back to top">
               {lang === "he" ? "שליו אושר" : "Shalev Osher"}
             </a>
-            <p className="text-muted-foreground text-sm mt-2">{t("footer.rights")}</p>
           </div>
 
           <nav className="flex items-center gap-3" aria-label="Social media links">
@@ -45,6 +44,8 @@ const Footer = () => {
               </motion.a>
             ))}
           </nav>
+
+          <p className="text-muted-foreground text-sm">{t("footer.rights")}</p>
         </motion.div>
       </div>
     </footer>
