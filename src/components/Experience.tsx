@@ -140,8 +140,10 @@ const Experience = () => {
                       <div className="md:hidden flex-shrink-0 relative z-10">
                         <button
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
-                          className={`w-14 h-14 rounded-full flex items-center justify-center text-xs font-bold font-display transition-all duration-500 ${
-                            isExpanded ? 'bg-primary text-primary-foreground timeline-dot-active' : 'bg-card border-2 border-primary/30 text-primary timeline-dot'
+                          className={`px-4 h-12 rounded-full flex items-center justify-center text-sm font-semibold font-display transition-all duration-300 ${
+                            isExpanded
+                              ? 'bg-primary text-primary-foreground hover:scale-105 hover:shadow-lg glow-effect'
+                              : 'border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground'
                           }`}
                           aria-expanded={isExpanded}
                           aria-label={`${exp.role} at ${exp.company}, ${exp.period}`}
@@ -210,8 +212,10 @@ const Experience = () => {
                       <div className="hidden md:flex absolute start-1/2 [transform:translateX(-50%)] rtl:[transform:translateX(50%)] z-10">
                         <button
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
-                          className={`w-14 h-14 rounded-full flex items-center justify-center text-xs font-bold font-display transition-all duration-500 ${
-                            isExpanded ? 'bg-primary text-primary-foreground timeline-dot-active scale-110' : 'bg-card border-2 border-primary/30 text-primary hover:border-primary hover:scale-105 timeline-dot'
+                          className={`px-5 h-12 rounded-full flex items-center justify-center text-sm font-semibold font-display transition-all duration-300 ${
+                            isExpanded
+                              ? 'bg-primary text-primary-foreground hover:scale-105 hover:shadow-lg glow-effect'
+                              : 'border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground'
                           }`}
                           aria-expanded={isExpanded}
                           aria-label={`${exp.role} at ${exp.company}, ${exp.period}`}
