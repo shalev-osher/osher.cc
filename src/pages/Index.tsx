@@ -11,7 +11,6 @@ import MacMenuBar from "@/components/MacMenuBar";
 import ControlCenter from "@/components/ControlCenter";
 import NotificationCenter from "@/components/NotificationCenter";
 import { WindowManagerProvider } from "@/components/desktop/WindowManager";
-import IPadOS from "@/components/ipados/IPadOS";
 
 const About = lazy(() => import("@/components/About"));
 const Skills = lazy(() => import("@/components/Skills"));
@@ -40,7 +39,7 @@ const useIsDesktop = () => {
 
 const Index = () => {
   const [deferReady, setDeferReady] = useState(false);
-  const isDesktop = useIsDesktop();
+  useIsDesktop();
 
   useEffect(() => {
     const ric = (window as any).requestIdleCallback || ((cb: () => void) => setTimeout(cb, 1200));
@@ -51,32 +50,10 @@ const Index = () => {
     };
   }, []);
 
-  // Desktop / large screens — iPadOS-style shell
-  if (isDesktop) {
-    return (
-      <WindowManagerProvider>
-        <div className="fixed inset-0 overflow-hidden bg-background">
-          <SkipToContent />
-          <IPadOS />
-          <CommandPalette />
-          {deferReady && (
-            <Suspense fallback={null}>
-              <KonamiEasterEgg />
-              <SnakeEasterEgg />
-              <TelegramChatWidget />
-            </Suspense>
-          )}
-        </div>
-      </WindowManagerProvider>
-    );
-  }
-
-  // Mobile / tablet — keep current scrolling site
   return (
     <div className="min-h-screen bg-background relative">
       <SkipToContent />
       <MacMenuBar />
-      <ParallaxBackground />
       <ScrollProgressBar />
       <main id="main-content" role="main">
         <Hero />
