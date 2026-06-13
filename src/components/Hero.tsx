@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { Download, ChevronDown } from "lucide-react";
+import { Download } from "lucide-react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import MagneticButton from "./MagneticButton";
@@ -87,14 +87,6 @@ const Hero = () => {
           </div>
         </div>
       </div>
-
-      <a
-        href="#about"
-        aria-label="Scroll to next section"
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-primary animate-bounce z-10"
-      >
-        <ChevronDown className="w-8 h-8 drop-shadow-[0_0_8px_hsl(var(--primary)/0.6)]" />
-      </a>
 
       <Dialog open={cvOpen} onOpenChange={setCvOpen}>
         <DialogContent className="max-w-2xl w-[90vw] h-[75vh] p-0 overflow-hidden flex flex-col bg-card border-border/50 [&>button]:hidden">
