@@ -38,6 +38,7 @@ const Launchpad = () => {
     { id: "experience", label: lang === "he" ? "ניסיון" : "Experience",   icon: "experience" },
     { id: "education",  label: lang === "he" ? "תעודות" : "Certifications", icon: "education" },
     { id: "contact",    label: "Mail",                                     icon: "mail" },
+    { id: "calculator", label: lang === "he" ? "מחשבון" : "Calculator",     icon: "settings" },
     { id: "terminal",   label: "Terminal",                                 icon: "settings" },
   ];
 

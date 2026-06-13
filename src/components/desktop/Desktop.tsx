@@ -6,11 +6,15 @@ import DesktopIcons from "./DesktopIcons";
 import DesktopDock from "./DesktopDock";
 import TerminalApp from "./apps/TerminalApp";
 import FinderApp from "./apps/FinderApp";
+import CalculatorApp from "./apps/CalculatorApp";
 import Launchpad from "./Launchpad";
 import DesktopContextMenu, { applyStoredWallpaper } from "./DesktopContextMenu";
 import MissionControlDesktop from "./MissionControlDesktop";
 import StageManager from "./StageManager";
 import Widgets from "./Widgets";
+import SnapPreview from "./SnapPreview";
+import HotCorners from "./HotCorners";
+import ForceQuitDialog from "./ForceQuitDialog";
 import { toast } from "sonner";
 
 const Hero = lazy(() => import("@/components/Hero"));
@@ -42,9 +46,10 @@ const APPS: Record<AppId, AppDef> = {
   contact:    { id: "contact",    title: "Contact",         app: "Mail",       defaults: { w: 760, h: 620 }, render: () => <Contact /> },
   finder:     { id: "finder",     title: "Finder — Portfolio", app: "Finder",  defaults: { w: 760, h: 480 }, render: () => <FinderApp /> },
   terminal:   { id: "terminal",   title: "shalev — zsh",    app: "Terminal",   defaults: { w: 720, h: 440 }, dark: true, render: () => <TerminalApp /> },
+  calculator: { id: "calculator", title: "Calculator",       app: "Calculator", defaults: { w: 320, h: 460 }, dark: true, render: () => <CalculatorApp /> },
 };
 
-export const APP_ORDER: AppId[] = ["finder", "home", "about", "skills", "projects", "experience", "education", "contact", "terminal"];
+export const APP_ORDER: AppId[] = ["finder", "home", "about", "skills", "projects", "experience", "education", "contact", "terminal", "calculator"];
 export const APP_META = APPS;
 
 const Desktop = () => {
@@ -110,9 +115,12 @@ const Desktop = () => {
       <DesktopDock />
 
       {/* Overlays */}
+      <SnapPreview />
       <Launchpad />
       <MissionControlDesktop />
       <DesktopContextMenu />
+      <ForceQuitDialog />
+      <HotCorners />
     </div>
   );
 };
