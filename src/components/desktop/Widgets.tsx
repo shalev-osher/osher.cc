@@ -126,17 +126,56 @@ const QuickLinksWidget = () => {
   );
 };
 
-const Widgets = () => (
-  null as unknown as JSX.Element
-);
+const CalendarWidget = () => {
+  const { lang } = useLanguage();
+  const now = new Date();
+  const month = now.toLocaleDateString(lang === "he" ? "he-IL" : "en-US", { month: "long" });
+  const weekday = now.toLocaleDateString(lang === "he" ? "he-IL" : "en-US", { weekday: "long" }).toUpperCase();
+  return (
+    <div className="w-44 rounded-3xl overflow-hidden border border-white/15 bg-white/[0.08] backdrop-blur-2xl
+                    shadow-[0_20px_50px_-20px_rgba(0,0,0,0.55)] text-white">
+      <div className="bg-[#ff453a] text-white text-center py-1 text-[11px] uppercase tracking-wider font-semibold">
+        {weekday}
+      </div>
+      <div className="bg-white text-[#1a1a1f] flex flex-col items-center py-3">
+        <div className="text-[10px] uppercase tracking-wider text-[#ff453a] font-semibold">{month}</div>
+        <div className="text-6xl font-light leading-none tabular-nums mt-1">{now.getDate()}</div>
+      </div>
+    </div>
+  );
+};
 
-const _Calendar = () => null;
+const WeatherWidget = () => {
+  const { lang } = useLanguage();
+  // Mock — looks live, no external API
+  const temp = 24;
+  const cond = lang === "he" ? "בהיר" : "Mostly Clear";
+  return (
+    <div className="w-44 rounded-3xl border border-white/15 backdrop-blur-2xl text-white p-4
+                    shadow-[0_20px_50px_-20px_rgba(0,0,0,0.55)]
+                    bg-gradient-to-br from-[#3a8dde] via-[#1f63b8] to-[#0e3a73]">
+      <div className="text-[11px] uppercase tracking-wider opacity-80">{lang === "he" ? "תל אביב" : "Tel Aviv"}</div>
+      <div className="text-5xl font-light tabular-nums mt-1">{temp}°</div>
+      <div className="text-[12px] opacity-90 mt-0.5">{cond}</div>
+      <div className="flex items-center justify-between mt-2 text-[11px] opacity-90">
+        <span>H:28°</span><span>L:19°</span>
+      </div>
+      {/* Sun arc */}
+      <svg viewBox="0 0 100 30" className="w-full h-7 mt-2 opacity-80">
+        <path d="M5 28 Q 50 -10 95 28" stroke="rgba(255,255,255,0.6)" strokeWidth="1.2" fill="none" strokeDasharray="2 3" />
+        <circle cx="60" cy="12" r="4" fill="#ffd96a" />
+      </svg>
+    </div>
+  );
+};
+
+const Widgets = () => (
   <>
     <Widget id="clock" defaultPos={{ x: 24, y: 56 }}><ClockWidget /></Widget>
     <Widget id="calendar" defaultPos={{ x: 24, y: 240 }}><CalendarWidget /></Widget>
     <Widget id="weather" defaultPos={{ x: 24, y: 420 }}><WeatherWidget /></Widget>
     <Widget id="stats" defaultPos={{ x: 220, y: 56 }}><StatsWidget /></Widget>
-    <Widget id="links" defaultPos={{ x: 220, y: 200 }}><QuickLinksWidget /></Widget>
+    <Widget id="links" defaultPos={{ x: 220, y: 220 }}><QuickLinksWidget /></Widget>
   </>
 );
 
