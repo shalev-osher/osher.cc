@@ -105,47 +105,13 @@ const RepoCard = ({
   t: (k: string) => string;
   onOpen: () => void;
 }) => {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useSpring(useTransform(y, [-100, 100], [10, -10]), { stiffness: 250, damping: 25 });
-  const rotateY = useSpring(useTransform(x, [-100, 100], [-10, 10]), { stiffness: 250, damping: 25 });
-  const glowX = useTransform(x, [-100, 100], [0, 100]);
-  const glowY = useTransform(y, [-100, 100], [0, 100]);
-
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLElement>) => {
-      const rect = e.currentTarget.getBoundingClientRect();
-      x.set(e.clientX - rect.left - rect.width / 2);
-      y.set(e.clientY - rect.top - rect.height / 2);
-    },
-    [x, y]
-  );
-  const handleLeave = useCallback(() => {
-    x.set(0);
-    y.set(0);
-  }, [x, y]);
-
   return (
-    <motion.button
+    <button
       type="button"
       onClick={onOpen}
       className="group card-premium h-full flex flex-col cursor-pointer overflow-hidden relative text-start w-full"
-      style={{ rotateX, rotateY, transformPerspective: 1000, transformStyle: "preserve-3d" }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleLeave}
       aria-label={`View case study for ${repo.name}`}
     >
-      {/* Cursor-following glow overlay */}
-      <motion.div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl z-[1]"
-        style={{
-          background: useTransform(
-            [glowX, glowY],
-            ([gx, gy]) => `radial-gradient(circle at ${gx}% ${gy}%, hsl(var(--primary) / 0.18) 0%, transparent 55%)`
-          ),
-        }}
-      />
-
       {/* GitHub OG preview image */}
       <div className="relative w-full h-32 overflow-hidden bg-secondary/50">
         <img
@@ -194,7 +160,7 @@ const RepoCard = ({
           <GitBranch className="w-3.5 h-3.5 text-muted-foreground" />
         </div>
       </div>
-    </motion.button>
+    </button>
   );
 };
 
