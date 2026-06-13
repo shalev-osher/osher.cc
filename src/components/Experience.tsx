@@ -140,11 +140,7 @@ const Experience = () => {
                       <div className="md:hidden flex-shrink-0 relative z-10">
                         <button
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
-                          className={`px-4 h-12 rounded-full flex items-center justify-center text-sm font-semibold font-display transition-all duration-300 ${
-                            isExpanded
-                              ? 'bg-primary text-primary-foreground hover:scale-105 hover:shadow-lg glow-effect'
-                              : 'border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground'
-                          }`}
+                          className="px-4 h-10 rounded-full flex items-center justify-center text-xs font-medium font-display border border-border bg-card text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors duration-200"
                           aria-expanded={isExpanded}
                           aria-label={`${exp.role} at ${exp.company}, ${exp.period}`}
                         >
@@ -212,11 +208,7 @@ const Experience = () => {
                       <div className="hidden md:flex absolute start-1/2 [transform:translateX(-50%)] rtl:[transform:translateX(50%)] z-10">
                         <button
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
-                          className={`px-5 h-12 rounded-full flex items-center justify-center text-sm font-semibold font-display transition-all duration-300 ${
-                            isExpanded
-                              ? 'bg-primary text-primary-foreground hover:scale-105 hover:shadow-lg glow-effect'
-                              : 'border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground'
-                          }`}
+                          className="px-4 h-10 rounded-full flex items-center justify-center text-xs font-medium font-display border border-border bg-card text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors duration-200"
                           aria-expanded={isExpanded}
                           aria-label={`${exp.role} at ${exp.company}, ${exp.period}`}
                         >
