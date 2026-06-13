@@ -195,17 +195,18 @@ const EducationIcon = () => (
 );
 
 const ContactIcon = () => (
-  <Squircle gradient="linear-gradient(180deg,#79d0ff 0%,#1e8ed8 55%,#0b5fa6 100%)">
+  <Squircle gradient="linear-gradient(180deg,#8fd4ff 0%,#1f8ce6 50%,#0a5aa6 100%)" ringTint="rgba(255,255,255,0.45)">
     <Glyph>
-      {/* Envelope */}
-      <rect x="18" y="30" width="64" height="42" rx="5" fill="#ffffff" />
+      {/* macOS Mail: white envelope with blue postmark V */}
+      <rect x="14" y="28" width="72" height="46" rx="5" fill="#ffffff" />
+      <rect x="14" y="28" width="72" height="46" rx="5" fill="none" stroke="#0a5aa6" strokeOpacity="0.25" />
       <path
-        d="M18 34 L50 56 L82 34"
-        stroke="#0b5fa6" strokeWidth="3" fill="none"
+        d="M16 32 L50 60 L84 32"
+        stroke="#1976d2" strokeWidth="3.2" fill="none"
         strokeLinecap="round" strokeLinejoin="round"
       />
-      <path d="M18 68 L42 50" stroke="#cfe5f7" strokeWidth="2" fill="none" />
-      <path d="M82 68 L58 50" stroke="#cfe5f7" strokeWidth="2" fill="none" />
+      <path d="M16 72 L40 52" stroke="#cfe5f7" strokeWidth="1.5" fill="none" />
+      <path d="M84 72 L60 52" stroke="#cfe5f7" strokeWidth="1.5" fill="none" />
     </Glyph>
   </Squircle>
 );
@@ -251,16 +252,18 @@ const CalculatorIcon = () => (
 );
 
 const NotesIcon = () => (
-  <Squircle gradient="linear-gradient(180deg,#fdfdfd 0%,#e6e6e6 100%)" ringTint="rgba(255,255,255,0.6)">
+  <Squircle gradient="linear-gradient(180deg,#fff6c2 0%,#ffd84d 100%)" ringTint="rgba(255,255,255,0.7)">
     <Glyph>
-      <rect x="16" y="14" width="68" height="72" rx="5" fill="#fff7b3" />
-      <rect x="16" y="14" width="68" height="14" fill="#ffd23a" />
-      <rect x="16" y="28" width="68" height="2" fill="#d4a017" opacity="0.5" />
-      <line x1="24" y1="40" x2="76" y2="40" stroke="#d6b85a" strokeWidth="1.2" />
-      <line x1="24" y1="50" x2="76" y2="50" stroke="#d6b85a" strokeWidth="1.2" />
-      <line x1="24" y1="60" x2="76" y2="60" stroke="#d6b85a" strokeWidth="1.2" />
-      <line x1="24" y1="70" x2="76" y2="70" stroke="#d6b85a" strokeWidth="1.2" />
-      <line x1="24" y1="80" x2="60" y2="80" stroke="#d6b85a" strokeWidth="1.2" />
+      {/* Top spiral binding */}
+      <rect x="10" y="12" width="80" height="14" fill="#e6b400" />
+      {[20,32,44,56,68,80].map((cx) => (
+        <circle key={cx} cx={cx} cy="19" r="2.4" fill="#3a2a00" />
+      ))}
+      {/* Page */}
+      <rect x="10" y="26" width="80" height="62" fill="#fffef0" />
+      {[40,50,60,70,80].map((y, i) => (
+        <line key={y} x1="18" y1={y} x2={i === 4 ? 62 : 82} y2={y} stroke="#e0c060" strokeWidth="1.2" />
+      ))}
     </Glyph>
   </Squircle>
 );
@@ -346,44 +349,39 @@ const GithubIcon = () => (
 );
 
 const SafariIcon = () => (
-  <Squircle gradient="linear-gradient(180deg,#e9eef5 0%,#cfd6e2 60%,#a9b3c2 100%)" ringTint="rgba(255,255,255,0.55)">
+  <Squircle gradient="linear-gradient(180deg,#f4f6fa 0%,#d9dfe8 100%)" ringTint="rgba(255,255,255,0.7)">
     <Glyph>
       <defs>
-        <radialGradient id="safariFace" cx="50%" cy="40%" r="60%">
-          <stop offset="0" stopColor="#5fb6ff" />
-          <stop offset="0.6" stopColor="#1f7ed1" />
-          <stop offset="1" stopColor="#0c4f8a" />
+        <radialGradient id="safariFace" cx="50%" cy="42%" r="62%">
+          <stop offset="0" stopColor="#6fc1ff" />
+          <stop offset="0.55" stopColor="#1e86dc" />
+          <stop offset="1" stopColor="#0a4a8d" />
         </radialGradient>
       </defs>
-      {/* Outer ring with tick marks */}
-      <circle cx="50" cy="50" r="36" fill="#e8edf3" stroke="#8a93a3" strokeWidth="1.2" />
-      <g stroke="#3a4150" strokeWidth="1.2">
+      {/* Outer chrome ring */}
+      <circle cx="50" cy="50" r="40" fill="#eff2f7" />
+      <circle cx="50" cy="50" r="40" fill="none" stroke="#a8b0bd" strokeWidth="0.8" />
+      <g stroke="#3a4150" strokeWidth="0.9">
         {Array.from({ length: 60 }).map((_, i) => {
           const a = (i * 6) * Math.PI / 180;
-          const r1 = i % 5 === 0 ? 30 : 32;
-          const r2 = 35;
+          const r1 = i % 5 === 0 ? 34 : 37;
+          const r2 = 39;
           return (
             <line key={i}
               x1={50 + Math.cos(a) * r1} y1={50 + Math.sin(a) * r1}
               x2={50 + Math.cos(a) * r2} y2={50 + Math.sin(a) * r2}
-              opacity={i % 5 === 0 ? 0.9 : 0.4}
+              opacity={i % 5 === 0 ? 0.85 : 0.35}
             />
           );
         })}
       </g>
-      <g fontFamily="ui-sans-serif, system-ui" fontSize="6" fill="#3a4150" fontWeight="700" textAnchor="middle">
-        <text x="50" y="23">N</text>
-        <text x="78" y="52">E</text>
-        <text x="50" y="83">S</text>
-        <text x="22" y="52">W</text>
-      </g>
       {/* Dial face */}
-      <circle cx="50" cy="50" r="26" fill="url(#safariFace)" />
-      {/* Compass needle */}
-      <g transform="translate(50 50) rotate(35)">
-        <polygon points="0,-22 5,0 0,4 -5,0" fill="#e74c3c" />
-        <polygon points="0,22 5,0 0,-4 -5,0" fill="#ffffff" />
-        <circle r="2.4" fill="#1a1a1f" />
+      <circle cx="50" cy="50" r="32" fill="url(#safariFace)" />
+      {/* Compass needle (Safari classic 35° tilt) */}
+      <g transform="translate(50 50) rotate(40)">
+        <polygon points="0,-26 6,0 0,3 -6,0" fill="#e8443a" />
+        <polygon points="0,26 6,0 0,-3 -6,0" fill="#ffffff" />
+        <circle r="2.6" fill="#0c2a4a" />
       </g>
     </Glyph>
   </Squircle>

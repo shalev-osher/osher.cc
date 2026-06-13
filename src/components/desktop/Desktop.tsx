@@ -69,9 +69,9 @@ const Desktop = () => {
     const shown = sessionStorage.getItem("osher-os-welcomed");
     if (!shown) {
       sessionStorage.setItem("osher-os-welcomed", "1");
-      // Auto-open Welcome window on first visit, centered
+      // Auto-open Safari on first visit (primary app)
       setTimeout(() => {
-        window.dispatchEvent(new CustomEvent("open-app", { detail: "home" }));
+        window.dispatchEvent(new CustomEvent("open-app", { detail: "safari" }));
       }, 500);
       setTimeout(() => {
         toast("F4 Launchpad · F3 Mission Control · ⌘K Spotlight", { duration: 4000 });
