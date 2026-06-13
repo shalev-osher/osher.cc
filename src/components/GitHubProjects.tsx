@@ -6,7 +6,6 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import ProjectCaseStudyModal from "@/components/ProjectCaseStudyModal";
-import MacTrafficLights from "@/components/MacTrafficLights";
 
 interface GitHubRepo {
   id: number;
@@ -149,13 +148,6 @@ const RepoCard = ({
       />
 
       {/* GitHub OG preview image */}
-      <div className="relative flex items-center gap-2 px-3 py-2 border-b border-border/50 bg-background/40">
-        <MacTrafficLights size="sm" />
-        <span className="flex-1 text-center text-[10px] font-mono text-muted-foreground truncate">
-          github.com/{repo.owner.login}/{repo.name}
-        </span>
-        <span className="w-[34px]" />
-      </div>
       <div className="relative w-full h-32 overflow-hidden bg-secondary/50">
         <img
           src={`https://opengraph.githubassets.com/1/${repo.owner.login}/${repo.name}`}
