@@ -39,35 +39,7 @@ const Hero = () => {
   });
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden noise-texture" aria-label="Hero section">
-      <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
-      
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          className="absolute top-1/4 -right-32 w-[500px] h-[500px] rounded-full blur-[100px]"
-          style={{ background: 'hsl(var(--primary) / 0.06)' }}
-          animate={{ y: [-20, 20, -20], x: [-10, 10, -10], scale: [1, 1.1, 1] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 -left-32 w-[400px] h-[400px] rounded-full blur-[100px]"
-          style={{ background: 'hsl(var(--primary) / 0.08)' }}
-          animate={{ y: [20, -20, 20], x: [10, -10, 10], scale: [1.1, 1, 1.1] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[120px]"
-          style={{ background: 'hsl(var(--primary) / 0.04)' }}
-          animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        />
-      </div>
-
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-px h-full opacity-[0.04]" style={{ background: 'linear-gradient(180deg, transparent, hsl(var(--primary)), transparent)' }} />
-        <div className="absolute top-0 right-1/3 w-px h-full opacity-[0.03]" style={{ background: 'linear-gradient(180deg, transparent, hsl(var(--primary)), transparent)' }} />
-      </div>
-
+    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden" aria-label="Hero section">
       <div className="container mx-auto px-6 text-center relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
