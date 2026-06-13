@@ -2,7 +2,6 @@ import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import { motion } from "framer-motion";
-import CursorGlow from "./CursorGlow";
 import MagneticButton from "./MagneticButton";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trackCvDownload } from "@/lib/trackCvDownload";
@@ -63,7 +62,6 @@ const Hero = () => {
         />
       </div>
 
-      <CursorGlow />
 
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-px h-full opacity-[0.04]" style={{ background: 'linear-gradient(180deg, transparent, hsl(var(--primary)), transparent)' }} />
