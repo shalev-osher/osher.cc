@@ -33,7 +33,7 @@ const Education = () => {
   const isRtl = lang === "he";
   const autoplay = useRef(Autoplay({ delay: 3500, stopOnInteraction: false, stopOnMouseEnter: true }));
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, align: "start", containScroll: false, skipSnaps: false, direction: isRtl ? "rtl" : "ltr" },
+    { loop: true, align: "center", skipSnaps: false, direction: isRtl ? "rtl" : "ltr" },
     [autoplay.current]
   );
 
