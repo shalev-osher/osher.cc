@@ -63,7 +63,7 @@ const Hero = () => {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <MagneticButton>
-              <Button variant="hero" size="xl" asChild>
+              <Button variant="heroOutline" size="xl" asChild>
                 <a href="#experience">{t("hero.viewExperience")}</a>
               </Button>
             </MagneticButton>
