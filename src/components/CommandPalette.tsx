@@ -94,7 +94,7 @@ const CommandPalette = () => {
 
   const openChat = useCallback(() => {
     setOpen(false);
-    window.dispatchEvent(new CustomEvent("open-telegram-chat"));
+    window.dispatchEvent(new CustomEvent("open-shalev-assistant"));
   }, []);
 
   return (
