@@ -140,7 +140,11 @@ const Experience = () => {
                       <div className="md:hidden flex-shrink-0 relative z-10">
                         <button
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
-                          className="px-4 h-10 rounded-full flex items-center justify-center text-xs font-medium font-display border border-border bg-card text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors duration-200"
+                          className={`px-5 h-11 rounded-md inline-flex items-center justify-center text-sm font-semibold font-display border-2 border-primary transition-colors duration-200 ${
+                            isExpanded
+                              ? 'bg-primary text-primary-foreground'
+                              : 'text-primary hover:bg-primary hover:text-primary-foreground'
+                          }`}
                           aria-expanded={isExpanded}
                           aria-label={`${exp.role} at ${exp.company}, ${exp.period}`}
                         >
@@ -208,7 +212,11 @@ const Experience = () => {
                       <div className="hidden md:flex absolute start-1/2 [transform:translateX(-50%)] rtl:[transform:translateX(50%)] z-10">
                         <button
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
-                          className="px-4 h-10 rounded-full flex items-center justify-center text-xs font-medium font-display border border-border bg-card text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors duration-200"
+                          className={`px-5 h-11 rounded-md inline-flex items-center justify-center text-sm font-semibold font-display border-2 border-primary transition-colors duration-200 ${
+                            isExpanded
+                              ? 'bg-primary text-primary-foreground'
+                              : 'text-primary hover:bg-primary hover:text-primary-foreground'
+                          }`}
                           aria-expanded={isExpanded}
                           aria-label={`${exp.role} at ${exp.company}, ${exp.period}`}
                         >
