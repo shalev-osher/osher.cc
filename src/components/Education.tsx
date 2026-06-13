@@ -7,7 +7,6 @@ import useEmblaCarousel from "embla-carousel-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTypewriter } from "@/hooks/useTypewriter";
-import MacSectionBar from "@/components/MacSectionBar";
 
 const education = [
   {
@@ -47,7 +46,6 @@ const Education = () => {
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        <MacSectionBar app="Photos" title="Certifications.app" />
         <AnimatedSection animation="scaleUp">
           <div className="text-center mb-20">
             <h2 id="education-heading" className="font-display text-4xl md:text-5xl font-bold mb-4">
