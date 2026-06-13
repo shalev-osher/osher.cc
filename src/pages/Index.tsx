@@ -14,7 +14,7 @@ import KonamiEasterEgg from "@/components/KonamiEasterEgg";
 import SnakeEasterEgg from "@/components/SnakeEasterEgg";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 import SkipToContent from "@/components/SkipToContent";
-import TelegramChatWidget from "@/components/TelegramChatWidget";
+import ShalevAssistant from "@/components/ShalevAssistant";
 import CommandPalette from "@/components/CommandPalette";
 
 const Index = () => {
@@ -29,7 +29,7 @@ const Index = () => {
       <KonamiEasterEgg />
       <SnakeEasterEgg />
       <ScrollProgressBar />
-      <TelegramChatWidget />
+      <ShalevAssistant />
       <CommandPalette />
       <Navbar />
       <main id="main-content" role="main">

@@ -19,8 +19,6 @@ import {
   Linkedin,
   Download,
   ShieldCheck,
-  Sun,
-  Moon,
   Languages,
   Home,
   MessageCircle,
@@ -78,15 +76,6 @@ const CommandPalette = () => {
     a.click();
   }, [lang]);
 
-  const toggleTheme = useCallback(() => {
-    setOpen(false);
-    document.documentElement.classList.toggle("dark");
-    try {
-      const isDark = document.documentElement.classList.contains("dark");
-      localStorage.setItem("theme", isDark ? "dark" : "light");
-    } catch {}
-  }, []);
-
   const switchLang = useCallback(() => {
     setLang(lang === "en" ? "he" : "en");
     setOpen(false);
@@ -94,7 +83,7 @@ const CommandPalette = () => {
 
   const openChat = useCallback(() => {
     setOpen(false);
-    window.dispatchEvent(new CustomEvent("open-telegram-chat"));
+    window.dispatchEvent(new CustomEvent("open-shalev-assistant"));
   }, []);
 
   return (
@@ -147,11 +136,6 @@ const CommandPalette = () => {
           <CommandItem onSelect={openChat}>
             <MessageCircle className="me-2 h-4 w-4" />
             <span>{lang === "he" ? "פתח צ'אט AI" : "Open AI Chat"}</span>
-          </CommandItem>
-          <CommandItem onSelect={toggleTheme}>
-            <Sun className="me-2 h-4 w-4 dark:hidden" />
-            <Moon className="me-2 h-4 w-4 hidden dark:inline-block" />
-            <span>{lang === "he" ? "החלף ערכת נושא" : "Toggle theme"}</span>
           </CommandItem>
           <CommandItem onSelect={switchLang}>
             <Languages className="me-2 h-4 w-4" />

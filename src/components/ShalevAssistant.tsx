@@ -19,7 +19,7 @@ const SESSION_ID = `web-${Math.random().toString(36).slice(2, 10)}`;
 const MAX_MESSAGES_PER_SESSION = 30;
 const MAX_FREE_TEXT_PER_SESSION = 2;
 
-const TelegramChatWidget = () => {
+const ShalevAssistant = () => {
   const { lang } = useLanguage();
   const isHebrew = lang === "he";
   const [isMinimized, setIsMinimized] = useState(false);
@@ -27,8 +27,8 @@ const TelegramChatWidget = () => {
   // External trigger from Command Palette
   useEffect(() => {
     const open = () => setIsMinimized(false);
-    window.addEventListener("open-telegram-chat", open);
-    return () => window.removeEventListener("open-telegram-chat", open);
+    window.addEventListener("open-shalev-assistant", open);
+    return () => window.removeEventListener("open-shalev-assistant", open);
   }, []);
 
   const [messages, setMessages] = useState<Message[]>(() => {
@@ -302,7 +302,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
         content: m.text || "",
       }));
 
-      const { data, error } = await supabase.functions.invoke("telegram-send", {
+      const { data, error } = await supabase.functions.invoke("shalev-assistant", {
         body: { text: trimmed, sessionId: SESSION_ID, history, lang },
       });
       if (error) throw error;
@@ -670,4 +670,4 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
   );
 };
 
-export default TelegramChatWidget;
+export default ShalevAssistant;
