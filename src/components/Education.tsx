@@ -125,10 +125,10 @@ const Education = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="p-3 md:p-4 relative">
+                          <div className="p-3 md:p-4 relative flex-1 flex flex-col">
                             <h4 className="font-display text-xs md:text-sm font-bold mb-1 group-hover:text-primary transition-colors duration-300 line-clamp-2">{cert.name}</h4>
                             <p className="text-muted-foreground text-[11px] font-medium mb-2">{cert.issuer}</p>
-                            <div className="flex items-center justify-between">
+                            <div className="flex items-center justify-between mt-auto">
                               <span className="text-xs text-muted-foreground flex items-center gap-1.5"><Calendar className="w-3 h-3" />{cert.year}</span>
                               <div className="flex items-center gap-2">
                                 {cert.verifyUrl && (
