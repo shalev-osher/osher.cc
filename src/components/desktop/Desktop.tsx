@@ -8,6 +8,9 @@ import TerminalApp from "./apps/TerminalApp";
 import FinderApp from "./apps/FinderApp";
 import Launchpad from "./Launchpad";
 import DesktopContextMenu, { applyStoredWallpaper } from "./DesktopContextMenu";
+import MissionControlDesktop from "./MissionControlDesktop";
+import StageManager from "./StageManager";
+import Widgets from "./Widgets";
 import { toast } from "sonner";
 
 const Hero = lazy(() => import("@/components/Hero"));
@@ -45,7 +48,7 @@ export const APP_ORDER: AppId[] = ["finder", "home", "about", "skills", "project
 export const APP_META = APPS;
 
 const Desktop = () => {
-  const { state } = useWindows();
+  const { state, close, minimize } = useWindows();
 
   useEffect(() => {
     applyStoredWallpaper();
@@ -54,17 +57,39 @@ const Desktop = () => {
       sessionStorage.setItem("osher-os-welcomed", "1");
       setTimeout(() => {
         toast.success("Welcome to osher.cc OS", {
-          description: "Right-click the desktop · F4 Launchpad · ⌘K Spotlight",
+          description: "F4 Launchpad · F3 Mission Control · ⌘K Spotlight · ⌘W close · ⌘M minimize",
           duration: 5000,
         });
       }, 600);
     }
   }, []);
 
+  // Global window keyboard shortcuts
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (!(e.metaKey || e.ctrlKey)) return;
+      if (!state.focus) return;
+      const k = e.key.toLowerCase();
+      // Avoid stomping inputs
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || (e.target as HTMLElement)?.isContentEditable) return;
+      if (k === "w") { e.preventDefault(); close(state.focus); }
+      else if (k === "m") { e.preventDefault(); minimize(state.focus); }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [state.focus, close, minimize]);
+
   return (
     <div className="fixed inset-0 overflow-hidden" id="desktop-root">
+      {/* Widgets layer (behind icons) */}
+      <Widgets />
+
       {/* Desktop layer — icons */}
       <DesktopIcons />
+
+      {/* Stage Manager strip */}
+      <StageManager />
 
       {/* Window layer */}
       <AnimatePresence>
@@ -86,6 +111,7 @@ const Desktop = () => {
 
       {/* Overlays */}
       <Launchpad />
+      <MissionControlDesktop />
       <DesktopContextMenu />
     </div>
   );

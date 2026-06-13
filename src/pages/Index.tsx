@@ -72,7 +72,6 @@ const Index = () => {
           <Suspense fallback={null}><Desktop /></Suspense>
 
           <CommandPalette />
-          <MissionControl />
           <ControlCenter />
           <NotificationCenter />
           {deferReady && (
