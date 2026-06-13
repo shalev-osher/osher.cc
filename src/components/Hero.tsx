@@ -95,7 +95,7 @@ const Hero = () => {
           </VisuallyHidden>
           <div className="flex-1 bg-muted/20">
             <iframe
-              src="/cv/shalev-osher-cv.pdf#view=FitH"
+              src="/cv/shalev-osher-cv.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH"
               title="CV Preview"
               className="w-full h-full"
             />
