@@ -99,7 +99,7 @@ const Education = () => {
                   {certificates.map((cert, index) => (
                     <motion.div
                       key={cert.name}
-                      className="flex-[0_0_100%] sm:flex-[0_0_50%] md:flex-[0_0_33.333%] min-w-0 px-2 md:px-3"
+                      className="flex-[0_0_33.333%] min-w-0 px-2 md:px-3"
                       initial={{ opacity: 0, y: 40, scale: 0.92 }}
                       whileInView={{ opacity: 1, y: 0, scale: 1 }}
                       viewport={{ once: true, amount: 0.2 }}
@@ -152,15 +152,6 @@ const Education = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-center gap-2 mt-8">
-              {certificates.map((_, index) => (
-                <button
-                  key={index} onClick={() => scrollTo(index)}
-                  className={`h-1.5 rounded-full transition-all duration-500 ${index === activeIndex ? "w-8 bg-primary" : "w-1.5 bg-muted-foreground/30 hover:bg-muted-foreground/50"}`}
-                  aria-label={`Go to certificate ${index + 1}`} aria-current={index === activeIndex ? "true" : undefined}
-                />
-              ))}
-            </div>
           </div>
         </AnimatedSection>
 
