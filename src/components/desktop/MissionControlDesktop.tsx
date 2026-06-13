@@ -2,14 +2,8 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWindows } from "./WindowManager";
 import { APP_META } from "./Desktop";
-import { iosIcons, type IosIconKey } from "@/components/ios/iconSet";
+import { AppIcon } from "./AppIcons";
 import { useLanguage } from "@/contexts/LanguageContext";
-
-const APP_ICON_MAP: Record<string, IosIconKey> = {
-  finder: "finder", home: "about", about: "about", skills: "skills",
-  projects: "projects", experience: "experience", education: "education",
-  contact: "mail", terminal: "settings",
-};
 
 const MissionControlDesktop = () => {
   const { state, focus } = useWindows();
@@ -54,7 +48,6 @@ const MissionControlDesktop = () => {
               <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                 {wins.map((w, i) => {
                   const meta = APP_META[w.id];
-                  const Icon = iosIcons[APP_ICON_MAP[w.id] ?? "about"];
                   // Mini preview frame proportional to actual window
                   const previewW = 320;
                   const previewH = Math.max(150, Math.round((w.h / w.w) * previewW));
@@ -80,7 +73,7 @@ const MissionControlDesktop = () => {
                         </div>
                         <div className="absolute inset-0 flex items-center justify-center pt-6 pointer-events-none">
                           <div className="w-16 h-16 opacity-90">
-                            <Icon />
+                            <AppIcon id={w.id} />
                           </div>
                         </div>
                         {w.minimized && (

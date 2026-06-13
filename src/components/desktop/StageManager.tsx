@@ -1,13 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useWindows } from "./WindowManager";
 import { APP_META } from "./Desktop";
-import { iosIcons, type IosIconKey } from "@/components/ios/iconSet";
-
-const ICON_MAP: Record<string, IosIconKey> = {
-  finder: "finder", home: "about", about: "about", skills: "skills",
-  projects: "projects", experience: "experience", education: "education",
-  contact: "mail", terminal: "settings",
-};
+import { AppIcon } from "./AppIcons";
 
 /** macOS Sonoma Stage Manager — strip of non-focused / minimized windows on the start edge. */
 const StageManager = () => {
@@ -23,7 +17,6 @@ const StageManager = () => {
         {others.map((id) => {
           const w = state.windows[id];
           const meta = APP_META[id];
-          const Icon = iosIcons[ICON_MAP[id] ?? "about"];
           return (
             <motion.button
               key={id}
@@ -47,7 +40,7 @@ const StageManager = () => {
                 <span className="w-1.5 h-1.5 rounded-full bg-[#28c840]" />
               </div>
               <div className="flex-1 flex items-center justify-center gap-2 px-2">
-                <div className="w-7 h-7"><Icon /></div>
+                <div className="w-7 h-7"><AppIcon id={id} /></div>
                 <span className="text-[10px] text-white/90 truncate font-medium">{meta?.title ?? id}</span>
               </div>
             </motion.button>
