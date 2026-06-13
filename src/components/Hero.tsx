@@ -1,4 +1,4 @@
-import { Download } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import MagneticButton from "./MagneticButton";
@@ -80,7 +80,6 @@ const Hero = () => {
                   onClick={() => trackCvDownload(lang)}
                   className="gap-2"
                 >
-                  <Download className="w-5 h-5" />
                   {t("hero.downloadCV")}
                 </a>
               </Button>
