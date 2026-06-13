@@ -109,7 +109,7 @@ const Education = () => {
                   {certificates.map((cert, index) => (
                     <motion.div
                       key={cert.name}
-                      className="flex-[0_0_75%] md:flex-[0_0_40%] min-w-0 px-3 md:px-4"
+                      className="flex-[0_0_60%] md:flex-[0_0_28%] min-w-0 px-2 md:px-3"
                       initial={{ opacity: 0, y: 40, scale: 0.92 }}
                       whileInView={{ opacity: 1, y: 0, scale: 1 }}
                       viewport={{ once: true, amount: 0.2 }}
@@ -126,7 +126,7 @@ const Education = () => {
                         <div className="relative rounded-2xl overflow-hidden bg-card/60 backdrop-blur-sm border border-border/40 group-hover:border-primary/20 transition-all duration-500">
                           <div className="relative overflow-hidden" onClick={() => setSelectedImage(cert.image)}>
                             <div className={`absolute inset-0 bg-gradient-to-br ${cert.accent} mix-blend-overlay z-[1]`} />
-                            <img src={cert.image} alt={cert.name} className="w-full h-56 md:h-72 object-contain bg-muted/20 transition-all duration-700 group-hover:scale-[1.03]" loading="lazy" />
+                            <img src={cert.image} alt={cert.name} className="w-full h-40 md:h-52 object-contain bg-muted/20 transition-all duration-700 group-hover:scale-[1.03]" loading="lazy" />
                             <div className="absolute inset-0 z-[2] bg-gradient-to-t from-card via-transparent to-transparent opacity-60" />
                             <div className="absolute inset-0 z-[3] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
                               <div className="px-5 py-2.5 rounded-full bg-primary/90 backdrop-blur-sm flex items-center gap-2 shadow-lg transform scale-90 group-hover:scale-100 transition-transform duration-500">
@@ -135,9 +135,9 @@ const Education = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="p-5 relative">
-                            <h4 className="font-display text-sm md:text-base font-bold mb-1 group-hover:text-primary transition-colors duration-300 line-clamp-2">{cert.name}</h4>
-                            <p className="text-muted-foreground text-xs font-medium mb-3">{cert.issuer}</p>
+                          <div className="p-3 md:p-4 relative">
+                            <h4 className="font-display text-xs md:text-sm font-bold mb-1 group-hover:text-primary transition-colors duration-300 line-clamp-2">{cert.name}</h4>
+                            <p className="text-muted-foreground text-[11px] font-medium mb-2">{cert.issuer}</p>
                             <div className="flex items-center justify-between">
                               <span className="text-xs text-muted-foreground flex items-center gap-1.5"><Calendar className="w-3 h-3" />{cert.year}</span>
                               <div className="flex items-center gap-2">
