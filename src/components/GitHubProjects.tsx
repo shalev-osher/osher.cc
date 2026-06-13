@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from "react";
 import { ExternalLink, GitBranch, Star, Code2, Eye } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import ProjectCaseStudyModal from "@/components/ProjectCaseStudyModal";
