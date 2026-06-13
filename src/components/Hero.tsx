@@ -88,7 +88,7 @@ const Hero = () => {
       </div>
 
       <Dialog open={cvOpen} onOpenChange={setCvOpen}>
-        <DialogContent className="max-w-5xl w-[95vw] h-[90vh] p-0 overflow-hidden flex flex-col bg-card border-border/50">
+        <DialogContent className="max-w-2xl w-[90vw] h-[75vh] p-0 overflow-hidden flex flex-col bg-card border-border/50">
           <DialogHeader className="px-6 py-4 border-b border-border/50 flex-row items-center justify-between space-y-0">
             <DialogTitle className="font-display text-xl">{t("hero.cvPreview")}</DialogTitle>
             <Button variant="heroOutline" size="sm" onClick={handleDownload} className="gap-2 me-8">
