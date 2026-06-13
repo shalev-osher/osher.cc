@@ -53,6 +53,18 @@ const CommandPalette = () => {
 
   const go = useCallback((id: string) => {
     setOpen(false);
+    // If desktop OS shell is mounted, open the windowed app instead of scrolling
+    if (document.getElementById("desktop-root")) {
+      const map: Record<string, string> = {
+        home: "home", about: "about", skills: "skills", projects: "projects",
+        experience: "experience", education: "education", contact: "contact",
+      };
+      const appId = map[id];
+      if (appId) {
+        window.dispatchEvent(new CustomEvent("open-app", { detail: appId }));
+        return;
+      }
+    }
     window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
 
     window.setTimeout(() => {
