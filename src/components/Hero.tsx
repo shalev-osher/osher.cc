@@ -72,19 +72,14 @@ const Hero = () => {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex items-center justify-center">
             <MagneticButton>
-              <Button variant="heroOutline" size="xl" asChild>
-                <a href="#experience">{t("hero.viewExperience")}</a>
-              </Button>
-            </MagneticButton>
-            <MagneticButton>
-              <Button variant="heroOutline" size="xl" asChild>
-                <a href="#contact">{t("hero.getInTouch")}</a>
-              </Button>
-            </MagneticButton>
-            <MagneticButton>
-              <Button variant="heroOutline" size="xl" onClick={() => setCvOpen(true)}>
+              <Button
+                variant="heroOutline"
+                size="xl"
+                onClick={() => setCvOpen(true)}
+                className="min-w-[18rem] sm:min-w-[24rem] text-lg"
+              >
                 {t("hero.viewCV")}
               </Button>
             </MagneticButton>
