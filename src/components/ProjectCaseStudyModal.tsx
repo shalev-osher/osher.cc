@@ -84,7 +84,7 @@ const ProjectCaseStudyModal = ({ repo, open, onOpenChange }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto card-premium border-primary/20">
+      <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto bg-card rounded-xl border border-primary/20 backdrop-blur-sm">
         <DialogHeader>
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1 min-w-0">
