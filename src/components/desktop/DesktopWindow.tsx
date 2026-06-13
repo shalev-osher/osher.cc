@@ -11,8 +11,8 @@ interface Props {
   dark?: boolean;
 }
 
-const MIN_W = 380;
-const MIN_H = 280;
+const MIN_W = 240;
+const MIN_H = 240;
 
 const DesktopWindow = ({ id, title, app, children, dark }: Props) => {
   const { state, close, focus, minimize, maximize, move, resize } = useWindows();
