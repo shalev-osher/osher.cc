@@ -103,7 +103,9 @@ const About = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <AnimatedSection animation="slideLeft">
-            <ProfileTilt />
+            <div className="max-w-xs sm:max-w-sm mx-auto">
+              <ProfileTilt />
+            </div>
           </AnimatedSection>
 
           <AnimatedSection delay={0.2} animation="slideRight">
