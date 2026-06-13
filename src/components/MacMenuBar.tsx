@@ -200,3 +200,100 @@ const MacMenuBar = () => {
 };
 
 export default MacMenuBar;
+
+/* ───────── Menu primitives ───────── */
+
+const MenuPanel = ({ children }: { children: React.ReactNode }) => (
+  <div
+    onMouseDown={(e) => e.stopPropagation()}
+    className="absolute top-full start-0 mt-1 min-w-[220px] py-1.5 rounded-xl
+               border border-white/15 bg-[hsl(220_15%_12%/0.92)] backdrop-blur-2xl
+               shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] text-white text-[12px] z-[260]"
+  >
+    {children}
+  </div>
+);
+
+const MenuLine = ({
+  children, onClick, shortcut, danger,
+}: { children: React.ReactNode; onClick: () => void; shortcut?: string; danger?: boolean }) => (
+  <button
+    onClick={onClick}
+    className={`w-full text-start px-3 py-1.5 flex items-center justify-between transition-colors
+                ${danger ? "hover:bg-[#ff5f57]/40" : "hover:bg-primary/30"}`}
+  >
+    <span>{children}</span>
+    {shortcut && <span className="text-white/50 text-[11px] ms-4 tabular-nums">{shortcut}</span>}
+  </button>
+);
+
+const Sep = () => <div className="my-1 mx-2 h-px bg-white/10" />;
+
+const DropdownTrigger = ({
+  label, id, openMenu, setOpenMenu, children,
+}: {
+  label: string; id: string;
+  openMenu: string | null; setOpenMenu: (v: string | null) => void;
+  children: React.ReactNode;
+}) => (
+  <div className="relative">
+    <button
+      onClick={() => setOpenMenu(openMenu === id ? null : id)}
+      className="px-2 py-0.5 rounded hover:bg-white/10 transition-colors font-display font-medium tracking-tight"
+    >
+      {label}
+    </button>
+    {openMenu === id && <MenuPanel>{children}</MenuPanel>}
+  </div>
+);
+
+const BrandMenu = ({
+  onClose, openApp, fire,
+}: { onClose: () => void; openApp: (id: string) => void; fire: (event: string) => void }) => (
+  <MenuPanel>
+    <div className="px-3 py-1.5 text-[11px] uppercase tracking-[0.14em] text-white/40">osher.cc OS · 27.1</div>
+    <Sep />
+    <MenuLine onClick={() => openApp("settings")} shortcut="⌘,">System Settings…</MenuLine>
+    <MenuLine onClick={() => openApp("about")}>About this Site</MenuLine>
+    <Sep />
+    <MenuLine onClick={() => fire("lock-screen")} shortcut="⌃⌘Q">Lock Screen</MenuLine>
+    <MenuLine onClick={() => { onClose(); window.location.reload(); }}>Restart…</MenuLine>
+    <Sep />
+    <MenuLine onClick={() => window.open("https://github.com/Shalev-osher", "_blank")}>Visit GitHub ↗</MenuLine>
+  </MenuPanel>
+);
+
+const AppMenu = ({
+  focusedApp, fire, lang,
+}: { focusedApp: string | null; fire: (event: string) => void; lang: string }) => {
+  const dispatch = (event: string, detail?: any) =>
+    window.dispatchEvent(new CustomEvent(event, { detail }));
+  return (
+    <MenuPanel>
+      <MenuLine onClick={() => dispatch("open-app", focusedApp ?? "home")}>
+        {lang === "he" ? "פתח חלון חדש" : "New Window"}
+      </MenuLine>
+      <Sep />
+      <MenuLine
+        onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "w", metaKey: true }))}
+        shortcut="⌘W"
+      >
+        {lang === "he" ? "סגור חלון" : "Close Window"}
+      </MenuLine>
+      <MenuLine
+        onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "m", metaKey: true }))}
+        shortcut="⌘M"
+      >
+        {lang === "he" ? "מזער" : "Minimize"}
+      </MenuLine>
+      <Sep />
+      <MenuLine
+        onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", metaKey: true, altKey: true }))}
+        shortcut="⌥⌘⎋"
+        danger
+      >
+        {lang === "he" ? "סגירה כפויה…" : "Force Quit…"}
+      </MenuLine>
+    </MenuPanel>
+  );
+};
