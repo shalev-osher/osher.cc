@@ -34,7 +34,7 @@
     --input: 0 0% 18%;
     --ring: 42 75% 55%;
 
-    --radius: 1rem;
+    --radius: 0.5rem;
 
     /* Custom design tokens */
     --gradient-gold: linear-gradient(135deg, hsl(42, 75%, 55%) 0%, hsl(35, 80%, 45%) 100%);
@@ -102,12 +102,7 @@
 @layer base {
   * {
     @apply border-border;
-  }
-
-  /* Smooth theme switch — applied only to root surfaces, not every element.
-     This keeps button/link hovers snappy (they use their own short transitions). */
-  html, body, [data-theme-surface] {
-    transition: background-color 0.5s ease, color 0.5s ease;
+    transition: background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
   }
 
   html {
@@ -120,66 +115,8 @@
     overflow-x: hidden;
   }
 
-  /* Subtle text legibility boost over fully transparent surfaces */
-  h1, h2, h3, h4, h5, h6 {
-    text-shadow: 0 1px 2px hsl(var(--background) / 0.45);
-  }
-
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-  }
-}
-
-/* iOS 27 — pills, continuous corners, GPU-stable surfaces */
-@layer components {
-  /* Continuous (squircle-ish) corner — apply via .ios-corner where needed */
-  .ios-corner {
-    border-radius: 1.25rem;
-  }
-
-  /* Pill — for navbars, toolbars, chips */
-  .pill {
-    border-radius: 9999px;
-    padding-inline: 1.25rem;
-    padding-block: 0.5rem;
-  }
-
-  /* Bump every Tailwind radius up one notch toward iOS-like generosity */
-  .rounded,
-  .rounded-md   { border-radius: 0.75rem !important; }
-  .rounded-lg   { border-radius: 1rem !important; }
-  .rounded-xl   { border-radius: 1.25rem !important; }
-  .rounded-2xl  { border-radius: 1.5rem !important; }
-
-  /* Promote heavy / animated UI to its own GPU layer so it doesn't
-     re-paint glassy siblings when it enters / opens. Fixes:
-     - "buttons don't load smoothly when chat opens"
-     - "Contact section flickers on first entry"
-     Scope is tight on purpose — too many promoted layers hurts more
-     than it helps and creates extra stacking contexts. */
-  [role="dialog"],
-  [cmdk-root],
-  .chat-widget,
-  .chat-widget * {
-    will-change: transform, opacity;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-  }
-
-  /* Limit repaint scope of each main section without hiding it */
-  main > section {
-    contain: layout style;
-  }
-
-  /* iOS 27 spec — full transparency, ZERO blur, anywhere.
-     This neutralises any leftover Tailwind .backdrop-blur-* utility
-     so we never pay the per-frame backdrop re-sample cost that was
-     causing the chat-open and section-enter rendering jank. */
-  *,
-  *::before,
-  *::after {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
   }
 }
 
@@ -208,53 +145,15 @@
   }
 
   .card-premium {
-    @apply rounded-xl;
-    background: linear-gradient(135deg, hsl(var(--card) / 0.10) 0%, hsl(var(--card) / 0.04) 100%);
-    border: 1px solid hsl(var(--border) / 0.35);
-    box-shadow:
-      var(--shadow-card),
-      inset 0 1px 0 hsl(0 0% 100% / 0.10),
-      inset 0 -1px 0 hsl(0 0% 0% / 0.18);
-    transition: border-color 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease;
-    transform: translateZ(0);
+    @apply bg-card rounded-xl border border-border/50 backdrop-blur-sm;
+    box-shadow: var(--shadow-card);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .card-premium:hover {
     box-shadow: var(--shadow-card-hover);
     border-color: hsl(var(--primary) / 0.3);
-  }
-
-  .mac-window {
-    background:
-      linear-gradient(135deg, hsl(var(--card) / 0.18), hsl(var(--card) / 0.06)),
-      radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.08), transparent 54%);
-    border: 1px solid hsl(var(--border) / 0.42);
-    box-shadow:
-      0 24px 70px hsl(var(--background) / 0.48),
-      inset 0 1px 0 hsl(0 0% 100% / 0.14),
-      inset 0 -1px 0 hsl(0 0% 0% / 0.18);
-    transform: translateZ(0);
-    backface-visibility: hidden;
-  }
-
-  .mac-traffic-lights {
-    display: inline-grid;
-    grid-template-columns: repeat(3, 0.72rem);
-    gap: 0.45rem;
-  }
-
-  .mac-traffic-lights::before,
-  .mac-traffic-lights::after,
-  .mac-traffic-lights {
-    height: 0.72rem;
-    border-radius: 9999px;
-  }
-
-  .mac-traffic-lights {
-    background: hsl(42 75% 55% / 0.9);
-    box-shadow:
-      -1.17rem 0 0 hsl(6 74% 58% / 0.9),
-      1.17rem 0 0 hsl(132 45% 48% / 0.9);
+    transform: translateY(-4px);
   }
 
   .section-glow {
@@ -316,137 +215,9 @@
   }
 
   .glass-effect {
-    @apply border border-border/30;
-    background: hsl(var(--card) / 0.08);
+    @apply backdrop-blur-md border border-border/30;
+    background: hsl(var(--card) / 0.6);
   }
-
-  /* Liquid Glass — iOS 27 style: full transparency, no blur */
-  .liquid-glass {
-    position: relative;
-    background: linear-gradient(
-      135deg,
-      hsl(var(--card) / 0.12) 0%,
-      hsl(var(--card) / 0.04) 100%
-    );
-    border: 1px solid hsl(var(--border) / 0.35);
-    box-shadow:
-      0 8px 32px -8px hsl(var(--background) / 0.4),
-      inset 0 1px 0 hsl(0 0% 100% / 0.12),
-      inset 0 -1px 0 hsl(0 0% 0% / 0.2),
-      inset 1px 0 0 hsl(0 0% 100% / 0.06),
-      inset -1px 0 0 hsl(0 0% 0% / 0.06);
-    border-radius: 1rem;
-    overflow: hidden;
-    isolation: isolate;
-  }
-
-  .liquid-glass::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      135deg,
-      hsl(0 0% 100% / 0.08) 0%,
-      transparent 40%,
-      transparent 60%,
-      hsl(0 0% 100% / 0.04) 100%
-    );
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .liquid-glass > * {
-    position: relative;
-    z-index: 1;
-  }
-
-  .liquid-glass-strong {
-    background: linear-gradient(135deg, hsl(var(--card) / 0.18) 0%, hsl(var(--card) / 0.08) 100%);
-  }
-
-  .liquid-glass-subtle {
-    background: hsl(var(--card) / 0.05);
-  }
-
-  /* ===========================================================
-     iOS 27 Liquid Glass — site-wide, full transparency, NO blur.
-     Strategy:
-     - Every surface is transparent with a faint tint + crisp border
-       so depth comes from line + inner highlight, not from blur.
-     - Text gets a subtle shadow so it stays readable over busy bg.
-     - Loading screen (.no-glass) keeps solid background.
-     - Primary buttons keep their gold (handled via .btn-solid or
-       components that don't use .bg-* surface classes).
-     =========================================================== */
-  .bg-card,
-  .bg-popover,
-  .bg-secondary,
-  .bg-muted,
-  .bg-input,
-  [class*="bg-card/"],
-  [class*="bg-popover/"],
-  [class*="bg-secondary/"],
-  [class*="bg-muted/"],
-  [class*="bg-input/"] {
-    background-color: transparent !important;
-    background-image: linear-gradient(
-      135deg,
-      hsl(var(--card) / 0.10) 0%,
-      hsl(var(--card) / 0.03) 100%
-    ) !important;
-    border-color: hsl(var(--border) / 0.35);
-    box-shadow:
-      inset 0 1px 0 hsl(0 0% 100% / 0.08),
-      inset 0 -1px 0 hsl(0 0% 0% / 0.12);
-  }
-
-  /* Floating overlays (dialogs, menus, popovers, command palette) */
-  [role="dialog"]:not(.no-glass),
-  [role="menu"]:not(.no-glass),
-  [role="listbox"]:not(.no-glass),
-  [cmdk-root]:not(.no-glass),
-  [data-radix-popper-content-wrapper] > *:not(.no-glass) {
-    background-color: transparent !important;
-    background-image: linear-gradient(
-      135deg,
-      hsl(var(--card) / 0.12) 0%,
-      hsl(var(--card) / 0.04) 100%
-    ) !important;
-    border-color: hsl(var(--border) / 0.4) !important;
-  }
-
-  /* Command palette selected row — must stay readable without blur */
-  [cmdk-item][data-selected="true"],
-  [cmdk-item][aria-selected="true"] {
-    background-color: hsl(var(--primary) / 0.18) !important;
-    color: hsl(var(--foreground)) !important;
-  }
-  [cmdk-item][data-selected="true"] *,
-  [cmdk-item][aria-selected="true"] * {
-    color: hsl(var(--foreground)) !important;
-  }
-
-  /* Opt-out — keep these solid (loading screen, primary CTAs that need it) */
-  .no-glass,
-  .no-glass.bg-background,
-  .no-glass.bg-card,
-  .no-glass.bg-popover,
-  .no-glass.bg-secondary,
-  .no-glass.bg-muted,
-  .no-glass.bg-input {
-    background-image: none !important;
-    background-color: hsl(var(--background)) !important;
-    box-shadow: none !important;
-  }
-
-  /* Loading screen guards — it uses bg-background directly */
-  .fixed.inset-0.z-\[9999\].bg-background,
-  .fixed.inset-0.z-\[9999\].bg-background * {
-    background-image: none !important;
-  }
-
-  /* Body must stay solid so transparent layers refract against it */
-  body, html { background-image: none !important; }
 
   .timeline-line {
     background: linear-gradient(

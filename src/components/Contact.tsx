@@ -117,7 +117,7 @@ const Contact = () => {
   return (
     <section id="contact" className="py-24 relative section-glow overflow-hidden" aria-labelledby="contact-heading">
       <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
-      <ConstellationBackground starCount={35} linkDistance={100} mouseInfluence={150} />
+      <ConstellationBackground starCount={60} linkDistance={120} mouseInfluence={160} />
 
       <div className="container mx-auto px-6 relative z-10">
         <AnimatedSection animation="blur">
@@ -170,9 +170,7 @@ const Contact = () => {
           </AnimatedSection>
 
           <AnimatedSection delay={0.2} animation="slideRight">
-            <div className="rounded-3xl border border-border/40 bg-card/60 backdrop-blur-xl shadow-2xl overflow-hidden">
-                <form onSubmit={handleSubmit} className="relative bg-background/40" aria-label="Contact form">
-                  <div className="space-y-5 p-6 relative">
+            <form onSubmit={handleSubmit} className="space-y-5 card-premium p-8 relative" aria-label="Contact form">
               {/* Success overlay */}
               <AnimatePresence>
                 {submitted && (
@@ -259,9 +257,7 @@ const Contact = () => {
                 )}
                 {isSubmitting ? t("contact.sending") : t("contact.send")}
               </Button>
-                  </div>
-                </form>
-            </div>
+            </form>
           </AnimatedSection>
         </div>
       </div>

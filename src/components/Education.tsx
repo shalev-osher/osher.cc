@@ -201,7 +201,7 @@ const Education = () => {
       </div>
 
       <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
-        <DialogContent hideChrome contentClassName="p-0" className="max-w-5xl w-[95vw] bg-transparent border-none shadow-none">
+        <DialogContent className="max-w-5xl w-[95vw] p-0 bg-transparent border-none shadow-none [&>button]:hidden">
           <div className="relative">
             <button onClick={() => setSelectedImage(null)} className="absolute -top-12 right-0 z-10 p-2 rounded-full bg-card/80 backdrop-blur-md border border-border/50 hover:border-primary/50 transition-all">
               <X className="w-5 h-5 text-foreground" />

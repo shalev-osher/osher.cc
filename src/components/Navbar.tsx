@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { Menu, X, Download, Command } from "lucide-react";
 import { motion } from "framer-motion";
+import ThemeToggle from "./ThemeToggle";
 import MagneticButton from "./MagneticButton";
 import useActiveSection from "@/hooks/useActiveSection";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -38,13 +39,13 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className="fixed top-10 inset-x-3 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:w-[min(1100px,calc(100%-2rem))] z-[200] liquid-glass-strong border border-border/50 shadow-xl rounded-full"
+        className="fixed top-0 inset-x-0 z-[200] bg-background/95 backdrop-blur-xl border-b border-border shadow-lg"
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="px-4 sm:px-6 py-2 sm:py-2.5">
+        <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <a href="#home" className="font-display text-lg sm:text-xl font-bold text-gradient" aria-label="Shalev Osher - Home">
+            <a href="#" className="font-display text-xl sm:text-2xl font-bold text-gradient" aria-label="Shalev Osher - Home">
               {lang === "he" ? "שליו אושר" : "Shalev Osher"}
             </a>
             <div className="hidden md:flex items-center gap-2">
@@ -89,6 +90,7 @@ const Navbar = () => {
                   {lang === "en" ? "HE" : "EN"}
                 </motion.button>
               </MagneticButton>
+              <ThemeToggle />
               <MagneticButton strength={0.25} radius={40}>
                 <motion.button
                   onClick={() => window.dispatchEvent(new CustomEvent("open-command-palette"))}
@@ -119,6 +121,7 @@ const Navbar = () => {
               >
                 <Download size={16} />
               </a>
+              <ThemeToggle />
               <button
                 onClick={() => setIsMobileOpen(!isMobileOpen)}
                 className="w-9 h-9 rounded-lg border border-border/50 bg-primary/5 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"

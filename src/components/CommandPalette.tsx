@@ -53,29 +53,10 @@ const CommandPalette = () => {
 
   const go = useCallback((id: string) => {
     setOpen(false);
-    // If desktop OS shell is mounted, open the windowed app instead of scrolling
-    if (document.getElementById("desktop-root")) {
-      const map: Record<string, string> = {
-        home: "home", about: "about", skills: "skills", projects: "projects",
-        experience: "experience", education: "education", contact: "contact",
-      };
-      const appId = map[id];
-      if (appId) {
-        window.dispatchEvent(new CustomEvent("open-app", { detail: appId }));
-        return;
-      }
-    }
-    window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
-
-    window.setTimeout(() => {
-      if (id === "home") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        return;
-      }
-
+    requestAnimationFrame(() => {
       const el = document.getElementById(id);
       el?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 80);
+    });
   }, []);
 
   const external = useCallback((url: string) => {
@@ -117,7 +98,7 @@ const CommandPalette = () => {
   }, []);
 
   return (
-    <CommandDialog spotlight open={open} onOpenChange={setOpen}>
+    <CommandDialog open={open} onOpenChange={setOpen}>
       <CommandInput
         placeholder={lang === "he" ? "חפש פעולה או סקשן..." : "Search actions or sections..."}
       />
@@ -125,7 +106,7 @@ const CommandPalette = () => {
         <CommandEmpty>{lang === "he" ? "לא נמצאו תוצאות." : "No results found."}</CommandEmpty>
 
         <CommandGroup heading={lang === "he" ? "ניווט" : "Navigation"}>
-          <CommandItem onSelect={() => go("home")}>
+          <CommandItem onSelect={() => go("hero")}>
             <Home className="me-2 h-4 w-4" />
             <span>{lang === "he" ? "דף הבית" : "Home"}</span>
           </CommandItem>

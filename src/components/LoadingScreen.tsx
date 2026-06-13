@@ -1,55 +1,137 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-/**
- * Authentic macOS boot screen.
- * Pure black canvas, centered white Apple silhouette, thin progress bar below.
- */
 const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
-  const [done, setDone] = useState(false);
+  const { lang } = useLanguage();
+  const isHebrew = lang === "he";
+  const [phase, setPhase] = useState<"logo" | "skeleton" | "reveal" | "done">("logo");
 
   useEffect(() => {
-    const id = setTimeout(() => {
-      setDone(true);
+    const t0 = setTimeout(() => setPhase("skeleton"), 900);
+    const t1 = setTimeout(() => setPhase("reveal"), 2200);
+    const t2 = setTimeout(() => {
+      setPhase("done");
       onComplete();
-    }, 1800);
-    return () => clearTimeout(id);
+    }, 2800);
+    return () => { clearTimeout(t0); clearTimeout(t1); clearTimeout(t2); };
   }, [onComplete]);
+
+  const nameLetters = (isHebrew ? "שליו אושר" : "Shalev Osher").split("");
 
   return (
     <AnimatePresence>
-      {!done && (
+      {phase !== "done" && (
         <motion.div
-          className="fixed inset-0 z-[9999] bg-black overflow-hidden no-glass flex flex-col items-center justify-center"
-          initial={{ opacity: 1 }}
+          className="fixed inset-0 z-[9999] bg-background overflow-hidden"
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          aria-label="Booting"
+          transition={{ duration: 0.5, ease: "easeInOut" }}
         >
-          {/* Apple logo — silhouette path drawn in pure white */}
-          <motion.svg
-            viewBox="0 0 170 170"
-            width={92}
-            height={92}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            aria-hidden="true"
-          >
-            <path
-              fill="#ffffff"
-              d="M130.7 90.4c-.2-19.9 16.2-29.4 17-29.9-9.3-13.5-23.7-15.4-28.8-15.6-12.3-1.2-23.9 7.2-30.2 7.2-6.2 0-15.8-7-26-6.8-13.4.2-25.7 7.8-32.6 19.7-13.9 24.1-3.6 59.8 10 79.4 6.6 9.6 14.5 20.4 24.9 20 10-.4 13.8-6.5 25.9-6.5 12 0 15.4 6.5 26 6.3 10.7-.2 17.5-9.8 24.1-19.4 7.6-11.2 10.8-22.1 11-22.6-.2-.1-21.1-8.1-21.3-32zM111.4 32.9c5.5-6.6 9.1-15.8 8.1-25-7.8.3-17.2 5.2-22.9 11.8-5.1 5.8-9.5 15.1-8.3 24.1 8.7.7 17.6-4.4 23.1-10.9z"
-            />
-          </motion.svg>
+          <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
 
-          {/* Progress bar */}
-          <div className="mt-[88px] w-[160px] h-[5px] rounded-full overflow-hidden bg-white/15">
-            <motion.div
-              className="h-full bg-white rounded-full"
-              initial={{ width: "0%" }}
-              animate={{ width: "100%" }}
-              transition={{ duration: 1.6, ease: [0.45, 0.05, 0.55, 0.95] }}
-            />
+          <div className="relative z-10 w-full h-full flex flex-col">
+            {/* Logo reveal phase */}
+            <AnimatePresence>
+              {phase === "logo" && (
+                <motion.div
+                  className="absolute inset-0 flex items-center justify-center"
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <div className="text-center">
+                    {/* Animated name letters */}
+                    <h1 className="font-display text-5xl md:text-7xl font-bold">
+                      {nameLetters.map((letter, i) => (
+                        <motion.span
+                          key={i}
+                          className="inline-block text-gradient-warm"
+                          initial={{ opacity: 0, y: 30, rotateX: -90 }}
+                          animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                          transition={{
+                            delay: i * 0.05,
+                            duration: 0.5,
+                            ease: [0.22, 1, 0.36, 1],
+                          }}
+                        >
+                          {letter === " " ? "\u00A0" : letter}
+                        </motion.span>
+                      ))}
+                    </h1>
+                    {/* Underline sweep */}
+                    <motion.div
+                      className="h-0.5 mx-auto mt-4 rounded-full"
+                      style={{ background: "var(--gradient-gold)" }}
+                      initial={{ width: 0 }}
+                      animate={{ width: "60%" }}
+                      transition={{ delay: 0.5, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                    />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Skeleton layout phase */}
+            {(phase === "skeleton" || phase === "reveal") && (
+              <motion.div
+                className="w-full h-full"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {/* Navbar skeleton */}
+                <div className="flex items-center justify-between px-8 py-5">
+                  <motion.div className="h-3 w-28 rounded-full bg-muted-foreground/10 overflow-hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0 }}>
+                    <motion.div className="h-full w-full" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--primary) / 0.15), transparent)" }} animate={{ x: ["-100%", "100%"] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }} />
+                  </motion.div>
+                  <div className="hidden md:flex gap-6">
+                    {[0, 1, 2, 3, 4].map(i => (
+                      <motion.div key={i} className="h-3 w-14 rounded-full bg-muted-foreground/10 overflow-hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.05 * i }}>
+                        <motion.div className="h-full w-full" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--primary) / 0.15), transparent)" }} animate={{ x: ["-100%", "100%"] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }} />
+                      </motion.div>
+                    ))}
+                  </div>
+                  <motion.div className="w-8 h-8 rounded-full bg-muted-foreground/10" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} />
+                </div>
+
+                {/* Hero skeleton */}
+                <div className="flex flex-col items-center justify-center mt-[12vh] gap-6 px-6">
+                  <motion.div className="h-4 w-20 rounded-full bg-muted-foreground/10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }} />
+                  <motion.div
+                    className="h-14 md:h-20 rounded-xl overflow-hidden"
+                    style={{ width: "min(420px, 72vw)", background: "linear-gradient(90deg, hsl(var(--primary) / 0.08), hsl(var(--primary) / 0.18), hsl(var(--primary) / 0.08))", backgroundSize: "200% 100%" }}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1, backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+                    transition={{ opacity: { delay: 0.25 }, scale: { delay: 0.25 }, backgroundPosition: { duration: 2, repeat: Infinity, ease: "linear" } }}
+                  />
+                  <motion.div className="h-4 w-56 rounded-full bg-muted-foreground/10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 }} />
+                  <div className="flex gap-4 mt-4">
+                    {[0, 1, 2].map(i => (
+                      <motion.div key={i} className="h-12 w-32 rounded-lg bg-muted-foreground/8 overflow-hidden" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 + i * 0.1 }}>
+                        <motion.div className="h-full w-full" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--primary) / 0.1), transparent)" }} animate={{ x: ["-100%", "100%"] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.2 }} />
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Loading dots */}
+                <motion.div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
+                  {[0, 1, 2].map(i => (
+                    <motion.div key={i} className="w-1.5 h-1.5 rounded-full bg-primary/40" animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.3, 0.8] }} transition={{ duration: 1, repeat: Infinity, delay: i * 0.15 }} />
+                  ))}
+                </motion.div>
+              </motion.div>
+            )}
+
+            {/* Reveal wipe */}
+            {phase === "reveal" && (
+              <motion.div
+                className="absolute inset-0 bg-background origin-top z-20"
+                initial={{ scaleY: 1 }}
+                animate={{ scaleY: 0 }}
+                transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
+                style={{ transformOrigin: "top" }}
+              />
+            )}
           </div>
         </motion.div>
       )}

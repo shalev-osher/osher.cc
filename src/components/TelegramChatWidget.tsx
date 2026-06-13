@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send, Sparkles, Trash2, Download } from "lucide-react";
+import { X, Send, Bot, Sparkles, Trash2, Download } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
-import MacTrafficLights from "./MacTrafficLights";
+import MagneticButton from "./MagneticButton";
 
 interface Message {
   id: string;
@@ -22,8 +22,7 @@ const MAX_FREE_TEXT_PER_SESSION = 2;
 const TelegramChatWidget = () => {
   const { lang } = useLanguage();
   const isHebrew = lang === "he";
-  const [isMinimized, setIsMinimized] = useState(true);
-  const [isMaximized, setIsMaximized] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
 
   // External trigger from Command Palette
   useEffect(() => {
@@ -446,34 +445,39 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
       className="fixed bottom-8 start-8 z-[60]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ delay: 0.25, duration: 0.22 }}
+      transition={{ delay: 1.5, duration: 0.35 }}
     >
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isMinimized ? (
-          null
+          <MagneticButton key="minimized-magnet" strength={0.4} radius={80}>
+            <motion.button
+              key="minimized"
+              onClick={() => setIsMinimized(false)}
+              className="w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-2xl hover:shadow-primary/30 transition-all flex items-center justify-center relative overflow-hidden group"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              aria-label={isHebrew ? "פתח צ'אט" : "Open chat"}
+            >
+              <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Bot className="w-6 h-6 relative z-10" />
+            </motion.button>
+          </MagneticButton>
         ) : (
           <motion.div
             key="chat"
-            className={
-              isMaximized
-                ? "chat-widget fixed inset-3 sm:inset-8 rounded-2xl overflow-hidden shadow-2xl flex flex-col liquid-glass mac-window z-[60]"
-                : "chat-widget fixed bottom-20 inset-x-3 h-[min(520px,calc(100vh-112px))] rounded-2xl overflow-hidden shadow-2xl flex flex-col liquid-glass mac-window sm:inset-x-auto sm:h-[600px] sm:w-[420px] sm:max-w-[420px] sm:start-8"
-            }
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.18, ease: "easeOut" }}
+            className="fixed bottom-20 inset-x-3 h-[min(520px,calc(100vh-112px))] rounded-2xl overflow-hidden shadow-2xl flex flex-col border border-primary/20 bg-background/80 backdrop-blur-xl sm:inset-x-auto sm:h-[600px] sm:w-[420px] sm:max-w-[420px] sm:start-8"
+            initial={{ scale: 0.8, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.8, opacity: 0, y: 20 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
               <div className="relative flex items-center justify-between px-4 py-3 text-foreground overflow-hidden">
                 <div className="absolute inset-0 bg-background/60 backdrop-blur-sm" />
                 <div className="absolute inset-0 border-b-2 border-primary/30" />
                 <div className="flex items-center gap-3 relative z-10">
-                  <MacTrafficLights
-                    className="me-1"
-                    onClose={() => { setIsMaximized(false); setIsMinimized(true); }}
-                    onMinimize={() => { setIsMaximized(false); setIsMinimized(true); }}
-                    onMaximize={() => setIsMaximized((v) => !v)}
-                  />
                   <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center ring-2 ring-primary/30">
                     <Sparkles className="w-4 h-4 text-primary" />
                   </div>
@@ -567,16 +571,23 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
 
               {/* Pinned option buttons above input */}
               {hasOptions && lastBotMsg?.options && (
-                <div className="px-2.5 py-1.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm flex flex-col items-center gap-0.5">
+                <motion.div
+                  className="px-2.5 py-1.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm flex flex-col items-center gap-0.5"
+                  initial="hidden"
+                  animate="visible"
+                  variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
+                >
                   {lastBotMsg.options.map((opt) => (
-                    <button
+                    <motion.button
                       key={opt}
                       onClick={() => handleOptionClick(opt)}
                       disabled={sending}
-                      className="w-auto min-w-[60%] max-w-[85%] px-3 py-1.5 text-[11px] sm:text-xs leading-snug font-bold font-display rounded-full border border-primary/30 text-primary-foreground bg-primary/80 hover:bg-primary hover:border-primary/50 transition-colors text-center disabled:opacity-50"
+                      className="w-auto min-w-[60%] max-w-[85%] px-3 py-1.5 text-[11px] sm:text-xs leading-snug font-bold font-display rounded-md border border-primary/30 text-primary-foreground bg-primary/80 hover:bg-primary hover:border-primary/50 transition-all text-center disabled:opacity-50"
+                      variants={{ hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0 } }}
+                      transition={{ duration: 0.2 }}
                     >
                       {opt}
-                    </button>
+                    </motion.button>
                   ))}
                   <div className="flex gap-1 mt-0.5">
                     {lastBotMsg.id !== "bot-welcome" && !lastBotMsg.id.startsWith("bot-menu-") && optionsHistory.length > 0 && (
@@ -594,7 +605,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;
                       {isHebrew ? "↩ תפריט ראשי" : "↩ Main menu"}
                     </button>
                   </div>
-                </div>
+                </motion.div>
               )}
               {!hasOptions && lastBotMsg && lastBotMsg.id !== "bot-welcome" && !lastBotMsg.id.startsWith("bot-menu-") && !sending && (
                 <div className="px-2.5 py-1.5 border-t border-primary/10 bg-background/60 backdrop-blur-sm flex gap-1">

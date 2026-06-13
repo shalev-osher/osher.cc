@@ -18,23 +18,4 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  define: {
-    __BUILD_ID__: JSON.stringify(Date.now().toString(36)),
-  },
-  build: {
-    target: "es2020",
-    cssCodeSplit: true,
-    sourcemap: false,
-    minify: "esbuild",
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          "react-vendor": ["react", "react-dom", "react-router-dom"],
-          "ui-vendor": ["framer-motion", "lucide-react"],
-          "query-vendor": ["@tanstack/react-query"],
-          "supabase-vendor": ["@supabase/supabase-js"],
-        },
-      },
-    },
-  },
 }));

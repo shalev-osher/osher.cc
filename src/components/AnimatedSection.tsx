@@ -12,32 +12,32 @@ interface AnimatedSectionProps {
 
 const animations: Record<AnimationType, Variants> = {
   fadeUp: {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0 },
   },
   fadeDown: {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
+    hidden: { opacity: 0, y: -40 },
+    visible: { opacity: 1, y: 0 },
   },
   slideLeft: {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
+    hidden: { opacity: 0, x: -60 },
+    visible: { opacity: 1, x: 0 },
   },
   slideRight: {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
+    hidden: { opacity: 0, x: 60 },
+    visible: { opacity: 1, x: 0 },
   },
   scaleUp: {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
+    hidden: { opacity: 0, scale: 0.85 },
+    visible: { opacity: 1, scale: 1 },
   },
   blur: {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
+    hidden: { opacity: 0, filter: "blur(10px)" },
+    visible: { opacity: 1, filter: "blur(0px)" },
   },
   rotate: {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
+    hidden: { opacity: 0, rotate: -3, y: 30 },
+    visible: { opacity: 1, rotate: 0, y: 0 },
   },
 };
 
@@ -48,9 +48,9 @@ const AnimatedSection = ({ children, className = "", delay = 0, animation = "fad
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-40px" }}
+      viewport={{ once: true, margin: "-80px" }}
       variants={variant}
-      transition={{ duration: 0.35, delay: Math.min(delay, 0.04), ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
       {children}
