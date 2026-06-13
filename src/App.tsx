@@ -4,7 +4,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PageTransition from "@/components/PageTransition";
 
-import ScrollToTop from "@/components/ScrollToTop";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import Index from "./pages/Index";
 import Admin from "./pages/Admin";
@@ -28,7 +27,6 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </PageTransition>
-          <ScrollToTop />
           
         </BrowserRouter>
       </TooltipProvider>
