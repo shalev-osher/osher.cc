@@ -1,0 +1,309 @@
+import type { AppId } from "./WindowManager";
+
+/**
+ * Premium macOS-style app icon set.
+ * Each icon: squircle background with gradient, inset highlight, outer shadow, and a
+ * unique vector glyph. Rendered at the container's full size — drop them inside any
+ * square container (Dock, Launchpad, Desktop icons, Mission Control thumbnails…).
+ */
+
+const Squircle = ({
+  gradient, children, ringTint = "rgba(255,255,255,0.22)",
+}: { gradient: string; children: React.ReactNode; ringTint?: string }) => (
+  <div
+    className="relative w-full h-full"
+    style={{
+      borderRadius: "22.5%",
+      background: gradient,
+      boxShadow:
+        "0 10px 22px -8px rgba(0,0,0,0.55), 0 2px 4px rgba(0,0,0,0.25), " +
+        `inset 0 1px 0 ${ringTint}, inset 0 -2px 4px rgba(0,0,0,0.22)`,
+    }}
+  >
+    {/* top sheen */}
+    <div
+      className="absolute inset-0 pointer-events-none"
+      style={{
+        borderRadius: "22.5%",
+        background:
+          "radial-gradient(120% 60% at 50% -10%, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 60%)",
+      }}
+    />
+    <div
+      className="absolute inset-0 overflow-hidden"
+      style={{ borderRadius: "22.5%" }}
+    >
+      {children}
+    </div>
+  </div>
+);
+
+const Glyph = ({ children }: { children: React.ReactNode }) => (
+  <svg
+    viewBox="0 0 100 100"
+    xmlns="http://www.w3.org/2000/svg"
+    className="absolute inset-0 w-full h-full"
+  >
+    {children}
+  </svg>
+);
+
+/* ───────────────────────── Icons ───────────────────────── */
+
+const FinderIcon = () => (
+  <Squircle gradient="linear-gradient(180deg,#7cc7ff 0%,#3486db 55%,#1f63b8 100%)">
+    <Glyph>
+      {/* Two profile silhouettes back-to-back, classic Finder hint */}
+      <defs>
+        <linearGradient id="fnDark" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#0c3a78" />
+          <stop offset="1" stopColor="#08234a" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M50 18c-13 0-22 13-22 32s9 32 22 32V62c-5-1-9-6-9-12s4-11 9-12V18z"
+        fill="url(#fnDark)"
+      />
+      <path
+        d="M50 18c13 0 22 13 22 32S63 82 50 82V62c5-1 9-6 9-12s-4-11-9-12V18z"
+        fill="#ffffff"
+      />
+      {/* Eyes */}
+      <circle cx="42" cy="42" r="2.4" fill="#ffffff" />
+      <circle cx="58" cy="42" r="2.4" fill="#0c3a78" />
+      {/* Smile */}
+      <path
+        d="M38 60 Q 50 70 62 60"
+        stroke="#0c3a78" strokeWidth="2" fill="none" strokeLinecap="round"
+      />
+    </Glyph>
+  </Squircle>
+);
+
+const HomeIcon = () => (
+  <Squircle gradient="linear-gradient(180deg,#ff8a5b 0%,#e64a32 60%,#b3270f 100%)">
+    <Glyph>
+      <path
+        d="M22 50 L50 24 L78 50 L72 50 L72 78 L56 78 L56 60 L44 60 L44 78 L28 78 L28 50 Z"
+        fill="#ffffff"
+      />
+      <path d="M50 18 L20 46 L26 52 L50 30 L74 52 L80 46 Z" fill="#ffffff" />
+    </Glyph>
+  </Squircle>
+);
+
+const AboutIcon = () => (
+  <Squircle gradient="linear-gradient(180deg,#f7d36b 0%,#d49b2a 55%,#a06b10 100%)">
+    <Glyph>
+      {/* Profile card */}
+      <rect x="18" y="26" width="64" height="48" rx="6" fill="#ffffff" />
+      <circle cx="38" cy="46" r="8" fill="#d49b2a" />
+      <path d="M28 64 c2-6 8-9 10-9 h0 c2 0 8 3 10 9 v2 H28 z" fill="#d49b2a" />
+      <rect x="54" y="40" width="20" height="3" rx="1.5" fill="#bd8c25" />
+      <rect x="54" y="48" width="20" height="3" rx="1.5" fill="#bd8c25" />
+      <rect x="54" y="56" width="14" height="3" rx="1.5" fill="#bd8c25" />
+    </Glyph>
+  </Squircle>
+);
+
+const SkillsIcon = () => (
+  <Squircle gradient="linear-gradient(180deg,#7a8cff 0%,#4254e0 55%,#23288f 100%)">
+    <Glyph>
+      {/* </> brackets + slash */}
+      <path
+        d="M30 36 L18 50 L30 64"
+        stroke="#ffffff" strokeWidth="6" fill="none"
+        strokeLinecap="round" strokeLinejoin="round"
+      />
+      <path
+        d="M70 36 L82 50 L70 64"
+        stroke="#ffffff" strokeWidth="6" fill="none"
+        strokeLinecap="round" strokeLinejoin="round"
+      />
+      <path
+        d="M58 30 L42 70"
+        stroke="#ffffff" strokeWidth="6" fill="none" strokeLinecap="round"
+      />
+    </Glyph>
+  </Squircle>
+);
+
+const ProjectsIcon = () => (
+  <Squircle gradient="linear-gradient(180deg,#3a3a3f 0%,#1d1d22 55%,#0a0a0d 100%)" ringTint="rgba(255,255,255,0.15)">
+    <Glyph>
+      {/* Xcode-style hammer */}
+      <defs>
+        <linearGradient id="hammerHead" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#8db8ff" />
+          <stop offset="1" stopColor="#2f7be2" />
+        </linearGradient>
+      </defs>
+      <rect x="46" y="40" width="6" height="38" rx="2" fill="#cfcfd6" />
+      <path
+        d="M28 22 C38 16 60 16 70 22 L74 32 C64 28 36 28 26 32 Z"
+        fill="url(#hammerHead)"
+      />
+      <rect x="32" y="30" width="36" height="10" rx="2" fill="url(#hammerHead)" />
+      <circle cx="49" cy="35" r="2" fill="#ffffff" opacity="0.7" />
+    </Glyph>
+  </Squircle>
+);
+
+const ExperienceIcon = () => (
+  <Squircle gradient="linear-gradient(180deg,#5fd6c2 0%,#1c9d8a 55%,#0d5e51 100%)">
+    <Glyph>
+      {/* Document */}
+      <rect x="22" y="16" width="56" height="68" rx="5" fill="#ffffff" />
+      {/* Timeline dots + lines */}
+      <circle cx="32" cy="32" r="3" fill="#0d5e51" />
+      <rect x="40" y="30" width="32" height="4" rx="2" fill="#bfe5dd" />
+      <circle cx="32" cy="46" r="3" fill="#0d5e51" />
+      <rect x="40" y="44" width="32" height="4" rx="2" fill="#bfe5dd" />
+      <circle cx="32" cy="60" r="3" fill="#0d5e51" />
+      <rect x="40" y="58" width="24" height="4" rx="2" fill="#bfe5dd" />
+      <circle cx="32" cy="74" r="3" fill="#1c9d8a" />
+      <rect x="40" y="72" width="20" height="4" rx="2" fill="#bfe5dd" />
+      {/* timeline rail */}
+      <line x1="32" y1="36" x2="32" y2="70" stroke="#1c9d8a" strokeWidth="1.5" />
+    </Glyph>
+  </Squircle>
+);
+
+const EducationIcon = () => (
+  <Squircle gradient="linear-gradient(180deg,#fff1c2 0%,#f5c344 55%,#b0791b 100%)">
+    <Glyph>
+      {/* Medal with ribbon */}
+      <path d="M30 18 L42 50 L34 50 L30 32 Z" fill="#d7493f" />
+      <path d="M70 18 L58 50 L66 50 L70 32 Z" fill="#d7493f" />
+      <circle cx="50" cy="62" r="22"
+        fill="url(#medalGrad)"
+        stroke="#9a6610" strokeWidth="2"
+      />
+      <defs>
+        <radialGradient id="medalGrad" cx="50%" cy="40%" r="70%">
+          <stop offset="0" stopColor="#fff5cf" />
+          <stop offset="0.6" stopColor="#e3a824" />
+          <stop offset="1" stopColor="#9a6610" />
+        </radialGradient>
+      </defs>
+      <path
+        d="M50 50 L53 60 L63 60 L55 66 L58 76 L50 70 L42 76 L45 66 L37 60 L47 60 Z"
+        fill="#ffffff"
+      />
+    </Glyph>
+  </Squircle>
+);
+
+const ContactIcon = () => (
+  <Squircle gradient="linear-gradient(180deg,#79d0ff 0%,#1e8ed8 55%,#0b5fa6 100%)">
+    <Glyph>
+      {/* Envelope */}
+      <rect x="18" y="30" width="64" height="42" rx="5" fill="#ffffff" />
+      <path
+        d="M18 34 L50 56 L82 34"
+        stroke="#0b5fa6" strokeWidth="3" fill="none"
+        strokeLinecap="round" strokeLinejoin="round"
+      />
+      <path d="M18 68 L42 50" stroke="#cfe5f7" strokeWidth="2" fill="none" />
+      <path d="M82 68 L58 50" stroke="#cfe5f7" strokeWidth="2" fill="none" />
+    </Glyph>
+  </Squircle>
+);
+
+const TerminalIcon = () => (
+  <Squircle gradient="linear-gradient(180deg,#2a2a2e 0%,#111114 55%,#050506 100%)" ringTint="rgba(255,255,255,0.12)">
+    <Glyph>
+      {/* Window chrome */}
+      <rect x="14" y="18" width="72" height="64" rx="6" fill="#1c1c20" />
+      <rect x="14" y="18" width="72" height="12" rx="6" fill="#2b2b30" />
+      <circle cx="22" cy="24" r="2" fill="#ff5f57" />
+      <circle cx="30" cy="24" r="2" fill="#febc2e" />
+      <circle cx="38" cy="24" r="2" fill="#28c840" />
+      {/* Prompt > _ */}
+      <path
+        d="M24 50 L34 58 L24 66"
+        stroke="#3ddc84" strokeWidth="3.5" fill="none"
+        strokeLinecap="round" strokeLinejoin="round"
+      />
+      <rect x="40" y="62" width="20" height="3.5" rx="1.5" fill="#3ddc84" />
+    </Glyph>
+  </Squircle>
+);
+
+const CalculatorIcon = () => (
+  <Squircle gradient="linear-gradient(180deg,#3c3c40 0%,#1c1c1f 55%,#0a0a0c 100%)" ringTint="rgba(255,255,255,0.12)">
+    <Glyph>
+      {/* Display */}
+      <rect x="16" y="14" width="68" height="20" rx="3" fill="#0d0d10" />
+      <text x="78" y="29" textAnchor="end" fontFamily="ui-monospace, monospace" fontSize="14" fill="#f5f5f7" fontWeight="300">0</text>
+      {/* Buttons grid */}
+      {Array.from({ length: 4 }).map((_, r) =>
+        Array.from({ length: 4 }).map((_, c) => {
+          const x = 16 + c * 18, y = 40 + r * 12;
+          const isOp = c === 3;
+          return (
+            <rect key={`${r}-${c}`} x={x} y={y} width="14" height="9" rx="2"
+              fill={isOp ? "#f5a623" : "#5e5e63"} />
+          );
+        })
+      )}
+    </Glyph>
+  </Squircle>
+);
+
+const NotesIcon = () => (
+  <Squircle gradient="linear-gradient(180deg,#fff094 0%,#f3c41a 55%,#a37b07 100%)">
+    <Glyph>
+      <rect x="18" y="16" width="64" height="68" rx="4" fill="#fffef5" />
+      <rect x="18" y="16" width="64" height="10" fill="#f0d243" />
+      <line x1="26" y1="38" x2="74" y2="38" stroke="#d8c170" strokeWidth="1.5" />
+      <line x1="26" y1="48" x2="74" y2="48" stroke="#d8c170" strokeWidth="1.5" />
+      <line x1="26" y1="58" x2="74" y2="58" stroke="#d8c170" strokeWidth="1.5" />
+      <line x1="26" y1="68" x2="62" y2="68" stroke="#d8c170" strokeWidth="1.5" />
+    </Glyph>
+  </Squircle>
+);
+
+const SettingsIcon = () => (
+  <Squircle gradient="linear-gradient(180deg,#9aa1ab 0%,#525a66 55%,#262a31 100%)" ringTint="rgba(255,255,255,0.2)">
+    <Glyph>
+      <defs>
+        <radialGradient id="gearGrad" cx="50%" cy="40%" r="60%">
+          <stop offset="0" stopColor="#f5f6fa" />
+          <stop offset="1" stopColor="#9ea4af" />
+        </radialGradient>
+      </defs>
+      {/* Gear */}
+      <g transform="translate(50 50)">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <rect key={i} x="-4" y="-34" width="8" height="14" rx="2"
+            fill="url(#gearGrad)" transform={`rotate(${i * 45})`} />
+        ))}
+        <circle r="22" fill="url(#gearGrad)" stroke="#3a3f47" strokeWidth="1.5" />
+        <circle r="8" fill="#262a31" />
+      </g>
+    </Glyph>
+  </Squircle>
+);
+
+/* ───────── Registry ───────── */
+
+export const APP_ICONS: Record<AppId, React.FC> = {
+  finder: FinderIcon,
+  home: HomeIcon,
+  about: AboutIcon,
+  skills: SkillsIcon,
+  projects: ProjectsIcon,
+  experience: ExperienceIcon,
+  education: EducationIcon,
+  contact: ContactIcon,
+  terminal: TerminalIcon,
+  calculator: CalculatorIcon,
+  notes: NotesIcon,
+  settings: SettingsIcon,
+};
+
+export const AppIcon = ({ id }: { id: AppId }) => {
+  const Cmp = APP_ICONS[id];
+  return Cmp ? <Cmp /> : null;
+};
