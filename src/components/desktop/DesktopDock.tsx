@@ -13,6 +13,7 @@ const DesktopDock = () => {
 
   const apps: DockApp[] = [
     { id: "finder",     label: "Finder" },
+    { id: "safari",     label: "Safari" },
     { id: "home",       label: lang === "he" ? "בית" : "Home" },
     { id: "about",      label: lang === "he" ? "אודות" : "About" },
     { id: "skills",     label: lang === "he" ? "מיומנויות" : "Skills" },

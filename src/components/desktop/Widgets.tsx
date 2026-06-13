@@ -42,13 +42,30 @@ const ClockWidget = () => {
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
-  const time = now.toLocaleTimeString(lang === "he" ? "he-IL" : "en-US", { hour: "2-digit", minute: "2-digit", hour12: false });
-  const date = now.toLocaleDateString(lang === "he" ? "he-IL" : "en-US", { weekday: "long", month: "short", day: "numeric" });
+  const hAng = ((now.getHours() % 12) + now.getMinutes() / 60) * 30;
+  const mAng = (now.getMinutes() + now.getSeconds() / 60) * 6;
+  const sAng = now.getSeconds() * 6;
+  const city = lang === "he" ? "תל אביב" : "Tel Aviv";
   return (
-    <div className="w-44 p-4 rounded-2xl border border-white/15 bg-white/10 backdrop-blur-2xl
-                    shadow-[0_20px_50px_-20px_rgba(0,0,0,0.55)] text-white">
-      <div className="text-[11px] text-white/70 uppercase tracking-wider">{date}</div>
-      <div className="text-4xl font-light tabular-nums tracking-tight mt-1">{time}</div>
+    <div className="w-44 h-44 p-3 rounded-3xl border border-white/15 bg-white/10 backdrop-blur-2xl
+                    shadow-[0_20px_50px_-20px_rgba(0,0,0,0.55)] text-white flex flex-col items-center">
+      <svg viewBox="0 0 100 100" className="w-32 h-32">
+        <circle cx="50" cy="50" r="46" fill="#0c1117" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" />
+        {Array.from({ length: 12 }).map((_, i) => {
+          const a = (i * 30 - 90) * Math.PI / 180;
+          return (
+            <line key={i}
+              x1={50 + Math.cos(a) * 38} y1={50 + Math.sin(a) * 38}
+              x2={50 + Math.cos(a) * 43} y2={50 + Math.sin(a) * 43}
+              stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+          );
+        })}
+        <g transform={`rotate(${hAng} 50 50)`}><line x1="50" y1="50" x2="50" y2="26" stroke="#fff" strokeWidth="3" strokeLinecap="round" /></g>
+        <g transform={`rotate(${mAng} 50 50)`}><line x1="50" y1="50" x2="50" y2="14" stroke="#fff" strokeWidth="2" strokeLinecap="round" /></g>
+        <g transform={`rotate(${sAng} 50 50)`}><line x1="50" y1="55" x2="50" y2="12" stroke="#ff9f0a" strokeWidth="1" strokeLinecap="round" /></g>
+        <circle cx="50" cy="50" r="2.6" fill="#ff9f0a" />
+      </svg>
+      <div className="text-[10px] text-white/70 mt-1">{city}</div>
     </div>
   );
 };
@@ -112,8 +129,10 @@ const QuickLinksWidget = () => {
 const Widgets = () => (
   <>
     <Widget id="clock" defaultPos={{ x: 24, y: 56 }}><ClockWidget /></Widget>
-    <Widget id="stats" defaultPos={{ x: 24, y: 200 }}><StatsWidget /></Widget>
-    <Widget id="links" defaultPos={{ x: 24, y: 360 }}><QuickLinksWidget /></Widget>
+    <Widget id="calendar" defaultPos={{ x: 24, y: 240 }}><CalendarWidget /></Widget>
+    <Widget id="weather" defaultPos={{ x: 24, y: 420 }}><WeatherWidget /></Widget>
+    <Widget id="stats" defaultPos={{ x: 220, y: 56 }}><StatsWidget /></Widget>
+    <Widget id="links" defaultPos={{ x: 220, y: 200 }}><QuickLinksWidget /></Widget>
   </>
 );
 
