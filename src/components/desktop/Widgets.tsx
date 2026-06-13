@@ -127,6 +127,10 @@ const QuickLinksWidget = () => {
 };
 
 const Widgets = () => (
+  null as unknown as JSX.Element
+);
+
+const _Calendar = () => null;
   <>
     <Widget id="clock" defaultPos={{ x: 24, y: 56 }}><ClockWidget /></Widget>
     <Widget id="calendar" defaultPos={{ x: 24, y: 240 }}><CalendarWidget /></Widget>
