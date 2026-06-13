@@ -95,11 +95,11 @@ const Education = () => {
           <div className="relative max-w-6xl mx-auto">
             <div className="relative">
               <div ref={emblaRef} className="overflow-hidden">
-                <div className="flex">
+                <div className="flex items-stretch">
                   {certificates.map((cert, index) => (
                     <motion.div
                       key={cert.name}
-                      className="flex-[0_0_33.333%] min-w-0 px-2 md:px-3"
+                      className="flex-[0_0_33.333%] min-w-0 px-2 md:px-3 h-auto"
                       initial={{ opacity: 0, y: 40, scale: 0.92 }}
                       whileInView={{ opacity: 1, y: 0, scale: 1 }}
                       viewport={{ once: true, amount: 0.2 }}
@@ -111,9 +111,9 @@ const Education = () => {
                         damping: 15,
                       }}
                     >
-                      <motion.div className="relative group cursor-pointer" whileHover={{ y: -8 }} transition={{ duration: 0.4, ease: "easeOut" }}>
+                      <motion.div className="relative group cursor-pointer h-full" whileHover={{ y: -8 }} transition={{ duration: 0.4, ease: "easeOut" }}>
                         <div className={`absolute -inset-2 rounded-3xl bg-gradient-to-br ${cert.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl`} />
-                        <div className="relative rounded-2xl overflow-hidden bg-card/60 backdrop-blur-sm border border-border/40 group-hover:border-primary/20 transition-all duration-500">
+                        <div className="relative h-full flex flex-col rounded-2xl overflow-hidden bg-card/60 backdrop-blur-sm border border-border/40 group-hover:border-primary/20 transition-all duration-500">
                           <div className="relative overflow-hidden" onClick={() => setSelectedImage(cert.image)}>
                             <div className={`absolute inset-0 bg-gradient-to-br ${cert.accent} mix-blend-overlay z-[1]`} />
                             <img src={cert.image} alt={cert.name} className="w-full h-40 md:h-52 object-contain bg-muted/20 transition-all duration-700 group-hover:scale-[1.03]" loading="lazy" />
