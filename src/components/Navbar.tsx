@@ -44,7 +44,28 @@ const Navbar = () => {
             <a href="#" className="font-display text-xl sm:text-2xl font-bold text-gradient" aria-label="Shalev Osher - Home">
               {lang === "he" ? "שליו אושר" : "Shalev Osher"}
             </a>
-            <div className="flex items-center gap-2">
+
+            {/* Desktop links - centered */}
+            <div className="hidden md:flex items-center gap-2 absolute left-1/2 -translate-x-1/2">
+              {navLinks.map((link) => (
+                <MagneticButton key={link.href} strength={0.2} radius={30}>
+                  <motion.a
+                    href={link.href}
+                    whileHover={navButtonHover}
+                    whileTap={navButtonTap}
+                    className={`font-display text-base font-semibold px-4 py-2 rounded-lg transition-colors ${
+                      activeSection === link.id
+                        ? "text-primary bg-primary/10"
+                        : "text-foreground/80 hover:text-primary hover:bg-primary/5"
+                    }`}
+                  >
+                    {link.label}
+                  </motion.a>
+                </MagneticButton>
+              ))}
+            </div>
+
+            <div className="flex md:hidden items-center gap-2">
               <MagneticButton strength={0.25} radius={40}>
                 <motion.button
                   onClick={() => setIsMobileOpen(!isMobileOpen)}
