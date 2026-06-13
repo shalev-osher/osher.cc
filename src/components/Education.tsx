@@ -101,9 +101,9 @@ const Education = () => {
             <div className="relative">
               <div ref={emblaRef} className="overflow-hidden">
                 <div className="flex items-stretch">
-                  {certificates.map((cert, index) => (
+                  {[...certificates, ...certificates, ...certificates].map((cert, index) => (
                     <motion.div
-                      key={cert.name}
+                      key={`${cert.name}-${index}`}
                       className="flex-[0_0_33.333%] min-w-0 px-2 md:px-3 h-auto"
                       initial={{ opacity: 0, y: 40, scale: 0.92 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
