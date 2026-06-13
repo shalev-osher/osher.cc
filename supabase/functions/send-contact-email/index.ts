@@ -67,13 +67,13 @@ Deno.serve(async (req) => {
         body: JSON.stringify({
           from: "contact@osher.cc",
           to: RECIPIENT_EMAIL,
-          subject: `New Contact Form: ${name.trim()}`,
+          subject: `New Contact Form: ${name.trim().slice(0, 120)}`,
           html: `
             <h2>New Contact Form Submission</h2>
-            <p><strong>Name:</strong> ${name.trim()}</p>
-            <p><strong>Email:</strong> ${email.trim()}</p>
+            <p><strong>Name:</strong> ${escHtml(name.trim())}</p>
+            <p><strong>Email:</strong> ${escHtml(email.trim())}</p>
             <p><strong>Message:</strong></p>
-            <p>${message.trim().replace(/\n/g, "<br>")}</p>
+            <p>${escHtml(message.trim()).replace(/\n/g, "<br>")}</p>
           `,
         }),
       });
