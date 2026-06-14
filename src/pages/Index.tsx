@@ -26,7 +26,7 @@ const Index = () => {
       <SkipToContent />
       <ParallaxBackground />
       <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-[5]">
-        <Particles count={60} className="!absolute" />
+        <Particles count={120} className="!absolute" />
       </div>
       <CursorGlow />
       <LoadingScreen onComplete={handleLoadComplete} />
