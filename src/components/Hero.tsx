@@ -62,7 +62,7 @@ const Hero = () => {
               {helloTypewriter.displayedText}
               <span className={`inline-block w-[2px] h-[0.8em] bg-foreground/60 ms-1 align-middle transition-opacity duration-100 ${helloTypewriter.showCursor && !nameTypewriter.displayedText ? 'opacity-100' : 'opacity-0'}`} />
             </span>
-            <span className="block text-primary">
+            <span className="block text-gradient">
               {nameTypewriter.displayedText}
               <span className={`inline-block w-[3px] h-[0.8em] bg-primary ms-1 align-middle transition-opacity duration-100 ${nameTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} />
             </span>
