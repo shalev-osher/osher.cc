@@ -50,7 +50,7 @@ const Hero = () => {
   });
 
   return (
-    <section className="min-h-screen flex items-center justify-center relative overflow-hidden noise-texture" aria-label="Hero section">
+    <section className="min-h-screen pb-40 md:pb-32 flex items-center justify-center relative overflow-hidden noise-texture" aria-label="Hero section">
       <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
       <Particles count={28} />
 
