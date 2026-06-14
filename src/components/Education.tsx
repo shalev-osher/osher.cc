@@ -152,10 +152,10 @@ const Education = () => {
                   style={{ transform: `translate3d(${trackOffset}%, 0, 0)` }}
                   onTransitionEnd={handleTrackTransitionEnd}
                 >
-                  {carouselItems.map((cert, index) => (
+                  {visibleCertificateItems.map((cert, index) => (
                     <div
                       key={`${cert.name}-${index}`}
-                      className="flex-[0_0_33.333%] min-w-0 px-2 md:px-3 h-auto"
+                      className="flex-[0_0_100%] min-w-0 px-2 h-auto md:flex-[0_0_33.333%] md:px-3"
                     >
                       <div className="relative group cursor-pointer h-full transition-transform duration-300 hover:-translate-y-2" dir={isRtl ? "rtl" : "ltr"}>
                         <div className={`absolute -inset-2 rounded-3xl bg-gradient-to-br ${cert.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl`} />
@@ -227,18 +227,21 @@ const Education = () => {
         </AnimatedSection>
       </div>
 
-      <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
-        <DialogContent className="max-w-2xl w-[90vw] sm:w-auto p-0 bg-transparent border-none shadow-none [&>button]:hidden">
-          <div className="relative">
-            <button onClick={() => setSelectedImage(null)} className="absolute -top-12 right-0 z-10 p-2 rounded-full bg-card/80 backdrop-blur-md border border-border/50 hover:border-primary/50 transition-all">
+      {selectedImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 p-3 md:p-6"
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative max-h-[88svh] w-full max-w-2xl" onClick={(event) => event.stopPropagation()}>
+            <button onClick={() => setSelectedImage(null)} className="absolute -top-11 end-0 z-10 p-2 rounded-full bg-card border border-border/50 hover:border-primary/50 transition-colors" aria-label="Close certificate">
               <X className="w-5 h-5 text-foreground" />
             </button>
-            {selectedImage && (
-              <motion.img initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} src={selectedImage} alt="Certificate" className="w-full h-auto max-h-[80vh] object-contain rounded-2xl shadow-2xl" />
-            )}
+            <img src={selectedImage} alt="Certificate" className="w-full max-h-[88svh] object-contain rounded-2xl shadow-2xl" />
           </div>
-        </DialogContent>
-      </Dialog>
+        </div>
+      )}
     </section>
   );
 };
