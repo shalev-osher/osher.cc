@@ -135,10 +135,14 @@ const Education = () => {
           </div>
 
           <div className="relative max-w-6xl mx-auto">
-            <div className="relative">
-              <div ref={emblaRef} className="overflow-hidden">
-                <div className="flex items-stretch">
-                  {[...certificates, ...certificates, ...certificates].map((cert, index) => (
+            <div className="relative" onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
+              <div className="overflow-hidden" dir="ltr">
+                <div
+                  className={`flex items-stretch ${isTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
+                  style={{ transform: `translate3d(${trackOffset}%, 0, 0)` }}
+                  onTransitionEnd={handleTrackTransitionEnd}
+                >
+                  {carouselItems.map((cert, index) => (
                     <motion.div
                       key={`${cert.name}-${index}`}
                       className="flex-[0_0_33.333%] min-w-0 px-2 md:px-3 h-auto"
@@ -152,7 +156,7 @@ const Education = () => {
                         damping: 15,
                       }}
                     >
-                      <motion.div className="relative group cursor-pointer h-full" whileHover={{ y: -8 }} transition={{ duration: 0.4, ease: "easeOut" }}>
+                      <motion.div className="relative group cursor-pointer h-full" dir={isRtl ? "rtl" : "ltr"} whileHover={{ y: -8 }} transition={{ duration: 0.4, ease: "easeOut" }}>
                         <div className={`absolute -inset-2 rounded-3xl bg-gradient-to-br ${cert.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl`} />
                         <div className="relative h-full flex flex-col rounded-2xl overflow-hidden bg-card/60 backdrop-blur-sm border border-border/40 group-hover:border-primary/20 transition-all duration-500">
                           <div className="relative overflow-hidden" onClick={() => setSelectedImage(cert.image)}>
