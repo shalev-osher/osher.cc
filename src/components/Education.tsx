@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useMemo } from "react";
+import { useState, useCallback, useEffect, useMemo, type TransitionEvent } from "react";
 import { GraduationCap, Award, Calendar, ExternalLink, Clock, Languages, X, Download, Eye } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
@@ -66,7 +66,9 @@ const Education = () => {
     return () => window.clearInterval(interval);
   }, [isPaused, scrollNext]);
 
-  const handleTrackTransitionEnd = useCallback(() => {
+  const handleTrackTransitionEnd = useCallback((event: TransitionEvent<HTMLDivElement>) => {
+    if (event.target !== event.currentTarget || event.propertyName !== "transform") return;
+
     const firstRealSlideIndex = VISIBLE_CERTIFICATES;
     const firstCloneAfterRealSlidesIndex = VISIBLE_CERTIFICATES + certificates.length;
 
