@@ -74,7 +74,7 @@ const Skills = () => {
           </div>
         </AnimatedSection>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Skills">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-6" role="list" aria-label="Skills">
           {skills.map((skill, index) => (
             <SkillCard3D key={skill.title} skill={skill} index={index} />
           ))}
