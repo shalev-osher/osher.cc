@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 
 interface ParticlesProps {
@@ -7,6 +7,18 @@ interface ParticlesProps {
 }
 
 const Particles = ({ count = 30, className = "" }: ParticlesProps) => {
+  const [isLowPower, setIsLowPower] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px), (prefers-reduced-motion: reduce)");
+    const updateIsLowPower = () => setIsLowPower(mediaQuery.matches);
+
+    updateIsLowPower();
+    mediaQuery.addEventListener("change", updateIsLowPower);
+
+    return () => mediaQuery.removeEventListener("change", updateIsLowPower);
+  }, []);
+
   const particles = useMemo(
     () =>
       Array.from({ length: count }, (_, i) => ({
@@ -20,6 +32,8 @@ const Particles = ({ count = 30, className = "" }: ParticlesProps) => {
       })),
     [count]
   );
+
+  if (isLowPower) return null;
 
   return (
     <div

@@ -15,11 +15,11 @@ const education = [
 ];
 
 const certificates = [
-  { name: "Certified Hands-On Cyber Security Specialist", issuer: "Kernelios", code: "CHCSS 310", year: "April 2022", verifyUrl: null, image: "/certificates/kernelios-chcss.jpeg", pdf: "/certificates/kernelios-chcss.pdf", accent: "from-yellow-500/20 to-amber-600/20" },
-  { name: "תעודת גמר - מיישם הגנת סייבר", issuer: "משרד הכלכלה והתעשייה", code: "תעודה מס׳ 1442431", year: "April 2022", verifyUrl: null, image: "/certificates/kernelios-gov.jpeg", pdf: "/certificates/kernelios-gov.pdf", accent: "from-blue-500/20 to-cyan-500/20" },
-  { name: "גיליון ציונים - מיישם הגנת סייבר", issuer: "משרד הכלכלה והתעשייה", code: "קרנליוס בע״מ", year: "June 2022", verifyUrl: null, image: "/certificates/kernelios-grades.jpeg", pdf: "/certificates/kernelios-grades.pdf", accent: "from-blue-500/20 to-indigo-500/20" },
-  { name: "MCSA: Windows Server 2016", issuer: "Microsoft", code: "Cert #1F7071-E04B87", year: "November 2020", verifyUrl: "https://learn.microsoft.com/he-il/users/shalevosher-6659/transcript/714gcwjmylnq9k7", image: "/certificates/mcsa.jpeg", pdf: "/certificates/mcsa.pdf", accent: "from-sky-500/20 to-blue-600/20" },
-  { name: "Linux Essentials", issuer: "Linux Professional Institute (LPI)", code: "LPI000494064", year: "July 2021", verifyUrl: "https://cs.lpi.org/caf/Xamman/certification/verify/LPI000494064/rafgerhedt", image: "/certificates/linux-essentials.jpeg", pdf: "/certificates/linux-essentials.pdf", accent: "from-emerald-500/20 to-teal-500/20" },
+  { name: "Certified Hands-On Cyber Security Specialist", issuer: "Kernelios", code: "CHCSS 310", year: "April 2022", verifyUrl: null, image: "/certificates/optimized/kernelios-chcss.webp", pdf: "/certificates/kernelios-chcss.pdf", accent: "from-yellow-500/20 to-amber-600/20" },
+  { name: "תעודת גמר - מיישם הגנת סייבר", issuer: "משרד הכלכלה והתעשייה", code: "תעודה מס׳ 1442431", year: "April 2022", verifyUrl: null, image: "/certificates/optimized/kernelios-gov.webp", pdf: "/certificates/kernelios-gov.pdf", accent: "from-blue-500/20 to-cyan-500/20" },
+  { name: "גיליון ציונים - מיישם הגנת סייבר", issuer: "משרד הכלכלה והתעשייה", code: "קרנליוס בע״מ", year: "June 2022", verifyUrl: null, image: "/certificates/optimized/kernelios-grades.webp", pdf: "/certificates/kernelios-grades.pdf", accent: "from-blue-500/20 to-indigo-500/20" },
+  { name: "MCSA: Windows Server 2016", issuer: "Microsoft", code: "Cert #1F7071-E04B87", year: "November 2020", verifyUrl: "https://learn.microsoft.com/he-il/users/shalevosher-6659/transcript/714gcwjmylnq9k7", image: "/certificates/optimized/mcsa.webp", pdf: "/certificates/mcsa.pdf", accent: "from-sky-500/20 to-blue-600/20" },
+  { name: "Linux Essentials", issuer: "Linux Professional Institute (LPI)", code: "LPI000494064", year: "July 2021", verifyUrl: "https://cs.lpi.org/caf/Xamman/certification/verify/LPI000494064/rafgerhedt", image: "/certificates/optimized/linux-essentials.webp", pdf: "/certificates/linux-essentials.pdf", accent: "from-emerald-500/20 to-teal-500/20" },
 ];
 
 const VISIBLE_CERTIFICATES = 3;
