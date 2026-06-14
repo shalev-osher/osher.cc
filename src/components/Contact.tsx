@@ -114,12 +114,12 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-24 relative section-glow overflow-hidden" aria-labelledby="contact-heading">
+    <section id="contact" className="py-14 relative section-glow overflow-hidden" aria-labelledby="contact-heading">
       <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
 
       <div className="container mx-auto px-6 relative z-10">
         <AnimatedSection animation="blur">
-          <div className="text-center mb-16">
+          <div className="text-center mb-8">
             <h2 id="contact-heading" className="font-display text-4xl md:text-5xl font-bold mb-4">
               <GradientText>{titleTypewriter.displayedText}</GradientText>
               <span className={`inline-block w-[3px] h-[0.8em] bg-primary ms-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
@@ -133,7 +133,7 @@ const Contact = () => {
 
         <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
           <AnimatedSection delay={0.1} animation="slideLeft">
-            <div className="space-y-8">
+            <div className="space-y-5">
               <div className="space-y-4" role="list" aria-label="Contact information">
                 {contactInfo.map((item) => (
                   <div

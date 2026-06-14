@@ -84,14 +84,14 @@ const Education = () => {
   const trackOffset = -(trackIndex * (100 / VISIBLE_CERTIFICATES));
 
   return (
-    <section id="education" className="py-24 bg-secondary/30 relative overflow-hidden" aria-labelledby="education-heading">
+    <section id="education" className="py-14 bg-secondary/30 relative overflow-hidden" aria-labelledby="education-heading">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] rounded-full bg-primary/[0.03] blur-[120px]" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
         <AnimatedSection animation="scaleUp">
-          <div className="text-center mb-20">
+          <div className="text-center mb-10">
             <h2 id="education-heading" className="font-display text-4xl md:text-5xl font-bold mb-4">
               <GradientText>{titleTypewriter.displayedText}</GradientText>
               <span className={`inline-block w-[3px] h-[0.8em] bg-primary ms-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
@@ -104,7 +104,7 @@ const Education = () => {
         </AnimatedSection>
 
         <AnimatedSection delay={0.1} animation="slideLeft">
-          <div className="max-w-3xl mx-auto mb-24">
+          <div className="max-w-3xl mx-auto mb-12">
             {education.map((edu) => (
               <div key={edu.institution} className="relative group">
                 <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-primary/30 via-primary/10 to-primary/30 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-sm" />

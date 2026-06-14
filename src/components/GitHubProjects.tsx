@@ -48,11 +48,11 @@ const GitHubProjects = () => {
   if (error || (!loading && repos.length === 0)) return null;
 
   return (
-    <section id="projects" className="py-24 relative overflow-hidden section-glow">
+    <section id="projects" className="py-14 relative overflow-hidden section-glow">
       <div className="absolute inset-0" style={{ background: "var(--gradient-radial)" }} />
       <div className="container mx-auto px-6 relative z-10">
         <AnimatedSection animation="blur">
-          <div className="text-center mb-16">
+          <div className="text-center mb-8">
             <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
               <GradientText>{titleTypewriter.displayedText}</GradientText>
               <span className={`inline-block w-[3px] h-[0.8em] bg-primary ms-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
@@ -65,7 +65,7 @@ const GitHubProjects = () => {
         </AnimatedSection>
 
         {loading ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 4k:grid-cols-6 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 4k:grid-cols-6 gap-4">
             {[...Array(6)].map((_, i) => (
               <div key={i} className="card-premium p-6 h-48 animate-pulse">
                 <div className="h-4 bg-muted rounded w-3/4 mb-4" />
@@ -75,7 +75,7 @@ const GitHubProjects = () => {
             ))}
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 4k:grid-cols-6 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 4k:grid-cols-6 gap-4">
             {repos.map((repo, index) => (
               <AnimatedSection key={repo.id} delay={index * 0.1} animation="scaleUp">
                 <RepoCard

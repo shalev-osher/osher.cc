@@ -58,7 +58,7 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="py-24 relative section-glow" aria-labelledby="about-heading">
+    <section id="about" className="py-14 relative section-glow" aria-labelledby="about-heading">
       <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
       
       <div className="container mx-auto px-6 relative z-10">
@@ -70,7 +70,7 @@ const About = () => {
           </AnimatedSection>
 
           <AnimatedSection delay={0.2} animation="slideRight">
-            <div className="space-y-6">
+            <div className="space-y-4">
               <h2 id="about-heading" className="font-display text-4xl md:text-5xl font-bold line-decoration">
                 <GradientText>{titleTypewriter.displayedText}</GradientText>
                 <span className={`inline-block w-[3px] h-[0.8em] bg-primary ms-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />

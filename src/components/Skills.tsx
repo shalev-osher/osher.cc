@@ -56,13 +56,13 @@ const Skills = () => {
   const subtitleTypewriter = useTypewriter({ text: t("skills.subtitle"), speed: 25, delay: 1000, loop: true, pauseDuration: 5000 });
 
   return (
-    <section id="skills" className="py-24 relative overflow-hidden section-glow" aria-labelledby="skills-heading">
+    <section id="skills" className="py-14 relative overflow-hidden section-glow" aria-labelledby="skills-heading">
       <div className="absolute inset-0 bg-secondary/30" />
       <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
 
       <div className="container mx-auto px-6 relative z-10">
         <AnimatedSection animation="blur">
-          <div className="text-center mb-16">
+          <div className="text-center mb-8">
             <h2 id="skills-heading" className="font-display text-4xl md:text-5xl font-bold mb-4">
               <GradientText>{titleTypewriter.displayedText}</GradientText>
               <span className={`inline-block w-[3px] h-[0.8em] bg-primary ms-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
@@ -74,7 +74,7 @@ const Skills = () => {
           </div>
         </AnimatedSection>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-6" role="list" aria-label="Skills">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-4" role="list" aria-label="Skills">
           {skills.map((skill, index) => (
             <SkillCard3D key={skill.title} skill={skill} index={index} />
           ))}
