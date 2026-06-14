@@ -13,6 +13,7 @@ const NetworkBackground = () => {
     let height = 0;
     let dpr = Math.min(window.devicePixelRatio || 1, 2);
     let raf = 0;
+    const isLowPower = window.matchMedia("(max-width: 767px), (prefers-reduced-motion: reduce)").matches;
 
     type P = { x: number; y: number; vx: number; vy: number };
     let points: P[] = [];
@@ -26,7 +27,7 @@ const NetworkBackground = () => {
       canvas.style.height = height + "px";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const density = Math.min(110, Math.floor((width * height) / 16000));
+      const density = isLowPower ? 18 : Math.min(110, Math.floor((width * height) / 16000));
       points = Array.from({ length: density }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -73,7 +74,9 @@ const NetworkBackground = () => {
         ctx.fill();
       }
 
-      raf = requestAnimationFrame(tick);
+      if (!isLowPower) {
+        raf = requestAnimationFrame(tick);
+      }
     };
 
     init();

@@ -2,8 +2,6 @@ import { useState, useCallback, useEffect, useMemo, type TransitionEvent } from 
 import { GraduationCap, Award, Calendar, ExternalLink, Clock, Languages, X, Download, Eye } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { motion } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTypewriter } from "@/hooks/useTypewriter";
 
@@ -17,11 +15,11 @@ const education = [
 ];
 
 const certificates = [
-  { name: "Certified Hands-On Cyber Security Specialist", issuer: "Kernelios", code: "CHCSS 310", year: "April 2022", verifyUrl: null, image: "/certificates/kernelios-chcss.jpeg", pdf: "/certificates/kernelios-chcss.pdf", accent: "from-yellow-500/20 to-amber-600/20" },
-  { name: "תעודת גמר - מיישם הגנת סייבר", issuer: "משרד הכלכלה והתעשייה", code: "תעודה מס׳ 1442431", year: "April 2022", verifyUrl: null, image: "/certificates/kernelios-gov.jpeg", pdf: "/certificates/kernelios-gov.pdf", accent: "from-blue-500/20 to-cyan-500/20" },
-  { name: "גיליון ציונים - מיישם הגנת סייבר", issuer: "משרד הכלכלה והתעשייה", code: "קרנליוס בע״מ", year: "June 2022", verifyUrl: null, image: "/certificates/kernelios-grades.jpeg", pdf: "/certificates/kernelios-grades.pdf", accent: "from-blue-500/20 to-indigo-500/20" },
-  { name: "MCSA: Windows Server 2016", issuer: "Microsoft", code: "Cert #1F7071-E04B87", year: "November 2020", verifyUrl: "https://learn.microsoft.com/he-il/users/shalevosher-6659/transcript/714gcwjmylnq9k7", image: "/certificates/mcsa.jpeg", pdf: "/certificates/mcsa.pdf", accent: "from-sky-500/20 to-blue-600/20" },
-  { name: "Linux Essentials", issuer: "Linux Professional Institute (LPI)", code: "LPI000494064", year: "July 2021", verifyUrl: "https://cs.lpi.org/caf/Xamman/certification/verify/LPI000494064/rafgerhedt", image: "/certificates/linux-essentials.jpeg", pdf: "/certificates/linux-essentials.pdf", accent: "from-emerald-500/20 to-teal-500/20" },
+  { name: "Certified Hands-On Cyber Security Specialist", issuer: "Kernelios", code: "CHCSS 310", year: "April 2022", verifyUrl: null, image: "/certificates/optimized/kernelios-chcss.webp", pdf: "/certificates/kernelios-chcss.pdf", accent: "from-yellow-500/20 to-amber-600/20" },
+  { name: "תעודת גמר - מיישם הגנת סייבר", issuer: "משרד הכלכלה והתעשייה", code: "תעודה מס׳ 1442431", year: "April 2022", verifyUrl: null, image: "/certificates/optimized/kernelios-gov.webp", pdf: "/certificates/kernelios-gov.pdf", accent: "from-blue-500/20 to-cyan-500/20" },
+  { name: "גיליון ציונים - מיישם הגנת סייבר", issuer: "משרד הכלכלה והתעשייה", code: "קרנליוס בע״מ", year: "June 2022", verifyUrl: null, image: "/certificates/optimized/kernelios-grades.webp", pdf: "/certificates/kernelios-grades.pdf", accent: "from-blue-500/20 to-indigo-500/20" },
+  { name: "MCSA: Windows Server 2016", issuer: "Microsoft", code: "Cert #1F7071-E04B87", year: "November 2020", verifyUrl: "https://learn.microsoft.com/he-il/users/shalevosher-6659/transcript/714gcwjmylnq9k7", image: "/certificates/optimized/mcsa.webp", pdf: "/certificates/mcsa.pdf", accent: "from-sky-500/20 to-blue-600/20" },
+  { name: "Linux Essentials", issuer: "Linux Professional Institute (LPI)", code: "LPI000494064", year: "July 2021", verifyUrl: "https://cs.lpi.org/caf/Xamman/certification/verify/LPI000494064/rafgerhedt", image: "/certificates/optimized/linux-essentials.webp", pdf: "/certificates/linux-essentials.pdf", accent: "from-emerald-500/20 to-teal-500/20" },
 ];
 
 const VISIBLE_CERTIFICATES = 3;
@@ -32,6 +30,7 @@ const Education = () => {
   const [trackIndex, setTrackIndex] = useState(VISIBLE_CERTIFICATES);
   const [isPaused, setIsPaused] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   const { t, lang } = useLanguage();
   const isRtl = lang === "he";
 
@@ -53,18 +52,21 @@ const Education = () => {
   }, []);
 
   useEffect(() => {
-    certificates.forEach((cert) => {
-      const image = new Image();
-      image.src = cert.image;
-    });
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    const updateIsMobile = () => setIsMobile(mediaQuery.matches);
+
+    updateIsMobile();
+    mediaQuery.addEventListener("change", updateIsMobile);
+
+    return () => mediaQuery.removeEventListener("change", updateIsMobile);
   }, []);
 
   useEffect(() => {
-    if (isPaused || selectedImage) return;
+    if (isMobile || isPaused || selectedImage) return;
 
     const interval = window.setInterval(scrollNext, CERTIFICATE_AUTOPLAY_DELAY);
     return () => window.clearInterval(interval);
-  }, [isPaused, scrollNext, selectedImage]);
+  }, [isMobile, isPaused, scrollNext, selectedImage]);
 
   const handleTrackTransitionEnd = useCallback((event: TransitionEvent<HTMLDivElement>) => {
     if (event.target !== event.currentTarget || event.propertyName !== "transform") return;
@@ -81,7 +83,8 @@ const Education = () => {
     }
   }, [trackIndex]);
 
-  const trackOffset = -(trackIndex * (100 / VISIBLE_CERTIFICATES));
+  const visibleCertificateItems = isMobile ? certificates : carouselItems;
+  const trackOffset = isMobile ? 0 : -(trackIndex * (100 / VISIBLE_CERTIFICATES));
 
   return (
     <section id="education" className="py-14 bg-secondary/30 relative overflow-hidden" aria-labelledby="education-heading">
@@ -108,7 +111,7 @@ const Education = () => {
             {education.map((edu) => (
               <div key={edu.institution} className="relative group">
                 <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-primary/30 via-primary/10 to-primary/30 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-sm" />
-                <div className="relative p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/30 transition-all duration-500">
+                <div className="relative p-8 rounded-2xl bg-card/70 border border-border/50 hover:border-primary/30 transition-colors duration-500">
                   <div className="flex items-start gap-5">
                     <div className="p-3 rounded-xl bg-primary/10 shrink-0">
                       <GraduationCap className="w-7 h-7 text-primary" />
@@ -143,26 +146,26 @@ const Education = () => {
               onMouseLeave={() => setIsPaused(false)}
               onTouchStart={() => setIsPaused(true)}
             >
-              <div className="overflow-hidden" dir="ltr">
+              <div className="overflow-x-auto md:overflow-hidden" dir="ltr">
                 <div
-                  className={`flex items-stretch ${isTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
+                  className={`flex items-stretch ${isTransitioning && !isMobile ? "transition-transform duration-700 ease-in-out" : ""}`}
                   style={{ transform: `translate3d(${trackOffset}%, 0, 0)` }}
                   onTransitionEnd={handleTrackTransitionEnd}
                 >
-                  {carouselItems.map((cert, index) => (
+                  {visibleCertificateItems.map((cert, index) => (
                     <div
                       key={`${cert.name}-${index}`}
-                      className="flex-[0_0_33.333%] min-w-0 px-2 md:px-3 h-auto"
+                      className="flex-[0_0_86%] min-w-0 px-2 h-auto md:flex-[0_0_33.333%] md:px-3"
                     >
                       <div className="relative group cursor-pointer h-full transition-transform duration-300 hover:-translate-y-2" dir={isRtl ? "rtl" : "ltr"}>
                         <div className={`absolute -inset-2 rounded-3xl bg-gradient-to-br ${cert.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl`} />
-                        <div className="relative h-full flex flex-col rounded-2xl overflow-hidden bg-card/60 backdrop-blur-sm border border-border/40 group-hover:border-primary/20 transition-all duration-500">
+                        <div className="relative h-full flex flex-col rounded-2xl overflow-hidden bg-card/75 border border-border/40 group-hover:border-primary/20 transition-colors duration-500">
                           <div className="relative overflow-hidden" onClick={() => setSelectedImage(cert.image)}>
                             <div className={`absolute inset-0 bg-gradient-to-br ${cert.accent} mix-blend-overlay z-[1]`} />
                             <img src={cert.image} alt={cert.name} className="w-full h-40 md:h-52 object-contain bg-muted/20 transition-all duration-700 group-hover:scale-[1.03]" loading="lazy" />
                             <div className="absolute inset-0 z-[2] bg-gradient-to-t from-card via-transparent to-transparent opacity-60" />
                             <div className="absolute inset-0 z-[3] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                              <div className="px-5 py-2.5 rounded-full bg-primary/90 backdrop-blur-sm flex items-center gap-2 shadow-lg transform scale-90 group-hover:scale-100 transition-transform duration-500">
+                              <div className="px-5 py-2.5 rounded-full bg-primary/90 flex items-center gap-2 shadow-lg transform scale-90 group-hover:scale-100 transition-transform duration-500">
                                 <Eye className="w-4 h-4 text-primary-foreground" />
                                 <span className="text-sm font-semibold text-primary-foreground">{t("edu.viewCert")}</span>
                               </div>
@@ -202,7 +205,7 @@ const Education = () => {
           <div className="max-w-md mx-auto mt-20">
             <div className="relative group">
               <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-primary/20 via-transparent to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-sm" />
-              <div className="relative p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50">
+              <div className="relative p-8 rounded-2xl bg-card/70 border border-border/50">
                 <h3 className="font-display text-lg font-semibold mb-6 text-center flex items-center justify-center gap-2 text-muted-foreground">
                   <Languages className="w-5 h-5 text-primary" />
                   {t("edu.languages")}
@@ -224,18 +227,21 @@ const Education = () => {
         </AnimatedSection>
       </div>
 
-      <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
-        <DialogContent className="max-w-2xl w-[90vw] sm:w-auto p-0 bg-transparent border-none shadow-none [&>button]:hidden">
-          <div className="relative">
-            <button onClick={() => setSelectedImage(null)} className="absolute -top-12 right-0 z-10 p-2 rounded-full bg-card/80 backdrop-blur-md border border-border/50 hover:border-primary/50 transition-all">
+      {selectedImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 p-3 md:p-6"
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative max-h-[88svh] w-full max-w-2xl" onClick={(event) => event.stopPropagation()}>
+            <button onClick={() => setSelectedImage(null)} className="absolute -top-11 end-0 z-10 p-2 rounded-full bg-card border border-border/50 hover:border-primary/50 transition-colors" aria-label="Close certificate">
               <X className="w-5 h-5 text-foreground" />
             </button>
-            {selectedImage && (
-              <motion.img initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} src={selectedImage} alt="Certificate" className="w-full h-auto max-h-[80vh] object-contain rounded-2xl shadow-2xl" />
-            )}
+            <img src={selectedImage} alt="Certificate" className="w-full max-h-[88svh] object-contain rounded-2xl shadow-2xl" />
           </div>
-        </DialogContent>
-      </Dialog>
+        </div>
+      )}
     </section>
   );
 };
