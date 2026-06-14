@@ -14,6 +14,7 @@ import SnakeEasterEgg from "@/components/SnakeEasterEgg";
 import SkipToContent from "@/components/SkipToContent";
 import CommandPalette from "@/components/CommandPalette";
 import ParallaxBackground from "@/components/ParallaxBackground";
+import NetworkBackground from "@/components/NetworkBackground";
 
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -23,6 +24,7 @@ const Index = () => {
     <div className="min-h-screen bg-background relative pb-32">
       <SkipToContent />
       <ParallaxBackground />
+      <NetworkBackground />
       <LoadingScreen onComplete={handleLoadComplete} />
       <KonamiEasterEgg />
       <SnakeEasterEgg />
