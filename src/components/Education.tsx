@@ -2,8 +2,6 @@ import { useState, useCallback, useEffect, useMemo, type TransitionEvent } from 
 import { GraduationCap, Award, Calendar, ExternalLink, Clock, Languages, X, Download, Eye } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { motion } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTypewriter } from "@/hooks/useTypewriter";
 
@@ -32,6 +30,7 @@ const Education = () => {
   const [trackIndex, setTrackIndex] = useState(VISIBLE_CERTIFICATES);
   const [isPaused, setIsPaused] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   const { t, lang } = useLanguage();
   const isRtl = lang === "he";
 
@@ -53,18 +52,21 @@ const Education = () => {
   }, []);
 
   useEffect(() => {
-    certificates.forEach((cert) => {
-      const image = new Image();
-      image.src = cert.image;
-    });
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    const updateIsMobile = () => setIsMobile(mediaQuery.matches);
+
+    updateIsMobile();
+    mediaQuery.addEventListener("change", updateIsMobile);
+
+    return () => mediaQuery.removeEventListener("change", updateIsMobile);
   }, []);
 
   useEffect(() => {
-    if (isPaused || selectedImage) return;
+    if (isMobile || isPaused || selectedImage) return;
 
     const interval = window.setInterval(scrollNext, CERTIFICATE_AUTOPLAY_DELAY);
     return () => window.clearInterval(interval);
-  }, [isPaused, scrollNext, selectedImage]);
+  }, [isMobile, isPaused, scrollNext, selectedImage]);
 
   const handleTrackTransitionEnd = useCallback((event: TransitionEvent<HTMLDivElement>) => {
     if (event.target !== event.currentTarget || event.propertyName !== "transform") return;
@@ -81,7 +83,8 @@ const Education = () => {
     }
   }, [trackIndex]);
 
-  const trackOffset = -(trackIndex * (100 / VISIBLE_CERTIFICATES));
+  const visibleCertificateItems = isMobile ? certificates : carouselItems;
+  const trackOffset = isMobile ? 0 : -(trackIndex * (100 / VISIBLE_CERTIFICATES));
 
   return (
     <section id="education" className="py-14 bg-secondary/30 relative overflow-hidden" aria-labelledby="education-heading">

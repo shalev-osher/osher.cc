@@ -27,6 +27,16 @@ export const useTypewriter = ({
     let timeout: NodeJS.Timeout;
     indexRef.current = 0;
 
+    const shouldReduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+
+    if (shouldReduceMotion || isMobile) {
+      setDisplayedText(texts[0] || "");
+      setIsTyping(false);
+      setShowCursor(false);
+      return;
+    }
+
     const typeText = (t: string, charIndex: number) => {
       setIsTyping(true);
       if (charIndex <= t.length) {
@@ -56,6 +66,10 @@ export const useTypewriter = ({
   }, [texts.join(","), speed, delay, pauseDuration, loop]);
 
   useEffect(() => {
+    const shouldReduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    if (shouldReduceMotion || isMobile) return;
+
     const interval = setInterval(() => setShowCursor((p) => !p), 530);
     return () => clearInterval(interval);
   }, []);
