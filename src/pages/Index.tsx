@@ -13,7 +13,6 @@ import KonamiEasterEgg from "@/components/KonamiEasterEgg";
 import SnakeEasterEgg from "@/components/SnakeEasterEgg";
 import SkipToContent from "@/components/SkipToContent";
 import CommandPalette from "@/components/CommandPalette";
-import ParallaxBackground from "@/components/ParallaxBackground";
 import NetworkBackground from "@/components/NetworkBackground";
 
 const Index = () => {
@@ -21,9 +20,8 @@ const Index = () => {
   const handleLoadComplete = useCallback(() => setIsLoaded(true), []);
 
   return (
-    <div className="min-h-screen bg-background relative pb-32">
+    <div className="min-h-screen relative pb-32">
       <SkipToContent />
-      <ParallaxBackground />
       <NetworkBackground />
       <LoadingScreen onComplete={handleLoadComplete} />
       <KonamiEasterEgg />
