@@ -5,6 +5,7 @@ import { Download } from "lucide-react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import MagneticButton from "./MagneticButton";
+import Particles from "./Particles";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trackCvDownload } from "@/lib/trackCvDownload";
 
@@ -51,6 +52,7 @@ const Hero = () => {
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden noise-texture" aria-label="Hero section">
       <div className="absolute inset-0" style={{ background: 'var(--gradient-radial)' }} />
+      <Particles count={28} />
 
       <div className="container mx-auto px-6 text-center relative z-10">
         <div>
