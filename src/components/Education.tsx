@@ -60,11 +60,11 @@ const Education = () => {
   }, []);
 
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || selectedImage) return;
 
     const interval = window.setInterval(scrollNext, CERTIFICATE_AUTOPLAY_DELAY);
     return () => window.clearInterval(interval);
-  }, [isPaused, scrollNext]);
+  }, [isPaused, scrollNext, selectedImage]);
 
   const handleTrackTransitionEnd = useCallback((event: TransitionEvent<HTMLDivElement>) => {
     if (event.target !== event.currentTarget || event.propertyName !== "transform") return;
@@ -137,7 +137,12 @@ const Education = () => {
           </div>
 
           <div className="relative max-w-6xl mx-auto">
-            <div className="relative" onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
+            <div
+              className="relative"
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
+              onTouchStart={() => setIsPaused(true)}
+            >
               <div className="overflow-hidden" dir="ltr">
                 <div
                   className={`flex items-stretch ${isTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
@@ -145,20 +150,11 @@ const Education = () => {
                   onTransitionEnd={handleTrackTransitionEnd}
                 >
                   {carouselItems.map((cert, index) => (
-                    <motion.div
+                    <div
                       key={`${cert.name}-${index}`}
                       className="flex-[0_0_33.333%] min-w-0 px-2 md:px-3 h-auto"
-                      initial={{ opacity: 0, y: 40, scale: 0.92 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      transition={{
-                        delay: index * 0.12,
-                        duration: 0.6,
-                        type: "spring",
-                        stiffness: 80,
-                        damping: 15,
-                      }}
                     >
-                      <motion.div className="relative group cursor-pointer h-full" dir={isRtl ? "rtl" : "ltr"} whileHover={{ y: -8 }} transition={{ duration: 0.4, ease: "easeOut" }}>
+                      <div className="relative group cursor-pointer h-full transition-transform duration-300 hover:-translate-y-2" dir={isRtl ? "rtl" : "ltr"}>
                         <div className={`absolute -inset-2 rounded-3xl bg-gradient-to-br ${cert.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl`} />
                         <div className="relative h-full flex flex-col rounded-2xl overflow-hidden bg-card/60 backdrop-blur-sm border border-border/40 group-hover:border-primary/20 transition-all duration-500">
                           <div className="relative overflow-hidden" onClick={() => setSelectedImage(cert.image)}>
@@ -192,8 +188,8 @@ const Education = () => {
                             </div>
                           </div>
                         </div>
-                      </motion.div>
-                    </motion.div>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
