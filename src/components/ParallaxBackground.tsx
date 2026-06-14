@@ -23,12 +23,18 @@ const ParallaxBackground = () => {
         <div className="aurora aurora-3" />
       </div>
 
+      {/* Twinkling starfield */}
+      <div className="starfield" />
+      <div className="starfield starfield-2" />
+
       {/* Shooting stars */}
       <div className="absolute inset-0 overflow-hidden">
         <span className="shooting-star" style={{ top: "12%", animationDelay: "0s" }} />
         <span className="shooting-star" style={{ top: "32%", animationDelay: "2.4s" }} />
         <span className="shooting-star" style={{ top: "58%", animationDelay: "4.1s" }} />
         <span className="shooting-star" style={{ top: "78%", animationDelay: "6.8s" }} />
+        <span className="shooting-star" style={{ top: "22%", animationDelay: "9.2s" }} />
+        <span className="shooting-star" style={{ top: "48%", animationDelay: "11.5s" }} />
       </div>
 
       {/* Floating gold orbs */}
@@ -63,6 +69,9 @@ const ParallaxBackground = () => {
           }}
         />
       </motion.div>
+
+      {/* Vignette */}
+      <div className="vignette" />
     </div>
   );
 };
