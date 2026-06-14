@@ -159,13 +159,13 @@ const Education = () => {
                     >
                       <div className="relative group cursor-pointer h-full transition-transform duration-300 hover:-translate-y-2" dir={isRtl ? "rtl" : "ltr"}>
                         <div className={`absolute -inset-2 rounded-3xl bg-gradient-to-br ${cert.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl`} />
-                        <div className="relative h-full flex flex-col rounded-2xl overflow-hidden bg-card/60 backdrop-blur-sm border border-border/40 group-hover:border-primary/20 transition-all duration-500">
+                        <div className="relative h-full flex flex-col rounded-2xl overflow-hidden bg-card/75 border border-border/40 group-hover:border-primary/20 transition-colors duration-500">
                           <div className="relative overflow-hidden" onClick={() => setSelectedImage(cert.image)}>
                             <div className={`absolute inset-0 bg-gradient-to-br ${cert.accent} mix-blend-overlay z-[1]`} />
                             <img src={cert.image} alt={cert.name} className="w-full h-40 md:h-52 object-contain bg-muted/20 transition-all duration-700 group-hover:scale-[1.03]" loading="lazy" />
                             <div className="absolute inset-0 z-[2] bg-gradient-to-t from-card via-transparent to-transparent opacity-60" />
                             <div className="absolute inset-0 z-[3] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                              <div className="px-5 py-2.5 rounded-full bg-primary/90 backdrop-blur-sm flex items-center gap-2 shadow-lg transform scale-90 group-hover:scale-100 transition-transform duration-500">
+                              <div className="px-5 py-2.5 rounded-full bg-primary/90 flex items-center gap-2 shadow-lg transform scale-90 group-hover:scale-100 transition-transform duration-500">
                                 <Eye className="w-4 h-4 text-primary-foreground" />
                                 <span className="text-sm font-semibold text-primary-foreground">{t("edu.viewCert")}</span>
                               </div>
@@ -205,7 +205,7 @@ const Education = () => {
           <div className="max-w-md mx-auto mt-20">
             <div className="relative group">
               <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-primary/20 via-transparent to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-sm" />
-              <div className="relative p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50">
+              <div className="relative p-8 rounded-2xl bg-card/70 border border-border/50">
                 <h3 className="font-display text-lg font-semibold mb-6 text-center flex items-center justify-center gap-2 text-muted-foreground">
                   <Languages className="w-5 h-5 text-primary" />
                   {t("edu.languages")}
