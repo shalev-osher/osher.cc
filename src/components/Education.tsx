@@ -1,11 +1,9 @@
-import { useState, useCallback, useRef } from "react";
-import { GraduationCap, Award, Calendar, ExternalLink, Clock, Languages, X, Download, Eye, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useCallback, useEffect, useMemo } from "react";
+import { GraduationCap, Award, Calendar, ExternalLink, Clock, Languages, X, Download, Eye } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTypewriter } from "@/hooks/useTypewriter";
 
@@ -26,23 +24,62 @@ const certificates = [
   { name: "Linux Essentials", issuer: "Linux Professional Institute (LPI)", code: "LPI000494064", year: "July 2021", verifyUrl: "https://cs.lpi.org/caf/Xamman/certification/verify/LPI000494064/rafgerhedt", image: "/certificates/linux-essentials.jpeg", pdf: "/certificates/linux-essentials.pdf", accent: "from-emerald-500/20 to-teal-500/20" },
 ];
 
+const VISIBLE_CERTIFICATES = 3;
+const CERTIFICATE_AUTOPLAY_DELAY = 3500;
+
 const Education = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [trackIndex, setTrackIndex] = useState(VISIBLE_CERTIFICATES);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(true);
   const { t, lang } = useLanguage();
   const isRtl = lang === "he";
-  const autoplay = useRef(Autoplay({ delay: 3500, stopOnInteraction: false, stopOnMouseEnter: true }));
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, align: "center", skipSnaps: false, direction: isRtl ? "rtl" : "ltr" },
-    [autoplay.current]
+
+  const carouselItems = useMemo(
+    () => [
+      ...certificates.slice(-VISIBLE_CERTIFICATES),
+      ...certificates,
+      ...certificates.slice(0, VISIBLE_CERTIFICATES),
+    ],
+    []
   );
 
   const titleTypewriter = useTypewriter({ text: t("edu.title"), speed: 80, loop: true, pauseDuration: 5000 });
   const subtitleTypewriter = useTypewriter({ text: t("edu.subtitle"), speed: 25, delay: 1000, loop: true, pauseDuration: 5000 });
 
-  const scrollTo = useCallback((index: number) => { emblaApi?.scrollTo(index); setActiveIndex(index); }, [emblaApi]);
-  const scrollPrev = useCallback(() => { emblaApi?.scrollPrev(); setActiveIndex((prev) => (prev - 1 + certificates.length) % certificates.length); }, [emblaApi]);
-  const scrollNext = useCallback(() => { emblaApi?.scrollNext(); setActiveIndex((prev) => (prev + 1) % certificates.length); }, [emblaApi]);
+  const scrollNext = useCallback(() => {
+    setIsTransitioning(true);
+    setTrackIndex((prev) => prev + 1);
+  }, []);
+
+  useEffect(() => {
+    certificates.forEach((cert) => {
+      const image = new Image();
+      image.src = cert.image;
+    });
+  }, []);
+
+  useEffect(() => {
+    if (isPaused) return;
+
+    const interval = window.setInterval(scrollNext, CERTIFICATE_AUTOPLAY_DELAY);
+    return () => window.clearInterval(interval);
+  }, [isPaused, scrollNext]);
+
+  const handleTrackTransitionEnd = useCallback(() => {
+    const firstRealSlideIndex = VISIBLE_CERTIFICATES;
+    const firstCloneAfterRealSlidesIndex = VISIBLE_CERTIFICATES + certificates.length;
+
+    if (trackIndex >= firstCloneAfterRealSlidesIndex) {
+      setIsTransitioning(false);
+      setTrackIndex(firstRealSlideIndex);
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => setIsTransitioning(true));
+      });
+    }
+  }, [trackIndex]);
+
+  const trackOffset = -(trackIndex * (100 / carouselItems.length));
 
   return (
     <section id="education" className="py-24 bg-secondary/30 relative overflow-hidden" aria-labelledby="education-heading">
