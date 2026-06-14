@@ -111,7 +111,7 @@ const Education = () => {
             {education.map((edu) => (
               <div key={edu.institution} className="relative group">
                 <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-primary/30 via-primary/10 to-primary/30 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-sm" />
-                <div className="relative p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/30 transition-all duration-500">
+                <div className="relative p-8 rounded-2xl bg-card/70 border border-border/50 hover:border-primary/30 transition-colors duration-500">
                   <div className="flex items-start gap-5">
                     <div className="p-3 rounded-xl bg-primary/10 shrink-0">
                       <GraduationCap className="w-7 h-7 text-primary" />
@@ -146,16 +146,16 @@ const Education = () => {
               onMouseLeave={() => setIsPaused(false)}
               onTouchStart={() => setIsPaused(true)}
             >
-              <div className="overflow-hidden" dir="ltr">
+              <div className="overflow-x-auto md:overflow-hidden" dir="ltr">
                 <div
-                  className={`flex items-stretch ${isTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
+                  className={`flex items-stretch ${isTransitioning && !isMobile ? "transition-transform duration-700 ease-in-out" : ""}`}
                   style={{ transform: `translate3d(${trackOffset}%, 0, 0)` }}
                   onTransitionEnd={handleTrackTransitionEnd}
                 >
                   {visibleCertificateItems.map((cert, index) => (
                     <div
                       key={`${cert.name}-${index}`}
-                      className="flex-[0_0_100%] min-w-0 px-2 h-auto md:flex-[0_0_33.333%] md:px-3"
+                      className="flex-[0_0_86%] min-w-0 px-2 h-auto md:flex-[0_0_33.333%] md:px-3"
                     >
                       <div className="relative group cursor-pointer h-full transition-transform duration-300 hover:-translate-y-2" dir={isRtl ? "rtl" : "ltr"}>
                         <div className={`absolute -inset-2 rounded-3xl bg-gradient-to-br ${cert.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl`} />
