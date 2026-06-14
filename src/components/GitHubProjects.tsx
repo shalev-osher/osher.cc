@@ -65,7 +65,7 @@ const GitHubProjects = () => {
         </AnimatedSection>
 
         {loading ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 4k:grid-cols-6 gap-6">
             {[...Array(6)].map((_, i) => (
               <div key={i} className="card-premium p-6 h-48 animate-pulse">
                 <div className="h-4 bg-muted rounded w-3/4 mb-4" />
@@ -75,7 +75,7 @@ const GitHubProjects = () => {
             ))}
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 4k:grid-cols-6 gap-6">
             {repos.map((repo, index) => (
               <AnimatedSection key={repo.id} delay={index * 0.1} animation="scaleUp">
                 <RepoCard

@@ -154,6 +154,17 @@ html {
     font-size: 87.5%;
   }
 
+  /* Densify on large displays — smaller base size, more items per row */
+  @media (min-width: 1600px) {
+    html { font-size: 82%; }
+  }
+  @media (min-width: 1920px) {
+    html { font-size: 78%; }
+  }
+  @media (min-width: 2400px) {
+    html { font-size: 72%; }
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
