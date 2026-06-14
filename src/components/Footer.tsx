@@ -12,7 +12,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="fixed bottom-0 inset-x-0 z-40 py-4" role="contentinfo">
+    <footer className="fixed bottom-0 inset-x-0 z-40 border-t border-border/20 bg-background/95 py-4 shadow-[0_-18px_50px_hsl(var(--background))] backdrop-blur-xl" role="contentinfo">
       <div className="container mx-auto px-6">
         <motion.div
           className="flex flex-col items-center gap-2 text-center"
