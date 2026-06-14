@@ -79,7 +79,7 @@ const Education = () => {
     }
   }, [trackIndex]);
 
-  const trackOffset = -(trackIndex * (100 / carouselItems.length));
+  const trackOffset = -(trackIndex * (100 / VISIBLE_CERTIFICATES));
 
   return (
     <section id="education" className="py-24 bg-secondary/30 relative overflow-hidden" aria-labelledby="education-heading">
