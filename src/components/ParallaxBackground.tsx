@@ -30,8 +30,7 @@ const ParallaxBackground = () => {
       />
       <motion.div
         style={{ y: y2 }}
-        className="absolute top-1/3 -end-40 h-[680px] w-[680px] rounded-full blur-[160px]"
-        // amber/orange tint
+        className="absolute top-1/3 -end-40 h-[680px] w-[680px] rounded-full blur-[160px] bg-[hsl(28_90%_55%/0.18)]"
       />
       <motion.div
         style={{ y: y3 }}
