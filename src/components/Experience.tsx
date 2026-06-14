@@ -108,12 +108,12 @@ const Experience = () => {
   const subtitleTypewriter = useTypewriter({ text: t("exp.subtitle"), speed: 25, delay: 1200, loop: true, pauseDuration: 5000 });
 
   return (
-    <section id="experience" className="py-24 section-glow relative overflow-hidden" aria-labelledby="experience-heading">
+    <section id="experience" className="py-14 section-glow relative overflow-hidden" aria-labelledby="experience-heading">
       <div className="absolute inset-0 pointer-events-none" style={{ background: 'var(--gradient-radial)' }} />
 
       <div className="container mx-auto px-6 relative z-10">
         <AnimatedSection animation="fadeDown">
-          <div className="text-center mb-20">
+          <div className="text-center mb-10">
             <h2 id="experience-heading" className="font-display text-4xl md:text-5xl font-bold mb-4">
               <GradientText>{titleTypewriter.displayedText}</GradientText>
               <span className={`inline-block w-[3px] h-[0.8em] bg-primary ms-2 align-middle transition-opacity duration-100 ${titleTypewriter.showCursor ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
@@ -137,7 +137,7 @@ const Experience = () => {
 
                 return (
                   <AnimatedSection key={`${exp.company}-${exp.role}`} delay={index * 0.1} animation={isEven ? "slideLeft" : "slideRight"}>
-                    <div className={`relative flex items-start gap-8 md:gap-0 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`} role="listitem">
+                    <div className={`relative flex items-start gap-5 md:gap-0 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`} role="listitem">
                       <div className="md:hidden flex-shrink-0 relative z-10" style={{ visibility: showYear ? 'visible' : 'hidden' }}>
                         <button
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
