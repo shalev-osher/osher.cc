@@ -1,11 +1,9 @@
-import { useState, useCallback, useRef } from "react";
-import { GraduationCap, Award, Calendar, ExternalLink, Clock, Languages, X, Download, Eye, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useCallback, useEffect, useMemo, type TransitionEvent } from "react";
+import { GraduationCap, Award, Calendar, ExternalLink, Clock, Languages, X, Download, Eye } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTypewriter } from "@/hooks/useTypewriter";
 
@@ -26,23 +24,64 @@ const certificates = [
   { name: "Linux Essentials", issuer: "Linux Professional Institute (LPI)", code: "LPI000494064", year: "July 2021", verifyUrl: "https://cs.lpi.org/caf/Xamman/certification/verify/LPI000494064/rafgerhedt", image: "/certificates/linux-essentials.jpeg", pdf: "/certificates/linux-essentials.pdf", accent: "from-emerald-500/20 to-teal-500/20" },
 ];
 
+const VISIBLE_CERTIFICATES = 3;
+const CERTIFICATE_AUTOPLAY_DELAY = 3500;
+
 const Education = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [trackIndex, setTrackIndex] = useState(VISIBLE_CERTIFICATES);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(true);
   const { t, lang } = useLanguage();
   const isRtl = lang === "he";
-  const autoplay = useRef(Autoplay({ delay: 3500, stopOnInteraction: false, stopOnMouseEnter: true }));
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, align: "center", skipSnaps: false, direction: isRtl ? "rtl" : "ltr" },
-    [autoplay.current]
+
+  const carouselItems = useMemo(
+    () => [
+      ...certificates.slice(-VISIBLE_CERTIFICATES),
+      ...certificates,
+      ...certificates.slice(0, VISIBLE_CERTIFICATES),
+    ],
+    []
   );
 
   const titleTypewriter = useTypewriter({ text: t("edu.title"), speed: 80, loop: true, pauseDuration: 5000 });
   const subtitleTypewriter = useTypewriter({ text: t("edu.subtitle"), speed: 25, delay: 1000, loop: true, pauseDuration: 5000 });
 
-  const scrollTo = useCallback((index: number) => { emblaApi?.scrollTo(index); setActiveIndex(index); }, [emblaApi]);
-  const scrollPrev = useCallback(() => { emblaApi?.scrollPrev(); setActiveIndex((prev) => (prev - 1 + certificates.length) % certificates.length); }, [emblaApi]);
-  const scrollNext = useCallback(() => { emblaApi?.scrollNext(); setActiveIndex((prev) => (prev + 1) % certificates.length); }, [emblaApi]);
+  const scrollNext = useCallback(() => {
+    setIsTransitioning(true);
+    setTrackIndex((prev) => prev + 1);
+  }, []);
+
+  useEffect(() => {
+    certificates.forEach((cert) => {
+      const image = new Image();
+      image.src = cert.image;
+    });
+  }, []);
+
+  useEffect(() => {
+    if (isPaused) return;
+
+    const interval = window.setInterval(scrollNext, CERTIFICATE_AUTOPLAY_DELAY);
+    return () => window.clearInterval(interval);
+  }, [isPaused, scrollNext]);
+
+  const handleTrackTransitionEnd = useCallback((event: TransitionEvent<HTMLDivElement>) => {
+    if (event.target !== event.currentTarget || event.propertyName !== "transform") return;
+
+    const firstRealSlideIndex = VISIBLE_CERTIFICATES;
+    const firstCloneAfterRealSlidesIndex = VISIBLE_CERTIFICATES + certificates.length;
+
+    if (trackIndex >= firstCloneAfterRealSlidesIndex) {
+      setIsTransitioning(false);
+      setTrackIndex(firstRealSlideIndex);
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => setIsTransitioning(true));
+      });
+    }
+  }, [trackIndex]);
+
+  const trackOffset = -(trackIndex * (100 / VISIBLE_CERTIFICATES));
 
   return (
     <section id="education" className="py-24 bg-secondary/30 relative overflow-hidden" aria-labelledby="education-heading">
@@ -98,10 +137,14 @@ const Education = () => {
           </div>
 
           <div className="relative max-w-6xl mx-auto">
-            <div className="relative">
-              <div ref={emblaRef} className="overflow-hidden">
-                <div className="flex items-stretch">
-                  {[...certificates, ...certificates, ...certificates].map((cert, index) => (
+            <div className="relative" onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
+              <div className="overflow-hidden" dir="ltr">
+                <div
+                  className={`flex items-stretch ${isTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
+                  style={{ transform: `translate3d(${trackOffset}%, 0, 0)` }}
+                  onTransitionEnd={handleTrackTransitionEnd}
+                >
+                  {carouselItems.map((cert, index) => (
                     <motion.div
                       key={`${cert.name}-${index}`}
                       className="flex-[0_0_33.333%] min-w-0 px-2 md:px-3 h-auto"
@@ -115,7 +158,7 @@ const Education = () => {
                         damping: 15,
                       }}
                     >
-                      <motion.div className="relative group cursor-pointer h-full" whileHover={{ y: -8 }} transition={{ duration: 0.4, ease: "easeOut" }}>
+                      <motion.div className="relative group cursor-pointer h-full" dir={isRtl ? "rtl" : "ltr"} whileHover={{ y: -8 }} transition={{ duration: 0.4, ease: "easeOut" }}>
                         <div className={`absolute -inset-2 rounded-3xl bg-gradient-to-br ${cert.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl`} />
                         <div className="relative h-full flex flex-col rounded-2xl overflow-hidden bg-card/60 backdrop-blur-sm border border-border/40 group-hover:border-primary/20 transition-all duration-500">
                           <div className="relative overflow-hidden" onClick={() => setSelectedImage(cert.image)}>
