@@ -70,8 +70,6 @@ const ParallaxBackground = () => {
         />
       </motion.div>
 
-      {/* Vignette */}
-      <div className="vignette" />
     </div>
   );
 };
