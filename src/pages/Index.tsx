@@ -15,6 +15,7 @@ import SkipToContent from "@/components/SkipToContent";
 import CommandPalette from "@/components/CommandPalette";
 import ParallaxBackground from "@/components/ParallaxBackground";
 import CursorGlow from "@/components/CursorGlow";
+import Particles from "@/components/Particles";
 
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
