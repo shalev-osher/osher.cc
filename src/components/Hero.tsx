@@ -86,13 +86,13 @@ const Hero = () => {
       </div>
 
       <Dialog open={cvOpen} onOpenChange={setCvOpen}>
-        <DialogContent className="max-w-2xl w-[90vw] h-[75vh] p-0 overflow-hidden flex flex-col bg-card border-border/50 [&>button]:hidden">
+        <DialogContent className="max-w-2xl w-[95vw] h-[85vh] sm:h-[75vh] p-0 overflow-hidden flex flex-col bg-card border-border/50 [&>button]:hidden">
           <VisuallyHidden>
             <DialogTitle>{t("hero.cvPreview")}</DialogTitle>
           </VisuallyHidden>
-          <div className="flex-1 bg-muted/20">
+          <div className="flex-1 bg-muted/20 overflow-auto">
             <iframe
-              src="/cv/shalev-osher-cv.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH"
+              src="/cv/shalev-osher-cv.pdf#toolbar=0&navpanes=0&scrollbar=0&view=Fit"
               title="CV Preview"
               className="w-full h-full"
             />
