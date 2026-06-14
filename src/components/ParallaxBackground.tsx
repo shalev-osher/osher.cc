@@ -17,10 +17,18 @@ const ParallaxBackground = () => {
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
       {/* Aurora waves */}
-      <div className="absolute inset-0 opacity-60">
+      <div className="absolute inset-0">
         <div className="aurora aurora-1" />
         <div className="aurora aurora-2" />
         <div className="aurora aurora-3" />
+      </div>
+
+      {/* Shooting stars */}
+      <div className="absolute inset-0 overflow-hidden">
+        <span className="shooting-star" style={{ top: "12%", animationDelay: "0s" }} />
+        <span className="shooting-star" style={{ top: "32%", animationDelay: "2.4s" }} />
+        <span className="shooting-star" style={{ top: "58%", animationDelay: "4.1s" }} />
+        <span className="shooting-star" style={{ top: "78%", animationDelay: "6.8s" }} />
       </div>
 
       {/* Floating gold orbs */}
