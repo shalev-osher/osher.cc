@@ -12,10 +12,10 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="fixed bottom-0 inset-x-0 z-40 border-t border-border/20 bg-background/95 py-4 shadow-[0_-18px_50px_hsl(var(--background))] backdrop-blur-xl" role="contentinfo">
+    <footer className="fixed bottom-0 inset-x-0 z-40 py-4 pointer-events-none" role="contentinfo">
       <div className="container mx-auto px-6">
         <motion.div
-          className="flex flex-col items-center gap-2 text-center"
+          className="flex flex-col items-center gap-2 text-center pointer-events-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
