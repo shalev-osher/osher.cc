@@ -15,6 +15,7 @@ import SkipToContent from "@/components/SkipToContent";
 import CommandPalette from "@/components/CommandPalette";
 import ParallaxBackground from "@/components/ParallaxBackground";
 import CursorGlow from "@/components/CursorGlow";
+import Particles from "@/components/Particles";
 
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -24,6 +25,9 @@ const Index = () => {
     <div className="min-h-screen bg-background relative pb-32">
       <SkipToContent />
       <ParallaxBackground />
+      <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-[5]">
+        <Particles count={60} className="!absolute" />
+      </div>
       <CursorGlow />
       <LoadingScreen onComplete={handleLoadComplete} />
       <KonamiEasterEgg />
