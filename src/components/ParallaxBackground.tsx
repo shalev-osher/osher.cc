@@ -16,35 +16,43 @@ const ParallaxBackground = () => {
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
+      {/* Aurora waves */}
+      <div className="absolute inset-0 opacity-60">
+        <div className="aurora aurora-1" />
+        <div className="aurora aurora-2" />
+        <div className="aurora aurora-3" />
+      </div>
+
       {/* Floating gold orbs */}
       <motion.div
         style={{ y: y1 }}
-        className="absolute -top-32 -start-32 h-[480px] w-[480px] rounded-full bg-primary/10 blur-[120px]"
+        className="absolute -top-32 -start-32 h-[640px] w-[640px] rounded-full bg-primary/25 blur-[140px] animate-pulse-glow"
       />
       <motion.div
         style={{ y: y2 }}
-        className="absolute top-1/3 -end-40 h-[520px] w-[520px] rounded-full bg-primary/[0.08] blur-[140px]"
+        className="absolute top-1/3 -end-40 h-[680px] w-[680px] rounded-full blur-[160px]"
+        // amber/orange tint
       />
       <motion.div
         style={{ y: y3 }}
-        className="absolute bottom-0 start-1/3 h-[420px] w-[420px] rounded-full bg-primary/[0.06] blur-[120px]"
+        className="absolute bottom-0 start-1/3 h-[560px] w-[560px] rounded-full bg-primary/20 blur-[130px]"
       />
 
       {/* Subtle moving lines grid */}
       <motion.div
         style={{ y: y2 }}
-        className="absolute inset-0 opacity-[0.05]"
+        className="absolute inset-0 opacity-[0.14]"
       >
         <div
           className="absolute inset-0"
           style={{
             backgroundImage:
-              "linear-gradient(hsl(var(--primary) / 0.6) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary) / 0.6) 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
+              "linear-gradient(hsl(var(--primary) / 0.9) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary) / 0.9) 1px, transparent 1px)",
+            backgroundSize: "70px 70px",
             maskImage:
-              "radial-gradient(ellipse at center, black 30%, transparent 75%)",
+              "radial-gradient(ellipse at center, black 40%, transparent 80%)",
             WebkitMaskImage:
-              "radial-gradient(ellipse at center, black 30%, transparent 75%)",
+              "radial-gradient(ellipse at center, black 40%, transparent 80%)",
           }}
         />
       </motion.div>
