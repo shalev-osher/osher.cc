@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
 
 interface ParticlesProps {
   count?: number;
@@ -19,9 +18,11 @@ const Particles = ({ count = 30, className = "" }: ParticlesProps) => {
     return () => mediaQuery.removeEventListener("change", updateIsLowPower);
   }, []);
 
+  const effectiveCount = isLowPower ? Math.min(10, count) : count;
+
   const particles = useMemo(
     () =>
-      Array.from({ length: count }, (_, i) => ({
+      Array.from({ length: effectiveCount }, (_, i) => ({
         id: i,
         size: Math.random() * 3 + 1,
         left: Math.random() * 100,
@@ -30,10 +31,8 @@ const Particles = ({ count = 30, className = "" }: ParticlesProps) => {
         delay: Math.random() * 5,
         drift: (Math.random() - 0.5) * 40,
       })),
-    [count]
+    [effectiveCount]
   );
-
-  if (isLowPower) return null;
 
   return (
     <div
@@ -41,27 +40,19 @@ const Particles = ({ count = 30, className = "" }: ParticlesProps) => {
       className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}
     >
       {particles.map((p) => (
-        <motion.span
+        <span
           key={p.id}
-          className="absolute rounded-full bg-primary"
+          className="absolute rounded-full bg-primary particle-float"
           style={{
             width: p.size,
             height: p.size,
             left: `${p.left}%`,
             top: `${p.top}%`,
             boxShadow: `0 0 ${p.size * 4}px hsl(var(--primary) / 0.8)`,
-          }}
-          initial={{ opacity: 0, y: 0 }}
-          animate={{
-            opacity: [0, 0.8, 0],
-            y: [-20, -120],
-            x: [0, p.drift],
-          }}
-          transition={{
-            duration: p.duration,
-            delay: p.delay,
-            repeat: Infinity,
-            ease: "easeInOut",
+            ["--drift" as any]: `${p.drift}px`,
+            animationDuration: `${p.duration}s`,
+            animationDelay: `${p.delay}s`,
+            willChange: "transform, opacity",
           }}
         />
       ))}

@@ -505,6 +505,18 @@ html {
     100% { background-position: 40% 10%, 60% 40%, 10% 60%, 90% 90%; }
   }
 
+  /* CSS-only floating particle (replaces per-particle framer-motion) */
+  @keyframes particleFloat {
+    0%   { opacity: 0; transform: translate3d(0, -20px, 0); }
+    50%  { opacity: 0.8; }
+    100% { opacity: 0; transform: translate3d(var(--drift, 0px), -120px, 0); }
+  }
+  .particle-float {
+    animation-name: particleFloat;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+
 }
 
 @media (max-width: 767px) {

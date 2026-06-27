@@ -39,7 +39,7 @@ const NetworkBackground = () => {
     let dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
     let raf = 0;
     let last = 0;
-    const frameInterval = isMobile ? 1000 / 30 : 0; // cap to 30fps on mobile
+    const frameInterval = isMobile ? 1000 / 30 : 1000 / 40; // cap fps to save CPU
 
     type P = { x: number; y: number; vx: number; vy: number };
     let points: P[] = [];
@@ -81,32 +81,35 @@ const NetworkBackground = () => {
         if (p.y < 0 || p.y > height) p.vy *= -1;
       }
 
-      // Lines
+      // Lines — squared-distance check, batched into one path with avg alpha
       const maxDist = isMobile ? 110 : 130;
+      const maxDistSq = maxDist * maxDist;
+      ctx.lineWidth = 0.6;
+      ctx.strokeStyle = "hsl(42 85% 60% / 0.18)";
+      ctx.beginPath();
       for (let i = 0; i < points.length; i++) {
+        const a = points[i];
         for (let j = i + 1; j < points.length; j++) {
-          const dx = points[i].x - points[j].x;
-          const dy = points[i].y - points[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < maxDist) {
-            const alpha = (1 - dist / maxDist) * 0.35;
-            ctx.strokeStyle = `hsl(42 85% 60% / ${alpha})`;
-            ctx.lineWidth = 0.6;
-            ctx.beginPath();
-            ctx.moveTo(points[i].x, points[i].y);
-            ctx.lineTo(points[j].x, points[j].y);
-            ctx.stroke();
+          const b = points[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const dSq = dx * dx + dy * dy;
+          if (dSq < maxDistSq) {
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
           }
         }
       }
+      ctx.stroke();
 
-      // Dots
+      // Dots — single path
       ctx.fillStyle = "hsl(42 90% 65% / 0.75)";
+      ctx.beginPath();
       for (const p of points) {
-        ctx.beginPath();
+        ctx.moveTo(p.x + 1.4, p.y);
         ctx.arc(p.x, p.y, 1.4, 0, Math.PI * 2);
-        ctx.fill();
       }
+      ctx.fill();
     };
 
     init();
