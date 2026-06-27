@@ -4,17 +4,26 @@ const NetworkBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [enabled, setEnabled] = useState(() => {
     if (typeof window === "undefined") return false;
-    return !window.matchMedia("(max-width: 767px), (prefers-reduced-motion: reduce)").matches;
+    return !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  });
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(max-width: 767px)").matches;
   });
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 767px), (prefers-reduced-motion: reduce)");
-    const updateEnabled = () => setEnabled(!mediaQuery.matches);
-
-    updateEnabled();
-    mediaQuery.addEventListener("change", updateEnabled);
-
-    return () => mediaQuery.removeEventListener("change", updateEnabled);
+    const reduceMq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const mobileMq = window.matchMedia("(max-width: 767px)");
+    const updateReduce = () => setEnabled(!reduceMq.matches);
+    const updateMobile = () => setIsMobile(mobileMq.matches);
+    updateReduce();
+    updateMobile();
+    reduceMq.addEventListener("change", updateReduce);
+    mobileMq.addEventListener("change", updateMobile);
+    return () => {
+      reduceMq.removeEventListener("change", updateReduce);
+      mobileMq.removeEventListener("change", updateMobile);
+    };
   }, []);
 
   useEffect(() => {
@@ -27,8 +36,10 @@ const NetworkBackground = () => {
 
     let width = 0;
     let height = 0;
-    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
     let raf = 0;
+    let last = 0;
+    const frameInterval = isMobile ? 1000 / 30 : 0; // cap to 30fps on mobile
 
     type P = { x: number; y: number; vx: number; vy: number };
     let points: P[] = [];
@@ -42,7 +53,9 @@ const NetworkBackground = () => {
       canvas.style.height = height + "px";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const density = Math.min(110, Math.floor((width * height) / 16000));
+      const density = isMobile
+        ? Math.min(28, Math.floor((width * height) / 28000))
+        : Math.min(110, Math.floor((width * height) / 16000));
       points = Array.from({ length: density }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -51,7 +64,13 @@ const NetworkBackground = () => {
       }));
     };
 
-    const tick = () => {
+    const tick = (now?: number) => {
+      raf = requestAnimationFrame(tick);
+      if (frameInterval) {
+        const t = now ?? performance.now();
+        if (t - last < frameInterval) return;
+        last = t;
+      }
       ctx.clearRect(0, 0, width, height);
 
       // Move
@@ -63,7 +82,7 @@ const NetworkBackground = () => {
       }
 
       // Lines
-      const maxDist = 130;
+      const maxDist = isMobile ? 110 : 130;
       for (let i = 0; i < points.length; i++) {
         for (let j = i + 1; j < points.length; j++) {
           const dx = points[i].x - points[j].x;
@@ -88,8 +107,6 @@ const NetworkBackground = () => {
         ctx.arc(p.x, p.y, 1.4, 0, Math.PI * 2);
         ctx.fill();
       }
-
-      raf = requestAnimationFrame(tick);
     };
 
     init();
@@ -97,6 +114,7 @@ const NetworkBackground = () => {
 
     const onResize = () => {
       cancelAnimationFrame(raf);
+      last = 0;
       init();
       tick();
     };
@@ -106,7 +124,7 @@ const NetworkBackground = () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
     };
-  }, [enabled]);
+  }, [enabled, isMobile]);
 
   if (!enabled) return null;
 
