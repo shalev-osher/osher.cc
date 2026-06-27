@@ -1,16 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { Menu, X } from "lucide-react";
-import { motion } from "framer-motion";
 import MagneticButton from "./MagneticButton";
 import useActiveSection from "@/hooks/useActiveSection";
 import { useLanguage } from "@/contexts/LanguageContext";
-
-const navButtonHover = {
-  scale: 1.07,
-  y: -2,
-  transition: { type: "spring" as const, stiffness: 400, damping: 15 },
-};
-const navButtonTap = { scale: 0.95 };
 
 const Navbar = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -49,10 +41,8 @@ const Navbar = () => {
             <div className="hidden md:flex items-center gap-2 absolute left-1/2 -translate-x-1/2">
               {navLinks.map((link) => (
                 <MagneticButton key={link.href} strength={0.2} radius={30}>
-                  <motion.a
+                  <a
                     href={link.href}
-                    whileHover={navButtonHover}
-                    whileTap={navButtonTap}
                     className={`font-display text-base font-semibold px-4 py-2 rounded-lg transition-colors ${
                       activeSection === link.id
                         ? "text-primary bg-primary/10"
@@ -60,23 +50,21 @@ const Navbar = () => {
                     }`}
                   >
                     {link.label}
-                  </motion.a>
+                  </a>
                 </MagneticButton>
               ))}
             </div>
 
             <div className="flex md:hidden items-center gap-2">
               <MagneticButton strength={0.25} radius={40}>
-                <motion.button
+                <button
                   onClick={() => setIsMobileOpen(!isMobileOpen)}
-                  whileHover={navButtonHover}
-                  whileTap={navButtonTap}
                   className="w-10 h-10 rounded-lg border border-border/60 bg-primary/10 flex items-center justify-center text-foreground/80 hover:bg-primary/20 hover:text-primary hover:border-primary/30 transition-colors"
                   aria-label={isMobileOpen ? "Close menu" : "Open menu"}
                   aria-expanded={isMobileOpen}
                 >
                   {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
-                </motion.button>
+                </button>
               </MagneticButton>
             </div>
           </div>
