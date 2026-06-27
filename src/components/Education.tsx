@@ -15,11 +15,11 @@ const education = [
 ];
 
 const certificates = [
-  { name: "Certified Hands-On Cyber Security Specialist", issuer: "Kernelios", code: "CHCSS 310", year: "April 2022", verifyUrl: null, image: "/certificates/optimized/kernelios-chcss.webp", pdf: "/certificates/kernelios-chcss.pdf", accent: "from-yellow-500/20 to-amber-600/20" },
-  { name: "תעודת גמר - מיישם הגנת סייבר", issuer: "משרד הכלכלה והתעשייה", code: "תעודה מס׳ 1442431", year: "April 2022", verifyUrl: null, image: "/certificates/optimized/kernelios-gov.webp", pdf: "/certificates/kernelios-gov.pdf", accent: "from-blue-500/20 to-cyan-500/20" },
-  { name: "גיליון ציונים - מיישם הגנת סייבר", issuer: "משרד הכלכלה והתעשייה", code: "קרנליוס בע״מ", year: "June 2022", verifyUrl: null, image: "/certificates/optimized/kernelios-grades.webp", pdf: "/certificates/kernelios-grades.pdf", accent: "from-blue-500/20 to-indigo-500/20" },
-  { name: "MCSA: Windows Server 2016", issuer: "Microsoft", code: "Cert #1F7071-E04B87", year: "November 2020", verifyUrl: "https://learn.microsoft.com/he-il/users/shalevosher-6659/transcript/714gcwjmylnq9k7", image: "/certificates/optimized/mcsa.webp", pdf: "/certificates/mcsa.pdf", accent: "from-sky-500/20 to-blue-600/20" },
-  { name: "Linux Essentials", issuer: "Linux Professional Institute (LPI)", code: "LPI000494064", year: "July 2021", verifyUrl: "https://cs.lpi.org/caf/Xamman/certification/verify/LPI000494064/rafgerhedt", image: "/certificates/optimized/linux-essentials.webp", pdf: "/certificates/linux-essentials.pdf", accent: "from-emerald-500/20 to-teal-500/20" },
+  { name: "Certified Hands-On Cyber Security Specialist", issuer: "Kernelios", code: "CHCSS 310", year: "April 2022", verifyUrl: null, image: "/certificates/optimized/kernelios-chcss.webp", mobileImage: "/certificates/mobile/kernelios-chcss.webp", pdf: "/certificates/kernelios-chcss.pdf", accent: "from-yellow-500/20 to-amber-600/20" },
+  { name: "תעודת גמר - מיישם הגנת סייבר", issuer: "משרד הכלכלה והתעשייה", code: "תעודה מס׳ 1442431", year: "April 2022", verifyUrl: null, image: "/certificates/optimized/kernelios-gov.webp", mobileImage: "/certificates/mobile/kernelios-gov.webp", pdf: "/certificates/kernelios-gov.pdf", accent: "from-blue-500/20 to-cyan-500/20" },
+  { name: "גיליון ציונים - מיישם הגנת סייבר", issuer: "משרד הכלכלה והתעשייה", code: "קרנליוס בע״מ", year: "June 2022", verifyUrl: null, image: "/certificates/optimized/kernelios-grades.webp", mobileImage: "/certificates/mobile/kernelios-grades.webp", pdf: "/certificates/kernelios-grades.pdf", accent: "from-blue-500/20 to-indigo-500/20" },
+  { name: "MCSA: Windows Server 2016", issuer: "Microsoft", code: "Cert #1F7071-E04B87", year: "November 2020", verifyUrl: "https://learn.microsoft.com/he-il/users/shalevosher-6659/transcript/714gcwjmylnq9k7", image: "/certificates/optimized/mcsa.webp", mobileImage: "/certificates/mobile/mcsa.webp", pdf: "/certificates/mcsa.pdf", accent: "from-sky-500/20 to-blue-600/20" },
+  { name: "Linux Essentials", issuer: "Linux Professional Institute (LPI)", code: "LPI000494064", year: "July 2021", verifyUrl: "https://cs.lpi.org/caf/Xamman/certification/verify/LPI000494064/rafgerhedt", image: "/certificates/optimized/linux-essentials.webp", mobileImage: "/certificates/mobile/linux-essentials.webp", pdf: "/certificates/linux-essentials.pdf", accent: "from-emerald-500/20 to-teal-500/20" },
 ];
 
 const VISIBLE_CERTIFICATES = 3;
@@ -157,20 +157,20 @@ const Education = () => {
                       key={`${cert.name}-${index}`}
                       className="flex-[0_0_86%] min-w-0 px-2 h-auto md:flex-[0_0_33.333%] md:px-3"
                     >
-                      <div className="relative group cursor-pointer h-full transition-transform duration-300 hover:-translate-y-2" dir={isRtl ? "rtl" : "ltr"}>
-                        <div className={`absolute -inset-2 rounded-3xl bg-gradient-to-br ${cert.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl`} />
+                      <div className="relative group h-full md:transition-transform md:duration-300 md:hover:-translate-y-2" dir={isRtl ? "rtl" : "ltr"}>
+                        <div className={`hidden md:block absolute -inset-2 rounded-3xl bg-gradient-to-br ${cert.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl`} />
                         <div className="relative h-full flex flex-col rounded-2xl overflow-hidden bg-card/75 border border-border/40 group-hover:border-primary/20 transition-colors duration-500">
-                          <div className="relative overflow-hidden" onClick={() => setSelectedImage(cert.image)}>
-                            <div className={`absolute inset-0 bg-gradient-to-br ${cert.accent} mix-blend-overlay z-[1]`} />
-                            <img src={cert.image} alt={cert.name} className="w-full h-40 md:h-52 object-contain bg-muted/20 transition-all duration-700 group-hover:scale-[1.03]" loading="lazy" />
+                          <button type="button" className="relative overflow-hidden text-start" onClick={() => setSelectedImage(isMobile ? cert.mobileImage : cert.image)} aria-label={`${t("edu.viewCert")} - ${cert.name}`}>
+                            <div className={`hidden md:block absolute inset-0 bg-gradient-to-br ${cert.accent} mix-blend-overlay z-[1]`} />
+                            <img src={isMobile ? cert.mobileImage : cert.image} alt={cert.name} className="w-full h-40 md:h-52 object-contain bg-muted/20 md:transition-transform md:duration-700 md:group-hover:scale-[1.03]" loading="lazy" decoding="async" />
                             <div className="absolute inset-0 z-[2] bg-gradient-to-t from-card via-transparent to-transparent opacity-60" />
-                            <div className="absolute inset-0 z-[3] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                              <div className="px-5 py-2.5 rounded-full bg-primary/90 flex items-center gap-2 shadow-lg transform scale-90 group-hover:scale-100 transition-transform duration-500">
+                            <div className="pointer-events-none absolute inset-0 z-[3] hidden md:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                              <div className="px-5 py-2.5 rounded-full bg-primary/90 flex items-center gap-2 shadow-lg">
                                 <Eye className="w-4 h-4 text-primary-foreground" />
                                 <span className="text-sm font-semibold text-primary-foreground">{t("edu.viewCert")}</span>
                               </div>
                             </div>
-                          </div>
+                          </button>
                           <div className="p-3 md:p-4 relative flex-1 flex flex-col">
                             <h4 className="font-display text-xs md:text-sm font-bold mb-1 group-hover:text-primary transition-colors duration-300 line-clamp-2">{cert.name}</h4>
                             <p className="text-muted-foreground text-[11px] font-medium mb-2">{cert.issuer}</p>
@@ -238,7 +238,7 @@ const Education = () => {
             <button onClick={() => setSelectedImage(null)} className="absolute -top-11 end-0 z-10 p-2 rounded-full bg-card border border-border/50 hover:border-primary/50 transition-colors" aria-label="Close certificate">
               <X className="w-5 h-5 text-foreground" />
             </button>
-            <img src={selectedImage} alt="Certificate" className="w-full max-h-[88svh] object-contain rounded-2xl shadow-2xl" />
+            <img src={selectedImage} alt="Certificate" className="w-full max-h-[88svh] object-contain rounded-2xl shadow-2xl" decoding="async" />
           </div>
         </div>
       )}
