@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Download } from "lucide-react";
@@ -12,6 +12,17 @@ import { trackCvDownload } from "@/lib/trackCvDownload";
 const Hero = () => {
   const { t, lang } = useLanguage();
   const [cvOpen, setCvOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    const updateIsMobile = () => setIsMobile(mediaQuery.matches);
+
+    updateIsMobile();
+    mediaQuery.addEventListener("change", updateIsMobile);
+
+    return () => mediaQuery.removeEventListener("change", updateIsMobile);
+  }, []);
 
   const handleDownload = () => {
     trackCvDownload(lang);
@@ -86,16 +97,25 @@ const Hero = () => {
       </div>
 
       <Dialog open={cvOpen} onOpenChange={setCvOpen}>
-        <DialogContent className="max-w-2xl w-[95vw] h-[85vh] sm:h-[75vh] p-0 overflow-hidden flex flex-col bg-card border-border/50 [&>button]:hidden">
+        <DialogContent className="max-w-sm sm:max-w-2xl w-[88vw] sm:w-[92vw] h-auto sm:h-[75vh] max-h-[78svh] sm:max-h-none p-0 overflow-hidden flex flex-col bg-card border-border/50 [&>button]:hidden">
           <VisuallyHidden>
             <DialogTitle>{t("hero.cvPreview")}</DialogTitle>
           </VisuallyHidden>
-          <div className="flex-1 bg-muted/20 overflow-auto">
-            <iframe
-              src="/cv/shalev-osher-cv.pdf#toolbar=0&navpanes=0&scrollbar=0&view=Fit"
-              title="CV Preview"
-              className="w-full h-full"
-            />
+          <div className="flex-1 bg-muted/20 overflow-auto min-h-0">
+            {isMobile ? (
+              <img
+                src="/cv/shalev-osher-cv-preview.webp"
+                alt={t("hero.cvPreview")}
+                className="w-full max-h-[62svh] object-contain"
+                decoding="async"
+              />
+            ) : (
+              <iframe
+                src="/cv/shalev-osher-cv.pdf#toolbar=0&navpanes=0&scrollbar=0&view=Fit"
+                title="CV Preview"
+                className="w-full h-full"
+              />
+            )}
           </div>
           <div className="px-6 py-3 border-t border-border/50 flex justify-center">
             <Button variant="heroOutline" size="sm" onClick={handleDownload} className="gap-2">
