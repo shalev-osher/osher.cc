@@ -2,7 +2,6 @@ import { Briefcase, Calendar, ChevronDown } from "lucide-react";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import AnimatedSection from "@/components/AnimatedSection";
 import GradientText from "@/components/GradientText";
-import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -154,10 +153,9 @@ const Experience = () => {
                       </div>
 
                       <div className={`flex-1 md:flex-none md:w-[calc(50%-40px)] ${isEven ? 'md:pe-20' : 'md:ps-20'}`}>
-                        <motion.div
+                        <div
                           className={`card-premium p-6 cursor-pointer ${isExpanded ? 'border-primary/30' : ''}`}
                           onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
-                          layout
                           role="button"
                           tabIndex={0}
                           aria-expanded={isExpanded}
@@ -183,31 +181,17 @@ const Experience = () => {
                             </div>
                           </div>
 
-                          <AnimatePresence>
-                            {isExpanded && (
-                              <motion.ul
-                                className="space-y-2 mt-4 pt-4 border-t border-border/50"
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: 'auto' }}
-                                exit={{ opacity: 0, height: 0 }}
-                                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                              >
-                                {exp.description.map((item, i) => (
-                                  <motion.li
-                                    key={i}
-                                    className="text-muted-foreground text-sm flex gap-2"
-                                    initial={{ opacity: 0, x: lang === 'he' ? 10 : -10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: i * 0.05, duration: 0.3 }}
-                                  >
-                                    <span className="text-primary flex-shrink-0" aria-hidden="true">{lang === 'he' ? '◂' : '▸'}</span>
-                                    {item}
-                                  </motion.li>
-                                ))}
-                              </motion.ul>
-                            )}
-                          </AnimatePresence>
-                        </motion.div>
+                          {isExpanded && (
+                            <ul className="space-y-2 mt-4 pt-4 border-t border-border/50">
+                              {exp.description.map((item, i) => (
+                                <li key={i} className="text-muted-foreground text-sm flex gap-2">
+                                  <span className="text-primary flex-shrink-0" aria-hidden="true">{lang === 'he' ? '◂' : '▸'}</span>
+                                  {item}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
                       </div>
 
                       <div className="hidden md:flex absolute start-1/2 [transform:translateX(-50%)] rtl:[transform:translateX(50%)] z-10" style={{ visibility: showYear ? 'visible' : 'hidden' }}>

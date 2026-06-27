@@ -5,9 +5,15 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
   const { lang } = useLanguage();
   const isHebrew = lang === "he";
-  const [phase, setPhase] = useState<"logo" | "skeleton" | "reveal" | "done">("logo");
+  const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
+  const [phase, setPhase] = useState<"logo" | "skeleton" | "reveal" | "done">(isMobile ? "done" : "logo");
 
   useEffect(() => {
+    if (isMobile) {
+      onComplete();
+      return;
+    }
+
     const t0 = setTimeout(() => setPhase("skeleton"), 900);
     const t1 = setTimeout(() => setPhase("reveal"), 2200);
     const t2 = setTimeout(() => {
@@ -15,7 +21,7 @@ const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
       onComplete();
     }, 2800);
     return () => { clearTimeout(t0); clearTimeout(t1); clearTimeout(t2); };
-  }, [onComplete]);
+  }, [isMobile, onComplete]);
 
   const nameLetters = (isHebrew ? "שליו אושר" : "Shalev Osher").split("");
 
