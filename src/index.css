@@ -508,41 +508,14 @@ html {
 }
 
 @media (max-width: 767px) {
-  *,
-  *::before,
-  *::after {
-    animation: none !important;
-    transition-duration: 0s !important;
-    scroll-behavior: auto !important;
+  /* Lighten — keep animations, just reduce heavy GPU effects */
+  [class*="backdrop-blur-2xl"],
+  [class*="backdrop-blur-3xl"] {
+    -webkit-backdrop-filter: blur(6px) !important;
+    backdrop-filter: blur(6px) !important;
   }
 
-  [class*="backdrop-blur"] {
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
-  }
-
-  .noise-texture::after,
-  .timeline-line::before,
-  .timeline-dot::after,
-  .absolute.blur-sm,
-  .absolute.blur-xl,
   .absolute.blur-\[120px\] {
-    display: none !important;
-  }
-
-  .text-gradient {
-    background-position: center !important;
-    background-size: 100% auto !important;
-  }
-
-  .card-premium,
-  .glass-effect {
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
-    box-shadow: none !important;
-  }
-
-  .card-premium:hover {
-    transform: none !important;
+    filter: blur(60px) !important;
   }
 }
