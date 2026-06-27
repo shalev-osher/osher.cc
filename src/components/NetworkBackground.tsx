@@ -55,7 +55,7 @@ const NetworkBackground = () => {
 
       const density = isMobile
         ? Math.min(28, Math.floor((width * height) / 28000))
-        : Math.min(110, Math.floor((width * height) / 16000));
+        : Math.min(45, Math.floor((width * height) / 36000));
       points = Array.from({ length: density }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
