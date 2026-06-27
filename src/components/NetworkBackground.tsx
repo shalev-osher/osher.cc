@@ -1,9 +1,25 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const NetworkBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [enabled, setEnabled] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return !window.matchMedia("(max-width: 767px), (prefers-reduced-motion: reduce)").matches;
+  });
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px), (prefers-reduced-motion: reduce)");
+    const updateEnabled = () => setEnabled(!mediaQuery.matches);
+
+    updateEnabled();
+    mediaQuery.addEventListener("change", updateEnabled);
+
+    return () => mediaQuery.removeEventListener("change", updateEnabled);
+  }, []);
+
+  useEffect(() => {
+    if (!enabled) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -13,7 +29,6 @@ const NetworkBackground = () => {
     let height = 0;
     let dpr = Math.min(window.devicePixelRatio || 1, 2);
     let raf = 0;
-    const isLowPower = window.matchMedia("(max-width: 767px), (prefers-reduced-motion: reduce)").matches;
 
     type P = { x: number; y: number; vx: number; vy: number };
     let points: P[] = [];
@@ -27,7 +42,7 @@ const NetworkBackground = () => {
       canvas.style.height = height + "px";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const density = isLowPower ? 18 : Math.min(110, Math.floor((width * height) / 16000));
+      const density = Math.min(110, Math.floor((width * height) / 16000));
       points = Array.from({ length: density }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -74,9 +89,7 @@ const NetworkBackground = () => {
         ctx.fill();
       }
 
-      if (!isLowPower) {
-        raf = requestAnimationFrame(tick);
-      }
+      raf = requestAnimationFrame(tick);
     };
 
     init();
@@ -93,7 +106,9 @@ const NetworkBackground = () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
     };
-  }, []);
+  }, [enabled]);
+
+  if (!enabled) return null;
 
   return (
     <canvas

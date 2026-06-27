@@ -85,7 +85,7 @@ const Navbar = () => {
 
       {/* Menu overlay */}
       <div
-        className={`fixed inset-0 z-40 bg-background/98 backdrop-blur-xl flex flex-col items-center justify-center gap-6 transition-all duration-300 ${
+        className={`fixed inset-0 z-40 bg-background flex flex-col items-center justify-center gap-6 transition-opacity duration-200 ${
           isMobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         role="dialog"
@@ -97,7 +97,7 @@ const Navbar = () => {
             key={link.href}
             href={link.href}
             onClick={() => setIsMobileOpen(false)}
-            className={`font-display text-2xl sm:text-3xl font-semibold transition-all duration-300 px-6 py-2 rounded-xl ${
+            className={`font-display text-2xl sm:text-3xl font-semibold transition-colors duration-200 px-6 py-2 rounded-xl ${
               activeSection === link.id
                 ? "text-primary bg-primary/10"
                 : "text-foreground hover:text-primary hover:bg-primary/5"
