@@ -1,4 +1,4 @@
-import { useState, useCallback, lazy, Suspense, useEffect } from "react";
+import { useState, useCallback, lazy, Suspense, useEffect, type ComponentType } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
@@ -10,7 +10,7 @@ import NetworkBackground from "@/components/NetworkBackground";
 
 // Defer heavy below-the-fold sections to shrink the initial bundle.
 // Retry on transient "Importing a module script failed" errors (stale chunks).
-const lazyWithRetry = <T,>(factory: () => Promise<{ default: T }>) =>
+const lazyWithRetry = <T extends ComponentType<any>>(factory: () => Promise<{ default: T }>) =>
   lazy(async () => {
     try {
       return await factory();
