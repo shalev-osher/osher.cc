@@ -6,20 +6,17 @@ const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
   const { lang } = useLanguage();
   const isHebrew = lang === "he";
   const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
-  const [phase, setPhase] = useState<"logo" | "skeleton" | "reveal" | "done">(isMobile ? "done" : "logo");
+  const [phase, setPhase] = useState<"logo" | "skeleton" | "reveal" | "done">("logo");
 
   useEffect(() => {
-    if (isMobile) {
-      onComplete();
-      return;
-    }
-
-    const t0 = setTimeout(() => setPhase("skeleton"), 900);
-    const t1 = setTimeout(() => setPhase("reveal"), 2200);
+    // Slightly longer on mobile so lazy chunks (certificates) finish preloading
+    const scale = isMobile ? 1.3 : 1;
+    const t0 = setTimeout(() => setPhase("skeleton"), 900 * scale);
+    const t1 = setTimeout(() => setPhase("reveal"), 2200 * scale);
     const t2 = setTimeout(() => {
       setPhase("done");
       onComplete();
-    }, 2800);
+    }, 2800 * scale);
     return () => { clearTimeout(t0); clearTimeout(t1); clearTimeout(t2); };
   }, [isMobile, onComplete]);
 
